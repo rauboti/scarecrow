@@ -47,7 +47,7 @@ function router() {
       if(req.user && req.user.rank >= 1) {
         next();
       } else {
-        res.redirect(availablePaths['signIn'].path);
+        res.redirect(availablePaths['signUp'].path);
       }
     })
     .get((req, res) => {
@@ -195,20 +195,20 @@ function router() {
         }());
       });
     })
-//    .post(passport.authenticate('local', {
-//      successRedirect: '/',
-//      failureRedirect: availablePaths['signIn'].path
-//    }));
-    .post((req, res) => {
-      getPages(8, function(scMenu){
-        (async function dbQuery() {
-          passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: scMenu['signIn'].path
-          });
-        }());
-      });
-    });
+    .post(passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/signIn'
+    }));
+//    .post((req, res) => {
+//      getPages(8, function(scMenu){
+//        (async function dbQuery() {
+//          passport.authenticate('local', {
+//            successRedirect: '/',
+//            failureRedirect: scMenu['signIn'].path
+//          });
+//        }());
+//      });
+//    });
     scarecrowRouter.route('/signUp')
       .get((req, res) => {
         let rank = 0;
