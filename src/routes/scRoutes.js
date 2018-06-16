@@ -8,6 +8,7 @@ const scarecrowRouter = express.Router();
 
 // => db connection
 const sql = require('../js/db');
+let availablePaths;
 
 function router() {
   // => root of the scarecrow router
@@ -28,7 +29,7 @@ function router() {
       if(req.user && req.user.rank === 8) {
         next();
       } else {
-        res.redirect('/signIn');
+        res.redirect(availablePaths[signIn].path);
       }
     })
     .get((req, res) => {
@@ -43,7 +44,7 @@ function router() {
       if(req.user && req.user.rank >= 1) {
         next();
       } else {
-        res.redirect('/signUp');
+        res.redirect(availablePaths[signIn].path);
       }
     })
     .get((req, res) => {
@@ -58,7 +59,7 @@ function router() {
       if(req.user && req.user.rank >= 2) {
         next();
       } else {
-        res.redirect('/signIn');
+        res.redirect(availablePaths[signIn].path);
       }
     })
     .get((req, res) => {
@@ -73,7 +74,7 @@ function router() {
       if(req.user) {
         next();
       } else {
-        res.redirect('/signIn');
+        res.redirect(availablePaths[signIn].path);
       }
     })
     .get((req, res) => {
@@ -104,7 +105,7 @@ function router() {
       if(req.user) {
         next();
       } else {
-        res.redirect('/signIn');
+        res.redirect(availablePaths[signIn].path);
       }
     })
     .get((req, res) => {
@@ -120,7 +121,7 @@ function router() {
         debug(req.user);
         next();
       } else {
-        res.redirect('/signIn');
+        res.redirect(availablePaths[signIn].path);
       }
     })
     .get((req, res) => {
@@ -177,7 +178,7 @@ function router() {
     })
     .post(passport.authenticate('local', {
       successRedirect: '/',
-      failureRedirect: '/signIn'
+      failureRedirect: availablePaths[signIn].path
     }));
     scarecrowRouter.route('/signUp')
       .get((req, res) => {
@@ -236,6 +237,7 @@ function getPages(rank, success) {
       obj['menu'] = result[i].menu;
       scMenu[result[i].name] = obj;
     }
+    availablePaths = scMenu;
     success(scMenu);
   }());
 }
