@@ -29,7 +29,7 @@ function router() {
       if(req.user && req.user.rank === 8) {
         next();
       } else {
-        res.redirect(availablePaths[signIn].path);
+        res.redirect(availablePaths['signIn'].path);
       }
     })
     .get((req, res) => {
@@ -44,7 +44,7 @@ function router() {
       if(req.user && req.user.rank >= 1) {
         next();
       } else {
-        res.redirect(availablePaths[signIn].path);
+        res.redirect(availablePaths['signIn'].path);
       }
     })
     .get((req, res) => {
@@ -59,7 +59,7 @@ function router() {
       if(req.user && req.user.rank >= 2) {
         next();
       } else {
-        res.redirect(availablePaths[signIn].path);
+        res.redirect(availablePaths['signIn'].path);
       }
     })
     .get((req, res) => {
@@ -74,7 +74,7 @@ function router() {
       if(req.user) {
         next();
       } else {
-        res.redirect(availablePaths[signIn].path);
+        res.redirect(availablePaths['signIn'].path);
       }
     })
     .get((req, res) => {
@@ -105,7 +105,7 @@ function router() {
       if(req.user) {
         next();
       } else {
-        res.redirect(availablePaths[signIn].path);
+        res.redirect(availablePaths['signIn'].path);
       }
     })
     .get((req, res) => {
@@ -121,7 +121,7 @@ function router() {
         debug(req.user);
         next();
       } else {
-        res.redirect(availablePaths[signIn].path);
+        res.redirect(availablePaths['signIn'].path);
       }
     })
     .get((req, res) => {
@@ -178,7 +178,7 @@ function router() {
     })
     .post(passport.authenticate('local', {
       successRedirect: '/',
-      failureRedirect: availablePaths[signIn].path
+      failureRedirect: availablePaths['signIn'].path
     }));
     scarecrowRouter.route('/signUp')
       .get((req, res) => {
