@@ -23,7 +23,7 @@
         <div class="container-headline">Sign up</div>
         <div class="container-body">
           <img class="container-login-image" src="/img/crow.png"></img>
-          <form name="frmSignUp" action="<%=scMenu['signIn'].path%>" method="post" onsubmit="return scarecrow._validateSignUp();">
+          <form name="frmSignUp" action="<%=scMenu['signUp'].path%>" method="post" onsubmit="return scarecrow._validateSignUp();">
             <div class="input-container">
               <input type="text" id="username" name="username" class="input-text-big signup-input" placeholder="Username"/>
             </div>
@@ -37,7 +37,7 @@
             <div class="buttonRow">
               <input id="btnSignUp" type="submit" class="button input-button" value="Sign up" />
             </div>
-            <div>...or <a href="/signIn"><u>sign in</u></a> here!</div>
+            <div>...or <a href="<%=scMenu['signIn'].path%>"><u>sign in</u></a> here!</div>
           </form>
         </div>
         <div class="container-foot">
