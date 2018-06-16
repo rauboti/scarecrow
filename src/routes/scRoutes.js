@@ -8,7 +8,6 @@ const scarecrowRouter = express.Router();
 
 // => db connection
 const sql = require('../js/db');
-let availablePaths;
 
 function router() {
   // => root of the scarecrow router
@@ -29,7 +28,11 @@ function router() {
       if(req.user && req.user.rank === 8) {
         next();
       } else {
-        res.redirect(availablePaths['signIn'].path);
+        getPages(8, function(scMenu){
+          (async function dbQuery() {
+            res.redirect(scMenu['signIn'].path);
+          }());
+        });
       }
     })
     .get((req, res) => {
@@ -59,7 +62,11 @@ function router() {
       if(req.user && req.user.rank >= 2) {
         next();
       } else {
-        res.redirect(availablePaths['signIn'].path);
+        getPages(8, function(scMenu){
+          (async function dbQuery() {
+            res.redirect(scMenu['signIn'].path);
+          }());
+        });
       }
     })
     .get((req, res) => {
@@ -74,7 +81,11 @@ function router() {
       if(req.user) {
         next();
       } else {
-        res.redirect(availablePaths['signIn'].path);
+        getPages(8, function(scMenu){
+          (async function dbQuery() {
+            res.redirect(scMenu['signIn'].path);
+          }());
+        });
       }
     })
     .get((req, res) => {
@@ -105,7 +116,11 @@ function router() {
       if(req.user) {
         next();
       } else {
-        res.redirect(availablePaths['signIn'].path);
+        getPages(8, function(scMenu){
+          (async function dbQuery() {
+            res.redirect(scMenu['signIn'].path);
+          }());
+        });
       }
     })
     .get((req, res) => {
@@ -121,7 +136,11 @@ function router() {
         debug(req.user);
         next();
       } else {
-        res.redirect(availablePaths['signIn'].path);
+        getPages(8, function(scMenu){
+          (async function dbQuery() {
+            res.redirect(scMenu['signIn'].path);
+          }());
+        });
       }
     })
     .get((req, res) => {
@@ -176,10 +195,20 @@ function router() {
         }());
       });
     })
-    .post(passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: availablePaths['signIn'].path
-    }));
+//    .post(passport.authenticate('local', {
+//      successRedirect: '/',
+//      failureRedirect: availablePaths['signIn'].path
+//    }));
+    .post((req, res) => {
+      getPages(8, function(scMenu){
+        (async function dbQuery() {
+          passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: scMenu['signIn'].path
+          });
+        }());
+      });
+    });
     scarecrowRouter.route('/signUp')
       .get((req, res) => {
         let rank = 0;
