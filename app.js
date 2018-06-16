@@ -28,10 +28,10 @@ app.use(favicon(path.join(__dirname, '/public/ico', 'favicon.ico')));
 
 // => static folder for source files
 app.use(express.static(path.join(__dirname, '/public')));
-app.use('/css', express.static(path.join(__dirname, '/src/css')));
-app.use('/js', express.static(path.join(__dirname, '/src/js')));
-app.use('/img', express.static(path.join(__dirname, '/src/img')));
-app.use('/ico', express.static(path.join(__dirname, '/src/ico')));
+app.use('/css', express.static(path.join(__dirname, '/public/src/css')));
+app.use('/js', express.static(path.join(__dirname, '/public/src/js')));
+app.use('/img', express.static(path.join(__dirname, '/public/src/img')));
+app.use('/ico', express.static(path.join(__dirname, '/public/src/ico')));
 
 // => setting up EJS as a template engine
 app.set('views', './public/views');
