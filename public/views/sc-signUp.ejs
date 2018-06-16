@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <nav class="nav-sc">
       <menu class="menu-sc">
-          <a href="/scarecrow"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
-        <% for(var i=0; i<scMenu.length; i++) {%>
-          <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].name%></div></div></a>
-        <%}%>
+          <a href="/"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <% for (var i in scMenu) {
+          if (scMenu[i].menu === 1) {%>
+          <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+        <%}}%>
       </menu>
     </nav>
   </head>
@@ -22,15 +23,15 @@
         <div class="container-headline">Sign up</div>
         <div class="container-body">
           <img class="container-login-image" src="/img/crow.png"></img>
-          <form name="frmSignUp" action="/signUp" method="post" onsubmit="return validate.signUp();">
+          <form name="frmSignUp" action="<%=scMenu['signIn'].path%>" method="post" onsubmit="return scarecrow._validateSignUp();">
             <div class="input-container">
-              <input type="text" id="username" name="username" class="input-text-big" placeholder="Username"/>
+              <input type="text" id="username" name="username" class="input-text-big signup-input" placeholder="Username"/>
             </div>
             <div class="input-container">
-              <input type="password" id="password" name="password" class="input-text-big" placeholder="Password"/>
+              <input type="password" id="password" name="password" class="input-text-big signup-input" placeholder="Password"/>
             </div>
             <div class="input-container">
-              <input type="password" id="password_confirm" name="password_confirm" class="input-text-big" placeholder="Confirm password"/>
+              <input type="password" id="password_confirm" name="password_confirm" class="input-text-big signup-input" placeholder="Confirm password"/>
             </div>
             <div id="errorMessage" class="text-error"></div>
             <div class="buttonRow">

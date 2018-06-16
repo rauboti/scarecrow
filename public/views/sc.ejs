@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <nav class="nav-sc">
       <menu class="menu-sc">
-          <a href="/scarecrow"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
-        <% for(var i=0; i<scMenu.length; i++) {
-          if (scMenu[i].name == activePage) {%>
-          <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=scMenu[i].name%></div></div></a>
-        <%} else {%>
-          <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].name%></div></div></a>
-        <%}}%>
+          <a href="/"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <% for (var i in scMenu) {
+          if (scMenu[i].menu === 1) {
+            if (i == activePage) {%>
+            <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+          <%} else {%>
+            <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+          <%}}}%>
       </menu>
     </nav>
   </head>
