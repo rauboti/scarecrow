@@ -1,0 +1,38 @@
+{
+  "name": "rauboti.net",
+  "version": "1.0.0",
+  "description": "Home Page",
+  "repository": "https://rauboti.github.com/rauboti",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set DEBUG=app:* & nodemon app.js"
+  },
+  "author": "Gaute Rauboti",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "cookie-parser": "^1.4.3",
+    "debug": "^3.1.0",
+    "ejs": "^2.6.1",
+    "express": "~4.16.3",
+    "express-session": "^1.15.6",
+    "morgan": "^1.9.0",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.17.5",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-strategy": "^1.0.0",
+    "serve-favicon": "^2.5.0",
+    "util": "^0.10.3"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "delay": "2000",
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": 4100
+    }
+  }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <nav class="nav-sc">
+      <menu class="menu-sc">
+          <a href="/scarecrow"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <% for(var i=0; i<scMenu.length; i++) {%>
+          <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].name%></div></div></a>
+        <%}%>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section id="pageContainer">
+      <div class="container-login-frame">
+        <div class="container-headline">Sign in</div>
+        <div class="container-body">
+          <img class="container-login-image" src="/img/crow.png"></img>
+          <form name="frmSignIn" action="/signIn" method="post">
+            <div class="input-container">
+              <input type="text" id="username" name="username" class="input-text-big" placeholder="Username" required/>
+            </div>
+            <div class="input-container">
+              <input type="password" id="password" name="password" class="input-text-big" placeholder="Password" required/>
+            </div>
+            <div id="errorMessage" class="text-error"></div>
+            <div class="buttonRow">
+              <input id="btnLogin" type="submit" class="button input-button" value="Sign in" />
+            </div>
+            <div>Don't have an account? <a href="/signUp"><u>Sign up!</u></a></div>
+          </form>
+        </div>
+        <div class="container-foot">
+        </div>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+  </foot>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <nav class="nav-sc">
+      <menu class="menu-sc">
+        <a href="/scarecrow"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <% for(var i=0; i<scMenu.length; i++) {
+          if (scMenu[i].name == activePage) {%>
+          <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=scMenu[i].name%></div></div></a>
+        <%} else {%>
+          <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].name%></div></div></a>
+        <%}}%>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section id="pageContainer">
+      <div class="container-sc">
+        <div class="container-frame">
+          <div class="container-body">
+          <div>
+            <% for (var i in progression) {%>
+              <div id="btn-Progression-<%=i.replace("'", "").replace(" ", "")%>" class="menu-button-small"><div class="menu-button-text"><%=i%></div></div>
+            <%}%>
+            </div>
+            <table>
+              <tr class="tr-table">
+                <th>Boss</th>
+                <th>Status</th>
+              </tr>
+              <% for (var i in progression) {
+                for (var j in progression[i]) {%>
+                  <tr class="tblProgression boss-<%=i.replace("'", "").replace(" ", "")%> hidden">
+                    <td><%=progression[i][j].boss%></td>
+                    <td><%=progression[i][j].status%></td>
+                  </tr>
+                <%}
+              } %>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+  </foot>
+</html>
