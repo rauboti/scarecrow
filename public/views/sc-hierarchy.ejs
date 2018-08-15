@@ -25,22 +25,30 @@
       <div class="container-sc">
         <div class="container-frame">
           <div class="container-body">
-          <div class="container-frame">
-            <% for (var i in progression) {%>
-            <div id="btn-Progression-<%=i.replace(/[\' ]/g, '')%>" class="menu-button-small"><div class="menu-button-text"><%=i%></div></div>
-            <%}%>
-          </div>
-          <div class="table-container-tiny-outer">
-            <div class="table-container-tiny-inner">
-              <table>
-                <% for (var i in progression) {
-                  for (var j in progression[i]) {%>
-                    <tr class="tblProgression boss-<%=i.replace(/[\' ]/g, '')%> hidden tr-col-2 tr-highlight">
-                      <td><%=progression[i][j].boss%></td>
-                      <td><%=progression[i][j].status%></td>
-                    </tr>
-                    <%}
-                  } %>
+            <div class="container-frame">Guild Master</div>
+            <div class="table-container-tiny-outer">
+              <div class="table-container-tiny-inner">
+                <table>
+                  <% for (var i in users) {
+                    if (users[i].rank === 'Guild Master') {%>
+                      <tr class="tr-col-2 tr-highlight">
+                        <td><%=users[i].user%></td>
+                      </tr>
+                    <%}}%>
+                </table>
+              </div>
+            </div>
+            <div class="container-frame">Officers</div>
+            <div class="table-container-tiny-outer">
+              <div class="table-container-tiny-inner">
+                <table>
+                  <% for (var i in users) {
+                    if (users[i].rank === 'Officer') {%>
+                      <tr class="tr-col-2 tr-highlight">
+                        <td><%=users[i].user%></td>
+                        <td><%=users[i].role%></td>
+                      </tr>
+                    <%}}%>
                 </table>
               </div>
             </div>

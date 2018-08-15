@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <nav class="nav-sc">
       <menu class="menu-sc">
-          <a href="/"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
-        <% for (var i in scMenu) {
-          if (scMenu[i].menu === 1) {%>
-          <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
-        <%}}%>
+          <a href="<%=scMenu['Home'].path%>"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+          <% for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (i == activePage) {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+            <%} else {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+          <%}}}%>
       </menu>
     </nav>
   </head>
@@ -23,14 +26,19 @@
         <div class="container-headline">Sign in</div>
         <div class="container-body">
           <img class="container-login-image" src="/img/crow.png"></img>
-          <form name="frmSignIn" action="<%=scMenu['signIn'].path%>" method="post" onsubmit="return scarecrow._validateSignIn();">
+          <form name="frmSignIn" action="<%=scMenu['Sign in'].path%>" method="post" onsubmit="return scarecrow._validateSignIn();">
             <div class="input-container">
-              <input type="text" id="username" name="username" class="input-text-big signin-input" placeholder="Username" required/>
+              <div class="input-text-container">
+                <input type="text" id="username" name="username" class="input-text-big signin-input" placeholder="Username" />
+                <div id="usernameError" class="text-error"></div>
+              </div>
             </div>
             <div class="input-container">
-              <input type="password" id="password" name="password" class="input-text-big signin-input" placeholder="Password" required/>
+              <div class="input-text-container">
+                <input type="password" id="password" name="password" class="input-text-big signin-input" placeholder="Password" />
+                <div id="passwordError" class="text-error"></div>
+              </div>
             </div>
-            <div id="errorMessage" class="text-error"></div>
             <div class="buttonRow">
               <input id="btnLogin" type="submit" class="button input-button" value="Sign in" />
             </div>
@@ -46,5 +54,6 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
+    <script src="/js/sc-main.js"></script>
   </foot>
 </html>

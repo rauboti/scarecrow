@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <nav class="nav-sc">
       <menu class="menu-sc">
-        <a href="/"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <a href="<%=scMenu['Home'].path%>"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
         <% for (var i in scMenu) {
           if (scMenu[i].menu === 1) {
             if (i == activePage) {%>
@@ -23,60 +23,72 @@
   <body>
     <section id="pageContainer">
       <div id="pageContainerCell" class="container-sc">
-        <div id="pageMainComponents">
-          <div class="container-frame">
-            <div class="container-headline">User</div>
+        <div class="container-frame pageMainComponent">
+          <form id="frmUserInformation" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.user.userInfo();">
+            <div class="container-headline">General information</div>
             <div class="container-body">
-              <table>
-                <tr>
-                  <th>Username:</th>
-                  <td id="tblUsername"><i><%=user[0].user%></i></td>
-                  <th>Email:</th>
-                  <td id="tblEmail"><i><%=user[0].email%></i></td>
-                </tr>
-                <tr>
-                  <th>Guild rank:</th>
-                  <td><i><%=user[0].rank%></i></td>
-                  <th></th>
-                  <td></td>
-                </tr>
-                <tr>
-                </tr>
-              </table>
+              <div class="table-container-tiny-outer">
+                <div class="table-container-tiny-inner">
+                  <table>
+                    <tr class="tr-col-4">
+                      <th>Username:</th>
+                      <td id="tblUsername"><i><%=user[0].user%></i></td>
+                      <th>Email:</th>
+                      <td id="tblEmail"><i><%=user[0].email%></i></td>
+                    </tr>
+                    <tr class="tr-col-4">
+                      <th>Guild rank:</th>
+                      <td><i><%=user[0].rankName%></i></td>
+                      <% if (user[0].role === null || user[0].role === '' || user[0].role === undefined) {%>
+                        <th></th>
+                        <td></td>
+                      <%} else {%>
+                        <th>Role:</th>
+                        <td><i><%=user[0].role%></i></td>
+                      <%}%>
+                    </tr>
+                  </table>
+                </div>
+              </div>
             </div>
             <div class="container-foot">
               <div class="buttonRow">
-                <input id="btnUpdateInfo" type="button" class="button input-button" value="Update info" />
+                <button id="btnUpdateInfo" type="submit" name="edit" value="userInfo" class="response-button icon-edit"></button>
               </div>
             </div>
-          </div>
-          <div class="container-frame">
-            <div class="container-headline">Characters</div>
-            <div class="container-body">
-              <table>
-                <tr class="tr-table">
-                  <th>Nickname</th>
-                  <th>Class</th>
-                  <th>Role</th>
-                  <th></th>
-                </tr>
-                <% for (var i=0; i<characters.length; i++) {%>
-                  <tr id="character_<%=characters[i].id%>" class="clr<%=characters[i].class%>">
-                    <td class="charName"><%=characters[i].name%></td>
-                    <td class="charClass"><%=characters[i].class%></td>
-                    <td class="charRole role<%=characters[i].role%>"></td>
-                    <td><div id="btnDeleteCharacter_<%=characters[i].id%>" class="button button-icon-delete"></div></td>
-                  </tr>
-                <%}%>
-              </table>
-            </div>
-            <div class="container-foot">
-              <div class="buttonRow">
-                <input id="btnAddCharacter" type="button" class="button input-button" value="Add character" />
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
+        <% if (user[0].rank > 1) {%>
+          <div class="container-frame pageMainComponent">
+            <form name="frmUserCharacters" method="post" onsubmit="return scarecrow.validate.user.character();">
+              <div class="container-headline">Characters</div>
+              <div class="container-body">
+                <div class="table-container-tiny-outer">
+                  <div class="table-container-tiny-inner">
+                    <table>
+                      <%for (var i in characters) {%>
+                        <tr id="character_<%=characters[i].id%>" class="tr-col-3 tr-highlight">
+                          <td><div id="characterName_<%=characters[i].id%>" class="charName clr<%=characters[i].class%>"><%=characters[i].name%></div><div><div class="charRole role<%=characters[i].role%>"></div><span class="charLevel">60</span> <span class="charClass"><%=characters[i].class%></span></div></td>
+                          <% if (characters[i].main === 'main') {%>
+                          <td>Main</td>
+                          <%} else if (characters[i].main === 'alt') {%>
+                          <td></td>
+                          <%}%>
+                          <td><button id="btnDeleteCharacter_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete list-button"></button></td>
+                        </tr>
+                      <%}%>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="container-foot">
+                <div class="buttonRow">
+                  <button id="btnAddCharacter" type="submit" name="add" value="character" class="response-button icon-add"></button>
+                </div>
+              </div>
+            </form>
+          </div>
+        <%}%>
       </div>
     </section>
   </body>
@@ -84,5 +96,6 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
+    <script src="/js/sc-main.js"></script>
   </foot>
 </html>

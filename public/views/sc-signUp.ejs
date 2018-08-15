@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <nav class="nav-sc">
       <menu class="menu-sc">
-          <a href="/"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+          <a href="<%=scMenu['Home'].path%>"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
         <% for (var i in scMenu) {
           if (scMenu[i].menu === 1) {%>
           <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
@@ -25,19 +25,27 @@
           <img class="container-login-image" src="/img/crow.png"></img>
           <form name="frmSignUp" action="<%=scMenu['signUp'].path%>" method="post" onsubmit="return scarecrow._validateSignUp();">
             <div class="input-container">
-              <input type="text" id="username" name="username" class="input-text-big signup-input" placeholder="Username"/>
+              <div class="input-text-container">
+                <input type="text" id="username" name="username" class="input-text-big signup-input" placeholder="Username"/>
+                <div id="usernameError" class="text-error"></div>
+              </div>
             </div>
             <div class="input-container">
-              <input type="password" id="password" name="password" class="input-text-big signup-input" placeholder="Password"/>
+              <div class="input-text-container">
+                <input type="password" id="password" name="password" class="input-text-big signup-input" placeholder="Password"/>
+                <div id="passwordError" class="text-error"></div>
+              </div>
             </div>
             <div class="input-container">
-              <input type="password" id="password_confirm" name="password_confirm" class="input-text-big signup-input" placeholder="Confirm password"/>
+              <div class="input-text-container">
+                <input type="password" id="password_confirm" name="password_confirm" class="input-text-big signup-input" placeholder="Confirm password"/>
+                <div id="passwordConfirmError" class="text-error"></div>
+              </div>
             </div>
-            <div id="errorMessage" class="text-error"></div>
             <div class="buttonRow">
               <input id="btnSignUp" type="submit" class="button input-button" value="Sign up" />
             </div>
-            <div>...or <a href="<%=scMenu['signIn'].path%>"><u>sign in</u></a> here!</div>
+            <div>...or <a href="<%=scMenu['Sign in'].path%>"><u>sign in</u></a> here!</div>
           </form>
         </div>
         <div class="container-foot">
@@ -49,5 +57,6 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
+    <script src="/js/sc-main.js"></script>
   </foot>
 </html>

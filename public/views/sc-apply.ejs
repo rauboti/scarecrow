@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <nav class="nav-sc">
+      <menu class="menu-sc">
+        <a href="<%=scMenu['Home'].path%>"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <% for (var i in scMenu) {
+          if (scMenu[i].menu === 1) {
+            if (i == activePage) {%>
+            <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+          <%} else {%>
+            <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+        <%}}}%>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section id="pageContainer">
+      <div class="container-sc">
+        <div class="container-frame">
+          <form name="frmSignIn" action="<%=scMenu['Apply'].path%>" method="post" onsubmit="return scarecrow._validateApplication();">
+            <div class="container-body">
+              <div class="container-frame">Guild application</div>
+              <table>
+                <tr>
+                  <td>Character name</td>
+                  <td>Class</td>
+                  <td>Role</td>
+                </tr>
+                <tr>
+                  <td valign="top"><div class="input-text-container"><input id="txtCharName" name="characterName" type="input" class="input-text" /><div id="txtCharNameError" class="text-error"></div></div></td>
+                  <td valign="top"><div class="input-text-container"><select id="slctCharClass" name="characterClass" class="input-text"></select><div id="slctCharClassError" class="text-error"></div></div></td>
+                  <td valign="top"><div class="input-text-container"><select id="slctCharRole" name="characterRole" class="input-text"></select><div id="slctCharRoleError" class="text-error"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Character level</td>
+                  <td>Link to your spec</td>
+                  <td>Armory profile</td>
+                </tr>
+                <tr>
+                  <td><div class="input-text-container"><input id="txtLevel" name="characterLevel" type="input" class="input-text" /><div id="txtLevelError" class="text-error"></div></div></td>
+                  <td><div class="input-text-container"><input id="txtSpecLink" name="specLink" type="input" class="input-text" /><div id="txtSpecLinkError" class="text-error"></div></div></td>
+                  <td><div class="input-text-container"><input id="txtArmoryLink" name="armoryLink" type="input" class="input-text" /><div id="txtArmoryLinkError" class="text-error"></div></div></td>
+                </tr>
+              </table>
+              <table>
+                <tr>
+                  <td>How many of our raids will you be able to attend each week?</td>
+                </tr>
+                <tr>
+                  <td><div class="input-text-container"><input id="txtNumberOfRaids" name="numberRaids" type="input" class="input-text" /><div id="txtNumberOfRaidsError" class="text-error"></div></div></td>
+                </tr>
+                <tr>
+                  <td>How do you prepare for each raid (progression and farm)?</td>
+                </tr>
+                <tr>
+                  <td><div class="input-text-container"><textarea id="txtPreparation" name="preparation"></textarea><div id="txtPreparationError" class="text-error"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Why are <u>you</u> a vaulable asset to our raiding team?</td>
+                </tr>
+                <tr>
+                  <td><div class="input-text-container"><textarea id="txtValuableAsset" name="asset"></textarea><div id="txtValuableAssetError" class="text-error"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Making a mistake, how do you respond to being called out on it?</td>
+                </tr>
+                <tr>
+                  <td><div class="input-text-container"><input id="txtMakingMistake" name="mistake" type="input" class="input-text" /><div id="txtMakingMistakeError" class="text-error"></div></div></td>
+                </tr>
+                <tr>
+                  <td>Finally, is there anything else you'd like to add?</td>
+                </tr>
+                <tr>
+                  <td><div class="input-text-container"><textarea id="txtAnythingElse" name="anythingElse"></textarea><div id="txtAnythingElseError" class="text-error"></div></div></td>
+                </tr>
+              </table>
+            </div>
+            <div class="container-foot">
+              <div class="buttonRow">
+                <input id="btnSubmitApplication" type="submit" class="button input-button" value="Submit" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script src="/js/sc-main.js"></script>
+    <script>
+    $(document).ready(function() {
+      scarecrow.getCharacterClasses();
+    });
+    </script>
+  </foot>
+</html>

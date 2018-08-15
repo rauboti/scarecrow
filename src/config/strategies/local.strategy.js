@@ -10,16 +10,12 @@ function localStrategy() {
       passwordField: 'password'
     }, (username, password, done) => {
       (async function dbQuery() {
-        const result = await sql.query('SELECT id, pw, user, rank FROM tblUser WHERE user = ?', [username]);
+        const result = await sql.query('SELECT id, user, rank FROM tblUser WHERE user = ? AND pw = ?', [username, password]);
         if (result === undefined || result.length === 0) {
           done(null, false);
         } else {
           const user = result[0]
-          if (user.pw === password) {
-            done(null, user);
-          } else {
-            done(null, false);
-          }
+          done(null, user);
         }
       }());
     }

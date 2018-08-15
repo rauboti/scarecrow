@@ -22,26 +22,30 @@
   </head>
   <body>
     <section id="pageContainer">
-      <div class="container-sc">
-        <div class="container-frame">
-          <div class="container-body">
+      <div id="pageContainerCell" class="container-sc">
+        <div id="pageMainComponents">
           <div class="container-frame">
-            <% for (var i in progression) {%>
-            <div id="btn-Progression-<%=i.replace(/[\' ]/g, '')%>" class="menu-button-small"><div class="menu-button-text"><%=i%></div></div>
-            <%}%>
-          </div>
-          <div class="table-container-tiny-outer">
-            <div class="table-container-tiny-inner">
-              <table>
-                <% for (var i in progression) {
-                  for (var j in progression[i]) {%>
-                    <tr class="tblProgression boss-<%=i.replace(/[\' ]/g, '')%> hidden tr-col-2 tr-highlight">
-                      <td><%=progression[i][j].boss%></td>
-                      <td><%=progression[i][j].status%></td>
+            <div class="container-headline">User administration</div>
+            <div class="container-body">
+              <div class="table-container-tiny-outer">
+                <div class="table-container-tiny-inner">
+                  <table>
+                    <tr class="tr-col-3">
+                      <th>Username</th>
+                      <th>Rank</th>
+                      <th>Role</th>
+                      <th></th>
                     </tr>
-                    <%}
-                  } %>
-                </table>
+                    <% for (var i in userList) {%>
+                      <tr class="tr-col-3 tr-highlight">
+                        <td><%=userList[i].user%></td>
+                        <td><%=userList[i].rank%></td>
+                        <td><%=userList[i].role%></td>
+                        <td><a href="/admin/user/<%=userList[i].id%>"><div class="icon-edit list-button"></div></a></td>
+                      </tr>
+                    <%}%>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
