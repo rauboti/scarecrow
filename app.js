@@ -36,7 +36,7 @@ app.use('/ico', express.static(path.join(__dirname, '/src/ico')));
 app.set('views', './public/views');
 app.set('view engine', 'ejs');
 
-// => using the scarecrow router if /scarecrow are called
+// => using the scarecrow router
 app.use('/', scarecrowRouter);
 
 // => listening to port
