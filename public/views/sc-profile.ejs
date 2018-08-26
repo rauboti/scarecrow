@@ -5,10 +5,11 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/boti.css" />
     <link rel="stylesheet" href="/css/scarecrow.css" />
-    <nav class="nav-sc">
-      <menu class="menu-sc">
+    <nav>
+      <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
         <% for (var i in scMenu) {
           if (scMenu[i].menu === 1) {
@@ -30,21 +31,32 @@
               <div class="table-container-tiny-outer">
                 <div class="table-container-tiny-inner">
                   <table>
-                    <tr class="tr-col-4">
-                      <th>Username:</th>
+                    <tr class="tr-col-3">
                       <td id="tblUsername"><i><%=user[0].user%></i></td>
-                      <th>Email:</th>
+                      <td></td>
                       <td id="tblEmail"><i><%=user[0].email%></i></td>
                     </tr>
-                    <tr class="tr-col-4">
-                      <th>Guild rank:</th>
+                    <tr class="tr-col-3">
+                      <td class="label-under">Username</td>
+                      <td></td>
+                      <td class="label-under">Email</td>
+                    </tr>
+                    <tr class="tr-col-3">
                       <td><i><%=user[0].rankName%></i></td>
+                      <td></td>
                       <% if (user[0].role === null || user[0].role === '' || user[0].role === undefined) {%>
-                        <th></th>
                         <td></td>
                       <%} else {%>
-                        <th>Role:</th>
                         <td><i><%=user[0].role%></i></td>
+                      <%}%>
+                    </tr>
+                    <tr class="tr-col-3">
+                      <td class="label-under">Guild rank</td>
+                      <td></td>
+                      <% if (user[0].role === null || user[0].role === '' || user[0].role === undefined) {%>
+                        <td></td>
+                      <%} else {%>
+                        <td class="label-under">Role</td>
                       <%}%>
                     </tr>
                   </table>

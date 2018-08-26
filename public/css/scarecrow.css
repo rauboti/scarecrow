@@ -1,16 +1,3 @@
-html {
-  font-family: 'Rajdhani', sans-serif;
-  height: 100vh;
-  width: 100vw;
-  background: url('/img/sc.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-section {
-  display: block;
-  text-align: center;
-}
 /* => Class roles */
 .roleDamage, .roleSupport, .roleTank {
   background-repeat: no-repeat;

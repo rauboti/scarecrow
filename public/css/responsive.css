@@ -1,0 +1,17 @@
+/* === Mobile === */
+.col-container-mobile {
+  font-size: 1.8em;
+}
+.container-mobile {
+  margin-top: 50px;
+}
+/* === Desktop === */
+.col-container-desktop {
+  font-size: 18px;
+}
+.container-desktop {
+  margin: 50px;
+  width: 50%;
+  min-width: 700px;
+  display: inline-block;
+}
