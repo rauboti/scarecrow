@@ -21,10 +21,24 @@ var isMobile = {
 
 function deviceAdjustment() {
   if( isMobile.any() ) {
-    $('.col-container').addClass('col-container-mobile');
+    $('menu').addClass('menu-mobile');
+    $('nav').addClass('nav-mobile');
+    $('section').addClass('section-mobile');
+    $('.button-icon-medium').addClass('button-icon-medium-mobile');
     $('.container').addClass('container-mobile');
+    $('.hover-highlighted').addClass('hover-highlighted-mobile');
+    $('.title').addClass('title-mobile');
+    $('.sub-container').addClass('sub-container-mobile');
+    $('.subtitle').addClass('subtitle-mobile');
   } else {
-    $('.col-container').addClass('col-container-desktop');
+    $('menu').addClass('menu-desktop');
+    $('nav').addClass('nav-desktop');
+    $('section').addClass('section-desktop');
+    $('.button-icon-medium').addClass('button-icon-medium-desktop');
     $('.container').addClass('container-desktop');
+    $('.hover-highlighted').addClass('hover-highlighted-desktop');
+    $('.title').addClass('title-desktop');
+    $('.sub-container').addClass('sub-container-desktop');
+    $('.subtitle').addClass('subtitle-desktop');
   }
 }

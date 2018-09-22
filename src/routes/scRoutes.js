@@ -212,7 +212,7 @@ function router() {
     getPages(rank, function(scMenu){
       (async function dbQuery() {
         const users = await sql.query('SELECT u.user, r.name as "rank", u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id ORDER BY r.name, u.user');
-        res.render('sc-hierarchy', { scMenu, activePage: 'Hierarchy', title: '<Scarecrow>', users });
+        res.render('hierarchy', { scMenu, activePage: 'Hierarchy', title: '<Scarecrow>', users });
       }());
     });
   });
@@ -281,16 +281,13 @@ function router() {
             progression[result[i].instance] = [];
           }
           var x = {};
-          x['boss'] = result[i].boss;
+          x['name'] = result[i].boss;
           x['status'] = result[i].status;
           progression[result[i].instance].push(x);
         }
-        res.render('sc-progression', { scMenu, activePage: 'Progression', progression, title: '<Scarecrow>' });
+        res.render('progression', { scMenu, activePage: 'Progression', progression, title: '<Scarecrow>' });
       }());
     });
-    (async function dbQuery() {
-
-    }());
   });
   scarecrowRouter.route('/signIn')
     .get((req, res) => {

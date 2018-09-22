@@ -1,17 +1,73 @@
 /* === Mobile === */
-.col-container-mobile {
-  font-size: 1.8em;
+.button-icon-medium-mobile {
+  height: 3em;
+  width: 3em;
 }
 .container-mobile {
-  margin-top: 50px;
+  padding: 5px;
+}
+.hover-highlighted-mobile {
+  opacity: 1;
+}
+.menu-mobile {
+  border-bottom: 1px solid rgba(var(--border-colour-alt), 0.3);
+  font-size: 4vw;
+}
+.nav-mobile {
+
+}
+.section-mobile {
+
+}
+.sub-container-mobile {
+ width: 85%;
+ font-size: 1.9em;
+ padding: 0.7em;
+ margin: 0.1em;
+}
+.subtitle-mobile {
+  font-size: 2em;
+}
+.title-mobile {
+  font-size: 3em;
 }
 /* === Desktop === */
-.col-container-desktop {
-  font-size: 18px;
+.button-icon-medium-desktop {
+  height: 40px;
+  width: 40px;
 }
 .container-desktop {
-  margin: 50px;
+  padding: 10px;
   width: 50%;
   min-width: 700px;
   display: inline-block;
+}
+.hover-highlighted-desktop {
+  opacity: 0.65;
+}
+.menu-desktop {
+  display: inline-block;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid rgba(var(--border-colour-alt), 0.3);
+  border-top: none;
+  font-size: 1.7em;
+}
+.nav-desktop {
+
+}
+.section-desktop {
+  text-align: center;
+}
+.sub-container-desktop {
+  margin: 2px;
+  padding: 5px;
+  width: 40%;
+  min-width: 500px;
+}
+.subtitle-desktop {
+  font-size: 1.3em;
+}
+.title-desktop {
+  font-size: 2.2em;
 }

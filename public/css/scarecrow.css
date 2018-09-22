@@ -1,96 +1,42 @@
-/* => Class roles */
-.roleDamage, .roleSupport, .roleTank {
-  background-repeat: no-repeat;
-  background-position:center;
-  width: 25px;
-  height: 20px;
+/*  *- Buttons: menu -*  */
+.menu-button {
+  vertical-align: top;
+  padding: 5px;
+  margin: 5px;
 }
-.roleDamage {
-  background-image: url('/ico/icoDamage.png');
-}
-.roleTank {
-  background-image: url('/ico/icoTank.png');
-}
-.roleSupport {
-  background-image: url('/ico/icoSupport.png');
-}
-.charLevel, .charClass, .charRole {
-  display: inline-block;
-  vertical-align:middle;
-  font-size: 0.7em;
-}
-.trLevel {
-  width: 10%;
-}
-.trName {
-  width: 70%;
-}
-.trActions {
-  width: 20%;
-}
-/* => Classes w/colours */
-.clrDeath-Knight {
-  color: rgba(196, 30, 59, 1);
-}
-.clrDemon-Hunter {
-  color: rgba(163, 48, 201, 1);
-}
-.clrDruid {
-  color: rgba(255, 125, 10, 1);
-}
-.clrHunter {
-  color: rgba(171, 212, 115, 1);
-}
-.clrMage {
-  color: rgba(105, 204, 240, 1);
-}
-.clrMonk {
-  color: rgba(0, 255, 150, 1);
-}
-.clrPaladin {
-  color: rgba(245, 140, 186, 1);
-}
-.clrPriest {
-  color: rgba(255, 255, 255, 1);
-}
-.clrRogue {
-  color: rgba(255, 245, 105, 1);
-}
-.clrShaman {
-  color: rgba(0, 112, 222, 1);
-}
-.clrWarlock {
-  color: rgba(148, 130, 201, 1);
-}
-.clrWarrior {
-  color: rgba(199, 156, 110, 1);
-}
-/* => Icons */
-.icon-home, .icon-accept, .icon-decline, .icon-back, .icon-edit, .icon-delete, .icon-add, .icon-m {
-  background-repeat: no-repeat;
+.menu-button, .menu-button-text {
   display: inline-block;
 }
-.icon-home {
-  background: url('/ico/home.svg');
+.menu-button-icon {
+  height: 1.2em;
+  width: 1.2em;
 }
-.icon-accept {
-  background: url('/ico/accept.svg');
+.menu-button-icon:hover, .menu-button-text:hover {
+  -webkit-transform: scale(1.075);
+  -moz-transform: scale(1.075);
+  -ms-transform: scale(1.075);
+  -o-transform: scale(1.075);
+  transform: scale(1.075);
 }
-.icon-decline {
-  background: url('/ico/decline.svg');
+.menu-button-selected {
+  box-shadow: 0 0 5px rgba(var(--border-colour-selected), 1);
+  color: rgba(var(--text-colour-selected), 1);
+  border-bottom: 1px solid rgba(var(--border-colour-selected), 1);
 }
-.icon-back {
-  background: url('/ico/back.svg');
+/*  *- Buttons: submit -*  */
+.response-button:hover {
+  -webkit-transform: scale(1.075);
+  -moz-transform: scale(1.075);
+  -ms-transform: scale(1.075);
+  -o-transform: scale(1.075);
+  transform: scale(1.075);
 }
-.icon-edit {
-  background: url('/ico/edit.svg');
+/*  *- Containers  -*  */
+.container {
+  margin: 10px;
+  text-align: center;
 }
-.icon-delete {
-  background: url('/ico/delete.svg');
-}
-.icon-add {
-  background: url('/ico/add.svg');
-}
-.icon-m {
-  background: url('/ico/m.svg');
+.sub-container {
+  display: inline-block;
+  text-align: left;
 }

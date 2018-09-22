@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/classes.css" />
+    <link rel="stylesheet" href="/css/icons.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <nav>
+      <menu class="background-black">
+        <a href="<%=scMenu['Home'].path%>"><div class="menu-button"><div class="menu-button-icon icon-home"></div></div></a>
+        <% for (var i in scMenu) {
+          if (scMenu[i].menu === 1) {
+            if (i == activePage) {%>
+            <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+          <%} else {%>
+            <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+        <%}}}%>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section class="margin-top">
+      <div class="container row-80 is-scrollable">
+        <% for (var instance in progression) {
+          var totalBosses = 0;
+          var defeatedBosses = 0;
+          for (var boss in progression[instance]) {
+            totalBosses++;
+            if (progression[instance][boss].status !== 'Undefeated') {
+              defeatedBosses++;
+            }
+          }
+          var instanceCompletion = 'Killed: ' + defeatedBosses + '/' + totalBosses;%>
+          <div id="btnInstance<%=i.replace(/[\' ]/g, '')%>" class="container border-rounded is-framed background-black">
+            <div class="col-90 is-inline align-middle">
+              <% if(defeatedBosses === totalBosses) {%>
+                <div class="container-headline"><i>- Cleared -</i></div>
+              <%}%>
+              <div>
+                <div class="title is-inline col-70"><%=instance%></div>
+                <div class="subtitle is-inline col-30"><%=instanceCompletion%></div>
+              </div>
+            </div>
+            <div class="is-inline-flex align-middle">
+              <div class="button-icon-medium icon-arrow-down is-inline is-clickable"></div>
+            </div>
+          </div>
+          <div class="is-expandable">
+            <% for (var boss in progression[instance]) {%>
+              <div class="sub-container is-framed border-rounded background-black hover-highlighted">
+                <div class="col-70 is-inline"><%=progression[instance][boss].name%></div>
+                <div class="col-30 is-inline"><%=progression[instance][boss].status%></div>
+              </div>
+            <%}%>
+          </div>
+        <%}%>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script src="/js/mobile.js"></script>
+    <script src="/js/main.js"></script>
+  </foot>
+</html>
