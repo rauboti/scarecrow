@@ -9,12 +9,20 @@
 .hover-highlighted-mobile {
   opacity: 1;
 }
+.menu-button-mobile {
+  display: block;
+}
+.menu-button-row-mobile {
+  width: 100%;
+}
 .menu-mobile {
   border-bottom: 1px solid rgba(var(--border-colour-alt), 0.3);
   font-size: 4vw;
 }
 .nav-mobile {
-
+  position: absolute;
+  width: 100%;
+  top: 0;
 }
 .section-mobile {
 
@@ -45,6 +53,9 @@
 .hover-highlighted-desktop {
   opacity: 0.65;
 }
+.menu-button-desktop {
+  display: inline-flex;
+}
 .menu-desktop {
   display: inline-block;
   border-bottom-left-radius: 5px;
@@ -54,7 +65,11 @@
   font-size: 1.7em;
 }
 .nav-desktop {
-
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 .section-desktop {
   text-align: center;

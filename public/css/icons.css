@@ -1,6 +1,6 @@
-.icon-accept, .icon-add, .icon-arrow-down, .icon-arrow-up, .icon-back, .icon-decline, .icon-delete, .icon-edit, .icon-home, .icon-m {
+.icon-accept, .icon-add, .icon-arrow-down, .icon-arrow-up, .icon-back, .icon-decline, .icon-delete, .icon-edit, .icon-home, .icon-home-selected, .icon-logo, .icon-m, .icon-menu {
   background-repeat: no-repeat;
-  display: inline-block;
+  cursor: pointer;
 }
 .icon-accept {
   background: url('/ico/accept.svg');
@@ -29,9 +29,19 @@
 .icon-home {
   background: url('/ico/home.svg');
 }
+.icon-home-selected {
+  background: url('/ico/home-selected.svg');
+}
+.icon-logo {
+  background: url('/ico/logo.svg');
+}
 .icon-m {
   background: url('/ico/m.svg');
 }
+.icon-menu {
+  background: url('/ico/menu.svg');
+}
+
 .button-icon-medium {
   padding-bottom: 0px;
 }

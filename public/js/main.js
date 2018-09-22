@@ -19,6 +19,10 @@ $(document).ready(function() {
     }
   });
 
+  $('.icon-menu').click(function() {
+    $('.menu-button-row').slideToggle(500);
+  });
+
   $('.response-button').click(function() {
     clicked = $(this).attr('id').split('btn')[1];
   });

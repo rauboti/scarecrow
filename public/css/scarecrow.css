@@ -1,15 +1,15 @@
 /*  *- Buttons: menu -*  */
-.menu-button {
+.menu-button, .selected-page {
   vertical-align: top;
   padding: 5px;
   margin: 5px;
 }
-.menu-button, .menu-button-text {
-  display: inline-block;
+.menu-button-text {
+  display: inline-flex;
 }
 .menu-button-icon {
-  height: 1.2em;
-  width: 1.2em;
+  height: 1.3em;
+  width: 1.3em;
 }
 .menu-button-icon:hover, .menu-button-text:hover {
   -webkit-transform: scale(1.075);
@@ -39,4 +39,8 @@
 .sub-container {
   display: inline-block;
   text-align: left;
+}
+/* *- Misc -* */
+.text-selected {
+  color: rgba(var(--clr-selected), 1);
 }

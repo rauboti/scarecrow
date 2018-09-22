@@ -1,5 +1,6 @@
 /* => setting defaults */
 :root {
+  --clr-selected: var(--cyan);
   --text-colour: var(--black);
   --text-colour-alt: var(--white);
   --text-colour-selected: var(--cyan);
@@ -49,4 +50,7 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+body {
+  margin-top: 10vh;
 }

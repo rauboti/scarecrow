@@ -27,9 +27,13 @@ function deviceAdjustment() {
     $('.button-icon-medium').addClass('button-icon-medium-mobile');
     $('.container').addClass('container-mobile');
     $('.hover-highlighted').addClass('hover-highlighted-mobile');
+    $('.menu-button-row').children('a').children('menu-button').addClass('menu-button-mobile');
     $('.title').addClass('title-mobile');
     $('.sub-container').addClass('sub-container-mobile');
     $('.subtitle').addClass('subtitle-mobile');
+
+    $('.show-desktop').hide();
+    $('.menu-button-row').addClass('menu-button-row-mobile');
   } else {
     $('menu').addClass('menu-desktop');
     $('nav').addClass('nav-desktop');
@@ -37,8 +41,13 @@ function deviceAdjustment() {
     $('.button-icon-medium').addClass('button-icon-medium-desktop');
     $('.container').addClass('container-desktop');
     $('.hover-highlighted').addClass('hover-highlighted-desktop');
+    $('.menu-button-row').children('a').children('menu-button').addClass('menu-button-desktop');
+    $('.menu-button-row').children('a').addClass('is-inline-flex');
     $('.title').addClass('title-desktop');
     $('.sub-container').addClass('sub-container-desktop');
     $('.subtitle').addClass('subtitle-desktop');
+    $('.show-desktop').addClass('is-inline');
+
+    $('.show-mobile').hide();
   }
 }

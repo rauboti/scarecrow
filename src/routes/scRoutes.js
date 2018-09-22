@@ -24,7 +24,7 @@ function router() {
         } else {
           session = 'out';
         }
-        res.render('sc-home', { scMenu, title: '<Scarecrow>', session });
+        res.render('home', { scMenu, activePage: 'Home', title: '<Scarecrow>', session });
       }());
     });
   });
