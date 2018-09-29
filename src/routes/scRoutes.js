@@ -174,7 +174,7 @@ function router() {
       if(req.user && req.user.rank >= 2) {
         next();
       } else {
-        res.redirect('/scarecrow/signIn');
+        res.redirect('/signIn');
       }
     })
     .get((req, res) => {
@@ -297,7 +297,7 @@ function router() {
       }
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          res.render('sc-signIn', { scMenu, activePage: 'Sign in', title: '<Scarecrow>' });
+          res.render('signIn', { scMenu, activePage: 'Sign In', title: '<Scarecrow>' });
         }());
       });
     })
@@ -305,34 +305,34 @@ function router() {
       successRedirect: '/',
       failureRedirect: '/signIn'
     }));
-    scarecrowRouter.route('/signUp')
-      .get((req, res) => {
-        let rank = 0;
-        if (req.user) {
-          rank = req.user.rank;
-        }
-        getPages(rank, function(scMenu){
-          (async function dbQuery() {
-            res.render('sc-signUp', { scMenu, title: '<Scarecrow>' });
-          }());
-        });
-      })
-      .post((req, res) => {
-        (async function addUser() {
-          let ID = createID();
-          let userExcists = await sql.query('SELECT * from tblUser WHERE id = ?', [ID]);
-          while (userExcists.length !== 0) {
-            ID = createID();
-            userExcists = await sql.query('SELECT * from tblUser WHERE id = ?', [ID]);
-          }
-          const newUser = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank) VALUES (?, ?, ?, ?, 1)', [ID, req.body.username, req.body.password, req.body.email]);
-          const getUser = await sql.query('SELECT id, user, rank FROM tblUser WHERE user = ? AND pw = ?', [req.body.username, req.body.password]);
-          const user = getUser[0];
-          req.login(user, () => {
-            res.redirect('/apply');
-          });
+  scarecrowRouter.route('/signUp')
+    .get((req, res) => {
+      let rank = 0;
+      if (req.user) {
+        rank = req.user.rank;
+      }
+      getPages(rank, function(scMenu){
+        (async function dbQuery() {
+          res.render('signUp', { scMenu, activePage: 'Sign Up', title: '<Scarecrow>' });
         }());
       });
+    })
+    .post((req, res) => {
+      (async function addUser() {
+        let ID = createID();
+        let userExcists = await sql.query('SELECT * from tblUser WHERE id = ?', [ID]);
+        while (userExcists.length !== 0) {
+          ID = createID();
+          userExcists = await sql.query('SELECT * from tblUser WHERE id = ?', [ID]);
+        }
+        const newUser = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank) VALUES (?, ?, ?, ?, 1)', [ID, req.body.username, req.body.password, req.body.email]);
+        const getUser = await sql.query('SELECT id, user, rank FROM tblUser WHERE user = ? AND pw = ?', [req.body.username, req.body.password]);
+        const user = getUser[0];
+        req.login(user, () => {
+          res.redirect('/apply');
+        });
+      }());
+    });
   // => API for the various database calls
   scarecrowRouter.route('/api').post((req, res) => {
     (async function dbQuery() {

@@ -1,0 +1,68 @@
+:root {
+  --black: 0, 0, 0;
+  --grey: 140, 140, 140;
+  --white: 255, 255, 255;
+
+  --crimson-red: 255, 40, 0;
+  --crimson-grey: 100, 100, 100;
+  --crimson-border-radius: 2px;
+
+  --ghostly-blue: 81, 203, 238;
+  --ghostly-border-radius: 5px;
+}
+/*
+<..> Cross-theme attributes <..>
+*/
+input {
+  border: none;
+  background: none;
+  outline: none;
+}
+.input-crimson, .input-ghostly {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  transition: all 0.30s ease-in-out;
+}
+
+/*
+<..> Crimson <..>
+*/
+.input-crimson {
+  border-radius: var(--crimson-border-radius);
+}
+.input-crimson[type="text"], .input-crimson[type="password"] {
+  background: rgba(var(--white), 0.03);
+  border: 1px solid rgba(var(--crimson-grey), 1);
+  color: rgba(var(--grey), 1);
+}
+.input-crimson:focus {
+  box-shadow: 0 0 5px rgba(var(--crimson-red), 1);
+  border: 1px solid rgba(var(--crimson-red), 1);
+}
+/*
+<..> Ghostly <..>
+*/
+.input-ghostly {
+  border-radius: var(--ghostly-border-radius);
+}
+.input-ghostly[type="text"], .input-ghostly[type="password"] {
+  background: rgba(var(--white), 0.05);
+  border: 1px solid rgba(var(--white), 0.3);
+  color: rgba(var(--white), 1);
+}
+.input-ghostly[type="submit"] {
+  background: rgba(var(--white), 0.7);
+  border: 1px solid rgba(var(--white), 0.3);
+  color: rgba(var(--black), 1);
+}
+.input-ghostly:focus {
+  box-shadow: 0 0 5px rgba(var(--ghostly-blue), 1);
+  border: 1px solid rgba(var(--ghostly-blue), 1);
+}
+
+
+.button-type-text {
+  border: 1px solid rgba(255,255,255,0.5);
+}

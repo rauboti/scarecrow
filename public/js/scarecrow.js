@@ -93,65 +93,6 @@ var scarecrow = {
       return true;
     }
   },
-  _validateSignIn: function() {
-    let userValid = true;
-    let pwValid = true;
-    let errormsg = '';
-    $('.input-text-big').removeClass('invalid');
-    $('.input-text-big').removeClass('valid');
-    if ($('#username').val().length < 3) {
-      $('#username').addClass('invalid');
-      $('#usernameError').html('Username required');
-      userValid = false;
-    } else {
-      $('#usernameError').html('');
-    }
-    if ($('#password').val() === '') {
-      $('#password').addClass('invalid');
-      $('#passwordError').html('Password required')
-      pwValid = false;
-    } else {
-      $('#passwordError').html('');
-    }
-    if (!userValid || !pwValid) {
-      return false
-    } else {
-      return true;
-    }
-  },
-  _validateSignUp: function() {
-    let userValid = true;
-    let pwValid = true;
-    let errormsg = '';
-    $('.input-text-big').removeClass('invalid');
-    $('.input-text-big').removeClass('valid');
-    if ($('#username').val().length < 3) {
-      $('#username').addClass('invalid');
-      $('#usernameError').html('Username with at least 3 characters required');
-      userValid = false;
-    } else {
-      $('#usernameError').html('')
-    }
-    if ($('#password').val() === '') {
-      $('#password').addClass('invalid');
-      $('#passwordError').html('Password required');
-      pwValid = false;
-    } else if ($('#password').val() !== $('#password_confirm').val()) {
-      $('#password').addClass('invalid');
-      $('#password_confirm').addClass('invalid');
-      $('#passwordError').html('The passwords must match each other');
-      $('#passwordConfirmError').html('The passwords must match each other');
-      pwValid = false;
-    } else {
-      $('#passwordError').html('');
-      $('#passwordConfirmError').html('');
-    }
-    if (!userValid || !pwValid) {
-      return false
-    } else {
-      return true;
-    }
-  },
   addCharacter: function(frmId, validationFunction, confirmName, confirmValue) {
     $('.container-sc').append('<form class="popupForm" id="' + frmId + '" name="' + frmId + '" method="post" onsubmit="return scarecrow.' + validationFunction + '();">'
     + '<div class="container-frame">'
@@ -227,6 +168,65 @@ var scarecrow = {
     }
   },
   validate: {
+    access: {
+      signIn: function() {
+        var userValid = true;
+        var pwValid = true;
+        $('.text-error').removeClass('col-90');
+        $('.text-error').removeClass('is-inline');
+        $('#usernameError').html('');
+        $('#passwordError').html('');
+        if ($('#username').val() === '') {
+          $('#usernameError').html('Username required');
+          $('#usernameError').addClass('col-90');
+          $('#usernameError').addClass('is-inline');
+          userValid = false;
+        }
+        if ($('#password').val() === '') {
+          $('#passwordError').html('Password required')
+          $('#passwordError').addClass('col-90');
+          $('#passwordError').addClass('is-inline');
+          pwValid = false;
+        }
+        if (!userValid || !pwValid) {
+          return false
+        } else {
+          return true;
+        }
+      },
+      signUp: function() {
+        let userValid = true;
+        let pwValid = true;
+        $('.text-error').removeClass('col-90');
+        $('.text-error').removeClass('is-inline');
+        $('#usernameError').html('')
+        if ($('#username').val().length < 3) {
+          $('#usernameError').html('Username with at least 3 characters required');
+          $('#usernameError').addClass('col-90');
+          $('#usernameError').addClass('is-inline');
+          userValid = false;
+        }
+        if ($('#password').val() === '') {
+          $('#passwordError').html('Password required');
+          $('#passwordError').addClass('col-90');
+          $('#passwordError').addClass('is-inline');
+          pwValid = false;
+        } else if ($('#password').val() !== $('#password_confirm').val()) {
+          $('#passwordError').html('The passwords must match each other');
+          $('#passwordError').addClass('col-90');
+          $('#passwordError').addClass('is-inline');
+          $('#passwordConfirmError').html('The passwords must match each other');
+          $('#passwordConfirmError').addClass('col-90');
+          $('#passwordConfirmError').addClass('is-inline');
+          pwValid = false;
+        }
+        if (!userValid || !pwValid) {
+          return false
+        } else {
+          return true;
+        }
+      },
+    },
     character: {
       add: function() {
         console.log('validate.character.add: ' + clicked);
@@ -255,6 +255,9 @@ var scarecrow = {
       }
     },
     highlight: {
+      access: {
+
+      },
       character: {
         add: function() {
           $('#txtCharName').val() === '' ? $('#txtCharName').addClass('invalid') : $('#txtCharName').removeClass('invalid');

@@ -1,6 +1,7 @@
 /* => setting defaults */
 :root {
   --clr-selected: var(--cyan);
+
   --text-colour: var(--black);
   --text-colour-alt: var(--white);
   --text-colour-selected: var(--cyan);
@@ -53,4 +54,11 @@ html {
 }
 body {
   margin-top: 10vh;
+}
+input {
+  font-family: 'Rajdhani', sans-serif;
+  margin: 10px;
+}
+input[type="submit"] {
+  cursor: pointer;
 }

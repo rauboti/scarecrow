@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/icons.css" />
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="/css/themes.css" />
     <nav>
       <menu class="background-black">
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
@@ -31,27 +32,22 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-big align-center">
-          <% for (var i in users) {
-            if (users[i].rank === 'Guild Master') {%>
-              <div class="container-medium align-left is-framed border-rounded background-black">
-                <div class="col-30 is-inline">Guild Master</div>
-                <div class="col-30 is-inline"><%=users[i].user%></div>
-                <div class="col-40 is-inline"></div>
-              </div>
-            <%}
-          }%>
-        </div>
-        <div class="container-big align-center">
-          <% for (var i in users) {
-            if (users[i].rank === 'Officer') {%>
-              <div class="container-medium align-left is-framed border-rounded background-black">
-                <div class="col-30 is-inline">Officer</div>
-                <div class="col-40 is-inline"><%=users[i].user%></div>
-                <div class="col-30 is-inline"><%=users[i].role%></div>
-              </div>
-            <%}
-          }%>
+        <div class="container-small align-center background-black border-rounded is-framed">
+          <form name="frmSignIn" action="<%=scMenu['Sign in'].path%>" method="post" onsubmit="return scarecrow.validate.access.signIn();">
+            <img class="round background-white faded margin-big" src="/img/crow.png"></img>
+            <div class="is-inline col-90">
+              <input id="username" type="text" name="username" class="input-ghostly col-90" placeholder="Username" />
+              <div id="usernameError" class="text-error col-90 align-left"></div>
+            </div>
+            <div class="is-inline col-90">
+              <input id="password" type="password" name="password" class="input-ghostly col-90" placeholder="Password" />
+              <div id="passwordError" class="text-error col-90 align-left"></div>
+            </div>
+            <div class="full-row">
+              <input id="btnLogin" type="submit" class="input-ghostly col-40" value="Sign in!" />
+            </div>
+            <div>Don't have an account? <a href="<%=scMenu['signUp'].path%>"><u>Sign up here!</u></a></div>
+          </form>
         </div>
       </div>
     </section>

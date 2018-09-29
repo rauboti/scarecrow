@@ -1,11 +1,25 @@
-.align-middle {
-  vertical-align: middle;
-}
 .align-bottom {
   vertical-align: bottom;
 }
+.align-center {
+  text-align: center;
+}
+.align-left {
+  text-align: left;
+}
+.align-middle {
+  vertical-align: middle;
+}
+.align-right {
+  text-align: right;
+}
 .background-black {
-  background: rgba(0,0,0,0.75);
+  background: rgba(0,0,0,0.85);
+  color: white;
+}
+.background-white {
+  background: rgba(255,255,255,0.85);
+  color: black;
 }
 .border-rounded {
   border-radius: 5px;
@@ -37,6 +51,15 @@
 .col-90 {
   width: 87.5%;
 }
+.col-100 {
+  width: 100%;
+}
+.faded {
+  opacity: 0.5;
+}
+.full-row {
+  display: block;
+}
 .hover-highlighted:hover {
   opacity: 1;
 }
@@ -61,6 +84,9 @@
 .is-inline-flex {
   display: inline-flex;
 }
+.is-hidden {
+  opacity: 0;
+}
 .is-scrollable {
   overflow: scroll;
   overflow: -moz-scrollbars-none;
@@ -69,12 +95,20 @@
 .is-scrollable::-webkit-scrollbar {
   width: 0 !important;
 }
+.margin-big {
+  margin: 20px;
+}
+.margin-medium {
+  margin: 10px;
+}
+.margin-small {
+  margin: 5px;
+}
 .margin-top {
   margin-top: 50px;
 }
-.row-80 {
-  height: 80vh;
-  max-height: 80vh;
+.text-error {
+  color: red;
 }
 .title, .subtitle {
   text-align: left;
