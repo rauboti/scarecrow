@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/classes.css" />
+    <link rel="stylesheet" href="/css/icons.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="/css/themes.css" />
+    <nav>
+      <menu class="background-black">
+        <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
+        <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
+        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
+        <div class="menu-button-row show-desktop">
+          <% for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (i == activePage) {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text text-selected"><%=i%></div></div></a>
+            <%} else {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+          <%}}}%>
+        </div>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section>
+      <div class="container-page align-center is-scrollable">
+        <div class="container-big align-center border-rounded is-framed background-black">
+          <div class="col-80 is-inline align-middle">
+            <div class="title is-inline col-100">User Management</div>
+          </div>
+          <div class="is-inline-flex align-middle">
+            <div class="button-icon-medium icon-arrow-down is-inline is-clickable"></div>
+          </div>
+        </div>
+        <div class="is-expandable">
+          <div class="container-medium align-left is-framed border-rounded background-black hover-highlighted">
+            <div class="col-30 is-inline">Username</div>
+            <div class="col-30 is-inline">Rank</div>
+            <div class="col-30 is-inline">Role</div>
+            <div class="col-10 is-inline"></div>
+          </div>
+          <% for (var i in userList) {%>
+            <div class="container-medium align-left is-framed border-rounded background-black hover-highlighted">
+              <div class="col-30 is-inline"><%=userList[i].user%></div>
+              <div class="col-30 is-inline"><%=userList[i].rank%></div>
+              <div class="col-30 is-inline"><%=userList[i].role%></div>
+              <div class="col-10 is-inline"><a href="/admin/user/<%=userList[i].id%>"><div class="icon-edit button-icon-small"></div></a></div>
+            </div>
+          <%}%>
+        </div>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script src="/js/mobile.js"></script>
+    <script src="/js/main.js"></script>
+  </foot>
+</html>

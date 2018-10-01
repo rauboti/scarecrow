@@ -41,7 +41,7 @@ function router() {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const userList = await sql.query('SELECT u.id, u.user, u.rank as "rankid", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank ORDER BY u.rank DESC, u.user ASC');
-          res.render('sc-admin', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userList });
+          res.render('admin', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userList });
         }());
       });
     });

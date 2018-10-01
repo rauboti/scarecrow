@@ -30,6 +30,7 @@ function deviceAdjustment() {
     $('nav').addClass('nav-mobile');
     $('section').addClass('section-mobile');
     $('.button-icon-medium').addClass('button-icon-medium-mobile');
+    $('.button-icon-small').addClass('button-icon-small-mobile');
     $('.container-page').addClass('container-page-mobile');
     $('.container-big').addClass('container-big-mobile');
     $('.container-medium').addClass('container-medium-mobile');
@@ -55,6 +56,7 @@ function deviceAdjustment() {
     $('nav').addClass('nav-desktop');
     $('section').addClass('section-desktop');
     $('.button-icon-medium').addClass('button-icon-medium-desktop');
+    $('.button-icon-small').addClass('button-icon-small-desktop');
     $('.container-page').addClass('container-page-desktop');
     $('.container-big').addClass('container-big-desktop');
     $('.container-medium').addClass('container-medium-desktop');
