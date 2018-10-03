@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/classes.css" />
+    <link rel="stylesheet" href="/css/icons.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="/css/themes.css" />
+    <nav>
+      <menu class="background-black">
+        <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
+        <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
+        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
+        <div class="menu-button-row show-desktop">
+          <% for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (i == activePage) {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+            <%} else {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+          <%}}}%>
+        </div>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section>
+      <div class="container-page align-center is-scrollable">
+        <form name="frmSignIn" action="<%=scMenu['Apply'].path%>" method="post" onsubmit="return scarecrow.validate.application();">
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="col-50 is-inline">
+              <div class="align-left">Character name</div>
+              <div><input id="txtCharName" type="text" name="characterName" class="input-ghostly col-80" /></div>
+              <div id="txtCharNameError" class="text-error align-left"></div>
+            </div>
+            <div class="col-50 is-inline">
+              <div class="align-left">Character level</div>
+              <div><input id="txtLevel" type="text" name="characterLevel" class="input-ghostly col-80" /></div>
+              <div id="txtLevelError" class="text-error align-left"></div>
+            </div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="col-50 is-inline">
+              <div class="align-left">Class</div>
+              <div><select id="slctCharClass" name="characterClass" class="select-ghostly col-90"></select></div>
+              <div id="slctCharClassError" class="text-error align-left"></div>
+            </div>
+            <div class="col-50 is-inline">
+              <div class="align-left">Role</div>
+              <div><select id="slctCharRole" name="characterRole" class="select-ghostly col-90"></select></div>
+              <div id="slctCharRoleError" class="text-error align-left"></div>
+            </div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="col-50 is-inline">
+              <div class="align-left">Link to your spec</div>
+              <div><input id="txtSpecLink" type="text" name="specLink" class="input-ghostly col-80" /></div>
+              <div id="txtSpecLinkError" class="text-error align-left"></div>
+            </div>
+            <div class="col-50 is-inline">
+              <div class="align-left">Armory profile</div>
+              <div><input id="txtArmoryLink" type="text" name="armoryLink" class="input-ghostly col-80" /></div>
+              <div id="txtArmoryLinkError" class="text-error align-left"></div>
+            </div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="align-left">How many of our raids will you be able to attend each week?</div>
+            <div><input id="txtNumberOfRaids" type="text" name="numberRaids" class="input-ghostly col-90" /></div>
+            <div id="txtNumberOfRaidsError" class="text-error align-left"></div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="align-left">How do you prepare for each raid (progression and farm)?</div>
+            <div><textarea id="txtPreparation" name="preparation" class="textarea-ghostly col-90"></textarea></div>
+            <div id="txtPreparationError" class="text-error align-left"></div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="align-left">Why are <u>you</u> a vaulable asset to our raiding team?</div>
+            <div><textarea id="txtValuableAsset" name="asset" class="textarea-ghostly col-90"></textarea></div>
+            <div id="txtValuableAssetError" class="text-error align-left"></div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="align-left">Making a mistake, how do you respond to being called out on it?</div>
+            <div><input id="txtMakingMistake" type="text" name="mistake" class="input-ghostly col-90" /></div>
+            <div id="txtMakingMistakeError" class="text-error align-left"></div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <div class="align-left">Finally, is there anything else you'd like to add?</div>
+            <div><textarea id="txtAnythingElse" name="anythingElse" class="textarea-ghostly col-90"></textarea></div>
+            <div id="txtAnythingElseError" class="text-error align-left"></div>
+          </div>
+          <div class="container-medium is-framed border-rounded background-black">
+            <input id="btnSubmitApplication" type="submit" class="input-ghostly col-40" value="Submit" />
+          </div>
+        </form>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script src="/js/mobile.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+      $(document).ready(function() {
+        scarecrow.get.character.classes();
+      });
+    </script>
+  </foot>
+</html>

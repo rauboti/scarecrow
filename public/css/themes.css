@@ -13,12 +13,12 @@
 /*
 <..> Cross-theme attributes <..>
 */
-input {
+input, select, textarea {
   border: none;
   background: none;
   outline: none;
 }
-.input-crimson, .input-ghostly {
+.input-crimson, .select-crimson, .textarea-crimson, .input-ghostly, .select-ghostly, .textarea-ghostly {
   -webkit-transition: all 0.30s ease-in-out;
   -moz-transition: all 0.30s ease-in-out;
   -ms-transition: all 0.30s ease-in-out;
@@ -29,25 +29,30 @@ input {
 /*
 <..> Crimson <..>
 */
-.input-crimson {
+.input-crimson, .select-crimson, .textarea-crimson {
   border-radius: var(--crimson-border-radius);
 }
-.input-crimson[type="text"], .input-crimson[type="password"] {
+.input-crimson[type="text"], .input-crimson[type="password"], .select-crimson, .textarea-crimson {
   background: rgba(var(--white), 0.03);
   border: 1px solid rgba(var(--crimson-grey), 1);
   color: rgba(var(--grey), 1);
 }
-.input-crimson:focus {
+.input-crimson[type="submit"] {
+  background: black;
+  border: black;
+  color: black;
+}
+.input-crimson:focus, .select-crimson:focus, .textarea-crimson:focus {
   box-shadow: 0 0 5px rgba(var(--crimson-red), 1);
   border: 1px solid rgba(var(--crimson-red), 1);
 }
 /*
 <..> Ghostly <..>
 */
-.input-ghostly {
+.input-ghostly, .select-ghostly, .textarea-ghostly {
   border-radius: var(--ghostly-border-radius);
 }
-.input-ghostly[type="text"], .input-ghostly[type="password"] {
+.input-ghostly[type="text"], .input-ghostly[type="password"], .select-ghostly, .textarea-ghostly {
   background: rgba(var(--white), 0.05);
   border: 1px solid rgba(var(--white), 0.3);
   color: rgba(var(--white), 1);
@@ -57,11 +62,13 @@ input {
   border: 1px solid rgba(var(--white), 0.3);
   color: rgba(var(--black), 1);
 }
-.input-ghostly:focus {
+.input-ghostly:focus, .select-ghostly:focus, .textarea-ghostly:focus {
   box-shadow: 0 0 5px rgba(var(--ghostly-blue), 1);
   border: 1px solid rgba(var(--ghostly-blue), 1);
 }
-
+.option-ghostly {
+  background-color: black;
+}
 
 .button-type-text {
   border: 1px solid rgba(255,255,255,0.5);

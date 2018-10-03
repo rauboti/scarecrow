@@ -95,6 +95,11 @@
 .is-scrollable::-webkit-scrollbar {
   width: 0 !important;
 }
+.input-full {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .margin-big {
   margin: 20px;
 }

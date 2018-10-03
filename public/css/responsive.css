@@ -29,7 +29,7 @@
   height: 30vw;
   width: 30vw;
 }
-.input-mobile {
+.input-mobile, .select-mobile, .textarea-mobile {
   padding: 20px;
   font-size: 2rem;
 }
@@ -53,6 +53,9 @@
 }
 .subtitle-mobile {
   font-size: 2em;
+}
+.textarea-mobile {
+  min-height: 10vh;
 }
 .title-mobile {
   font-size: 3em;
@@ -96,7 +99,7 @@
   height: 10vw;
   width: 10vw;
 }
-.input-desktop {
+.input-desktop, .select-desktop, .textarea-desktop {
   padding: 10px;
 }
 .menu-button-desktop {

@@ -22,7 +22,7 @@
   --orange: 255,100,0;
   --black: 0, 0, 0;
 }
-html, body, nav, menu, head, img, section, div {
+html, body, nav, menu, head, img, section, div, textarea {
   margin: 0;
   padding: 0;
   color: white;
@@ -55,10 +55,17 @@ html {
 body {
   margin-top: 10vh;
 }
-input {
+input, select, textarea, option {
   font-family: 'Rajdhani', sans-serif;
   margin: 10px;
+  font-size: 1rem;
 }
 input[type="submit"] {
   cursor: pointer;
+}
+textarea {
+  resize: none;
+}
+button {
+  border: none;
 }

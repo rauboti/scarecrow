@@ -106,8 +106,23 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const applications = await sql.query('SELECT id, status, character_name, character_class, character_role, character_level FROM tblApplications');
-          res.render('sc-applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', applications });
+          const result = await sql.query('SELECT id, status, character_name, character_class, character_role, character_level FROM tblApplications');
+          var applications = {}
+          applications['New'] = []
+          applications['Accepted'] = []
+          applications['Declined'] = []
+
+          for (var i in result) {
+            var x = {};
+            x['id'] = result[i].id;
+            x['name'] = result[i].character_name;
+            x['class'] = result[i].character_class;
+            x['role'] = result[i].character_role;
+            x['level'] = result[i].character_level;
+            applications[result[i].status].push(x);
+          }
+
+          res.render('applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', applications });
         }());
       });
     });
@@ -124,7 +139,7 @@ function router() {
           (async function dbQuery() {
             const { id }  = req.params;
             const application = await sql.query('SELECT user, status, character_name, character_class, character_role, character_level, spec, armory, raids, preparation, asset, mistakes, anything_else FROM tblApplications WHERE id = ?', [id]);
-            res.render('sc-application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', application });
+            res.render('application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', application });
           }());
         });
       })
@@ -153,7 +168,7 @@ function router() {
         (async function dbQuery() {
           const classes = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
           const username = req.user.user;
-          res.render('sc-apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', username, classes });
+          res.render('apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', username, classes });
         }());
       });
     })
@@ -297,7 +312,7 @@ function router() {
       }
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          res.render('signIn', { scMenu, activePage: 'Sign In', title: '<Scarecrow>' });
+          res.render('signIn', { scMenu, activePage: 'Sign in', title: '<Scarecrow>' });
         }());
       });
     })
@@ -313,7 +328,7 @@ function router() {
       }
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          res.render('signUp', { scMenu, activePage: 'Sign Up', title: '<Scarecrow>' });
+          res.render('signUp', { scMenu, activePage: 'Sign up', title: '<Scarecrow>' });
         }());
       });
     })
