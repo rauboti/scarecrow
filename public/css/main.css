@@ -1,4 +1,6 @@
-/* => setting defaults */
+/*
+    =<>= Defaults =<>=
+*/
 :root {
   --clr-selected: var(--cyan);
 
@@ -13,7 +15,7 @@
   --border-colour-selected: var(--cyan);
   --border-colour-popup: var(--red);
 
-  /* => available colours */
+  /* =<>= available colours =<>= */
   --red: 255, 0, 0;
   --green: 0, 255, 0;
   --blue: 0, 0, 255;

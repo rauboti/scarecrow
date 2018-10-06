@@ -13,6 +13,9 @@
 .align-right {
   text-align: right;
 }
+.align-top {
+  vertical-align: top;
+}
 .background-black {
   background: rgba(0,0,0,0.85);
   color: white;
@@ -100,6 +103,23 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.label {
+  color: grey;
+  font-style: italic;
+  font-size: 0.8em;
+}
+.margin-sides-5 {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.margin-sides-10 {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.margin-sides-20 {
+  margin-left: 20%;
+  margin-right: 20%;
+}
 .margin-big {
   margin: 20px;
 }
@@ -112,9 +132,21 @@
 .margin-top {
   margin-top: 50px;
 }
+.padding-big {
+  padding: 20px;
+}
+.padding-medium {
+  padding: 10px;
+}
+.padding-small {
+  padding: 5px;
+}
 .text-error {
   color: red;
 }
 .title, .subtitle {
   text-align: left;
+}
+.underlined {
+  border-bottom: 1px solid grey;
 }

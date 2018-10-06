@@ -40,7 +40,7 @@
               defeatedBosses++;
             }
           }
-          var instanceCompletion = 'Killed: ' + defeatedBosses + '/' + totalBosses;%>
+          var instanceCompletion = defeatedBosses + '/' + totalBosses;%>
           <div id="btnInstance<%=i.replace(/[\' ]/g, '')%>" class="container-big align-center border-rounded is-framed background-black">
             <div class="col-80 is-inline align-middle">
               <% if(defeatedBosses === totalBosses) {%>

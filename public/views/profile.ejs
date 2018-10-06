@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/boti.css" />
+    <link rel="stylesheet" href="/css/classes.css" />
+    <link rel="stylesheet" href="/css/icons.css" />
+    <link rel="stylesheet" href="/css/scarecrow.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+    <link rel="stylesheet" href="/css/themes.css" />
+    <nav>
+      <menu class="background-black">
+        <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
+        <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
+        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
+        <div class="menu-button-row show-desktop">
+          <% for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (i == activePage) {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+            <%} else {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+          <%}}}%>
+        </div>
+      </menu>
+    </nav>
+  </head>
+  <body>
+    <section>
+      <div class="container-page align-center is-scrollable">
+        <form id="frmUserInformation" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.user.userInfo();">
+          <div class="container-big is-framed border-rounded background-black">
+            <div class="col-30 is-inline margin-sides-10 align-top">
+              <div id="txtUsername" class="align-left underlined"><%=user[0].user%></div>
+              <div class="align-left label">Username</div>
+              <div class="align-left underlined"><%=user[0].rankName%></div>
+              <div class="align-left label">Guild rank</div>
+            </div>
+            <div class="col-30 is-inline margin-sides-10 align-top">
+              <div id="txtEmail" class="align-left underlined"><%=user[0].email%></div>
+              <div class="align-left label">E-mail</div>
+              <% if (user[0].role !== null && user[0].role !== '' && user[0].role !== undefined) {%>
+                <div class="align-left underlined"><%=user[0].role%></div>
+                <div class="align-left label">Role</div>
+              <%}%>
+            </div>
+            <div>
+              <button id="btnUpdateInfo" type="submit" name="edit" value="userInfo" class="button-icon-medium icon-edit submit-button"></button>
+            </div>
+          </div>
+        </form>
+        <% if (user[0].rank > 1) {%>
+          <div class="container-big align-middle is-framed border-rounded background-black">
+            <%for (var i in characters) {%>
+              <div class="container-medium align-left is-framed border-rounded">
+                <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.delete();">
+                  <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
+                  <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
+                  <div class="is-inline align-middle col-30">60 <%=characters[i].class%></div>
+                  <% if (characters[i].main === 'main') {%>
+                    <div class="is-inline align-middle col-20">Main</div>
+                  <%} else if (characters[i].main === 'alt') {%>
+                    <div class="is-inline align-middle col-20"></div>
+                  <%}%>
+                  <div class="is-inline-flex align-middle col-10"><button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button></div>
+                </form>
+              </div>
+            <%}%>
+            <div>
+              <form name="frmAddCharacters" method="post" onsubmit="return scarecrow.validate.character.add();">
+                <button id="btnShowWindow" type="submit" name="add" value="character" class="button-icon-medium icon-add submit-button"></button>
+              </form>
+            </div>
+          </div>
+        <%}%>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script src="/js/mobile.js"></script>
+    <script src="/js/main.js"></script>
+  </foot>
+</html>

@@ -1,4 +1,6 @@
-/*  *- Buttons: menu -*  */
+/*
+    =<>= Buttons: Menu =<>=
+*/
 .menu-button, .selected-page {
   vertical-align: top;
   padding: 5px;
@@ -23,15 +25,21 @@
   box-shadow: 0 0 5px rgba(var(--border-colour-selected), 1);
   border-bottom: 1px solid rgba(var(--border-colour-selected), 1);
 }
-/*  *- Buttons: submit -*  */
-.response-button:hover {
+/*
+    =<>= Buttons: Submit =<>=
+*/
+.submit-button {
+}
+.submit-button:hover {
   -webkit-transform: scale(1.075);
   -moz-transform: scale(1.075);
   -ms-transform: scale(1.075);
   -o-transform: scale(1.075);
   transform: scale(1.075);
 }
-/*  *- Containers  -*  */
+/*
+    =<>= Containers =<>=
+*/
 .container-page {
   height: 80vh;
   max-height: 80vh;
@@ -42,7 +50,46 @@
 .container-medium, .container-small {
   display: inline-block;
 }
-/* *- Misc -* */
+.container-popup-desktop, .container-popup-mobile {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 5px;
+  background-color: black;
+}
+.container-popup-desktop {
+  top: 20vh;
+  width: 30%;
+  min-width: 600px;
+}
+.container-popup-mobile {
+  top: 20vh;
+  width: 80%;
+  font-size: 2rem;
+}
+.container-body, .container-footer {
+  padding: 10px;
+}
+.container-headline {
+  background: rgba(255,255,255,0.3);
+  padding: 5px;
+}
+/*
+    =<>= Popups =<>=
+*/
+.input-popup {
+  font-size: 1em;
+  padding: 0.5em;
+}
+/*
+    =<>= Misc =<>=
+*/
+.inactive {
+  opacity: 0.3;
+  pointer-events: none;
+}
 .text-selected {
   color: rgba(var(--clr-selected), 1);
 }

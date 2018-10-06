@@ -11,7 +11,7 @@
   --ghostly-border-radius: 5px;
 }
 /*
-<..> Cross-theme attributes <..>
+    =<>= Cross-theme attribute =<>=
 */
 input, select, textarea {
   border: none;
@@ -27,7 +27,7 @@ input, select, textarea {
 }
 
 /*
-<..> Crimson <..>
+    =<>= Crimson =<>=
 */
 .input-crimson, .select-crimson, .textarea-crimson {
   border-radius: var(--crimson-border-radius);
@@ -47,7 +47,7 @@ input, select, textarea {
   border: 1px solid rgba(var(--crimson-red), 1);
 }
 /*
-<..> Ghostly <..>
+    =<>= Ghostly =<>=
 */
 .input-ghostly, .select-ghostly, .textarea-ghostly {
   border-radius: var(--ghostly-border-radius);

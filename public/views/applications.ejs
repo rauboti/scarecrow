@@ -32,10 +32,15 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <% for (var status in applications) {%>
+        <% for (var status in applications) {
+          var apps = 0;
+          for (var application in applications[status]) {
+            apps++;
+          }
+          %>
           <div class="container-big align-center border-rounded is-framed background-black">
-            <div class="col-80 is-inline align-middle">
-              <div class="title is-inline col-70"><%=status%> applications</div>
+            <div class="col-90 is-inline align-left align-middle">
+              <div class="title is-inline col-100"><%=status%> applications (<%=apps%>)</div>
             </div>
             <div class="is-inline-flex align-middle">
               <div class="button-icon-medium icon-arrow-down is-inline is-clickable"></div>

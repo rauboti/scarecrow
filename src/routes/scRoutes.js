@@ -259,7 +259,7 @@ function router() {
         (async function dbQuery() {
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
           const characters = await sql.query('SELECT id, name, class, role, main FROM tblCharacter WHERE user_id = ?', [req.user.id]);
-          res.render('sc-profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>' });
+          res.render('profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>' });
         }());
       });
     })

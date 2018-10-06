@@ -1,4 +1,6 @@
-/* === Mobile === */
+/*
+    =<>= Mobile =<>=
+*/
 .button-icon-medium-mobile {
   height: 3rem;
   width: 3rem;
@@ -10,9 +12,15 @@
 .container-big-mobile, .container-page-mobile {
   padding: 5px;
 }
+.container-page-mobile {
+  font-size: 1.5rem;
+}
+.container-big-mobile {
+  font-size: 1em;
+}
 .container-medium-mobile {
  width: 85%;
- font-size: 1.9em;
+ font-size: 1em;
  padding: 0.7em;
  margin: 0.1em;
 }
@@ -58,9 +66,11 @@
   min-height: 10vh;
 }
 .title-mobile {
-  font-size: 3em;
+  font-size: 2em;
 }
-/* === Desktop === */
+/*
+    =<>= Desktop =<>=
+*/
 .button-icon-medium-desktop {
   height: 40px;
   width: 40px;
@@ -125,7 +135,7 @@
   text-align: center;
 }
 .subtitle-desktop {
-  font-size: 1.3em;
+  font-size: 1.7em;
 }
 .title-desktop {
   font-size: 2.2em;

@@ -1,4 +1,7 @@
-/* => Class roles */
+/*
+    =<>= Class roles =<>=
+*/
+
 .roleDamage, .roleSupport, .roleTank {
   background-repeat: no-repeat;
   background-position:center;
@@ -19,7 +22,11 @@
   vertical-align:middle;
   font-size: 0.7em;
 }
-/* => Classes w/colours */
+
+/*
+    =<>= Classes w/colours =<>=
+*/
+
 .clrDeath-Knight {
   color: rgba(196, 30, 59, 1);
 }
