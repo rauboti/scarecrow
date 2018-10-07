@@ -49,7 +49,7 @@
               <%}%>
             </div>
             <div>
-              <button id="btnUpdateInfo" type="submit" name="edit" value="userInfo" class="button-icon-medium icon-edit submit-button"></button>
+              <button id="btnShowWindow" type="submit" name="edit" value="userInfo" class="button-icon-medium icon-edit submit-button"></button>
             </div>
           </div>
         </form>
@@ -57,7 +57,7 @@
           <div class="container-big align-middle is-framed border-rounded background-black">
             <%for (var i in characters) {%>
               <div class="container-medium align-left is-framed border-rounded">
-                <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.delete();">
+                <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
                   <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
                   <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
                   <div class="is-inline align-middle col-30">60 <%=characters[i].class%></div>

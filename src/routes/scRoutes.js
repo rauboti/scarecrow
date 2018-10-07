@@ -58,9 +58,10 @@ function router() {
         (async function dbQuery() {
           const { id }  = req.params;
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [id]);
-          const ranks = await sql.query('SELECT * FROM tblRank');
+          //const ranks = await sql.query('SELECT * FROM tblRank');
           const characters = await sql.query('SELECT id, name, class, role, main FROM tblCharacter WHERE user_id = ?', [id]);
-          res.render('sc-user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', user, ranks, characters });
+          debug(characters);
+          res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', user, characters });
         }());
       });
     })
@@ -69,11 +70,6 @@ function router() {
         debug(req.body);
         if (req.body.back) {
           res.redirect('/admin');
-        } else if (req.body.accept) {
-          if (req.body.accept === 'userInfo') {
-            const result = await sql.query('UPDATE tblUser SET user = ?, rank = ?, role = ? WHERE id = ?', [req.body.user, req.body.rank, req.body.role, req.params.id]);
-            res.redirect(req.get('referer'));
-          }
         } else if (req.body.delete) {
           if (req.body.delete === 'user') {
             const deleteCharacters = await sql.query('DELETE FROM tblCharacter WHERE user_id = ?', [req.params.id]);
@@ -88,9 +84,12 @@ function router() {
             const result = await sql.query('INSERT INTO tblCharacter (name, class, role, user_id, main) VALUES (?, ?, ?, ?, ?)', [req.body.cName, req.body.cClass, req.body.cRole, req.params.id, 'alt']);
             res.redirect(req.get('referer'));
           }
-        } else if (req.body.edit) {
+        } else if (req.body.main) {
           const resetMainCharacters = await sql.query('UPDATE tblCharacter SET main = ? WHERE user_id = ?', ['alt', req.params.id]);
-          const setNewMainCharacter = await sql.query('UPDATE tblCharacter SET main = ? WHERE user_id = ? AND id = ?', ['main', req.params.id, req.body.edit.split('_')[1]])
+          const setNewMainCharacter = await sql.query('UPDATE tblCharacter SET main = ? WHERE user_id = ? AND id = ?', ['main', req.params.id, req.body.main.split('_')[1]])
+          res.redirect(req.get('referer'));
+        } else if (req.body.update === 'general') {
+          const result = await sql.query('UPDATE tblUser SET user = ?, rank = ?, role = ?, email = ? WHERE id = ?', [req.body.username, req.body.rank, req.body.role, req.body.email, req.params.id]);
           res.redirect(req.get('referer'));
         }
       }());
@@ -353,6 +352,9 @@ function router() {
     (async function dbQuery() {
       if (req.body.request === 'getCharacterClasses') {
         const result = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
+        res.json(result);
+      } else if (req.body.request === 'getUserRanks') {
+        const result = await sql.query('SELECT * FROM tblRank');
         res.json(result);
       }
     }());
