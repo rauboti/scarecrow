@@ -5,13 +5,16 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/boti.css" />
-    <link rel="stylesheet" href="/css/classes.css" />
-    <link rel="stylesheet" href="/css/icons.css" />
-    <link rel="stylesheet" href="/css/scarecrow.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/themes.css" />
+    <link rel="stylesheet" href="/css/boti-main.css" />
+    <link rel="stylesheet" href="/css/boti-icons.css" />
+    <link rel="stylesheet" href="/css/boti-themes.css" />
+    <% if (userDevice === 'PHONE') {%>
+      <link rel="stylesheet" href="/css/boti-mobile.css" />
+    <%} else if (userDevice === 'DESKTOP') {%>
+      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <%}%>
+    <link rel="stylesheet" href="/css/boti-classes.css" />
+    <link rel="stylesheet" href="/css/boti-extras.css" />
     <nav>
       <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
@@ -33,7 +36,7 @@
     <section>
       <div class="container-page align-center is-scrollable">
         <form id="frmUserInformation" name="frmUserInfo" method="post" onsubmit="return scarecrow.validate.user.update();">
-          <div class="container-big is-framed border-rounded background-black">
+          <div class="container-big frame-ghostly background-ghostly">
             <div class="col-30 is-inline margin-sides-10 align-bottom">
               <div id="txtUsername" class="align-left underlined"><%=user[0].user%></div>
               <div class="align-left label">Username</div>
@@ -55,13 +58,13 @@
             </div>
           </div>
         </form>
-        <div class="container-big align-middle is-framed border-rounded background-black">
+        <div class="container-big align-middle frame-ghostly background-ghostly">
           <%for (var i in characters) {%>
-            <div class="container-medium align-left is-framed border-rounded">
+            <div class="container-medium align-left frame-ghostly">
               <form name="frmUpdateCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
                 <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
                 <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-30 clr<%=characters[i].class%>"><%=characters[i].name%></div>
-                <div class="is-inline align-middle col-30">60 <%=characters[i].class%></div>
+                <div class="is-inline align-middle col-30"><%=characters[i].level%> <%=characters[i].class%></div>
                 <% if (characters[i].main === 'main') {%>
                   <div class="is-inline align-middle col-20">Main</div>
                 <%} else if (characters[i].main === 'alt') {%>
@@ -82,7 +85,7 @@
             </form>
           </div>
         </div>
-        <div class="container-big align-middle is-framed border-rounded background-black">
+        <div class="container-big align-middle frame-ghostly background-ghostly">
           <form id="frmUserActions" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.user.delete();">
             <button id="btnBack" type="submit" name="back" value="back" class="button-icon-medium icon-back submit-button"></button>
             <button id="btnShowWindow" type="submit" name="delete" value="user" class="button-icon-medium icon-delete submit-button"></button>

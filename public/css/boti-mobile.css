@@ -16,6 +16,10 @@ menu {
 nav {
   width: 100%;
 }
+
+textarea {
+  min-height: 10vh;
+}
 /*
   =<>= Classes: Buttons
 */
@@ -30,16 +34,52 @@ nav {
   padding: 5px;
   margin: 5px;
 }
+.button-icon-medium {
+  height: 3rem;
+  width: 3rem;
+}
+.button-icon-small {
+  height: 2.5rem;
+  width: 2.5rem;
+}
 /*
   =<>= Classes: Containers
 */
+.container-big {
+  font-size: 1em;
+}
+.container-big, .container-page {
+  padding: 5px;
+}
+.container-medium {
+ width: 85%;
+ font-size: 1em;
+ padding: 0.7em;
+ margin: 0.1em;
+}
 .container-page {
   font-size: 1.5rem;
-  padding: 5px;
+}
+.container-popup {
+  top: 20vh;
+  width: 80%;
+  font-size: 2rem;
 }
 .container-small {
   width: 70%;
   font-size: 1.7em;
   padding: 0.7em;
   margin: 0.1em;
+}
+/*
+  =<>= Classes: Mouseovers
+*/
+.hover-highlighted {
+  opacity: 1;
+}
+/*
+  =<>= Classes: Text
+*/
+.subtitle, .title {
+  font-size: 2em;
 }

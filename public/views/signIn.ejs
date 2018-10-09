@@ -14,15 +14,6 @@
       <link rel="stylesheet" href="/css/boti-desktop.css" />
     <%}%>
     <link rel="stylesheet" href="/css/boti-extras.css" />
-    <!--
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/boti.css" />
-    <link rel="stylesheet" href="/css/classes.css" />
-    <link rel="stylesheet" href="/css/icons.css" />
-    <link rel="stylesheet" href="/css/scarecrow.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/themes.css" />
-    -->
     <nav>
       <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
@@ -43,7 +34,7 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-small align-center background-ghostly border-rounded frame-ghostly">
+        <div class="container-small align-center background-ghostly frame-ghostly">
           <form name="frmSignIn" action="<%=scMenu['Sign in'].path%>" method="post" onsubmit="return scarecrow.validate.access.signIn();">
             <img class="round background-white faded margin-big" src="/img/crow.png"></img>
             <div class="is-inline col-90">

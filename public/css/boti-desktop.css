@@ -7,6 +7,7 @@ img {
 }
 input, select, textarea {
   padding: 10px;
+  font-size: 1rem;
 }
 menu {
   display: inline-block;
@@ -30,18 +31,57 @@ section {
 .menu-button {
   display: inline-flex;
 }
+.button-icon-medium {
+  height: 40px;
+  width: 40px;
+}
+.button-icon-small {
+  height: 30px;
+  width: 30px;
+}
 /*
-  =<>= Classes: Buttons
+  =<>= Classes: Containers
 */
-.container-page {
-  min-width: 700px;
+.container-big {
+  min-width: 600px;
+}
+.container-big, .container-page {
   padding: 20px;
   width: 50%;
   display: inline-block;
+}
+.container-medium {
+  margin: 2px;
+  padding: 5px;
+  width: 40%;
+  min-width: 500px;
+}
+.container-page {
+  min-width: 700px;
+}
+.container-popup {
+  top: 20vh;
+  width: 30%;
+  min-width: 600px;
 }
 .container-small {
   margin: 2px;
   padding: 5px;
   width: 30%;
   min-width: 400px;
+}
+/*
+  =<>= Classes: Mouseovers
+*/
+.hover-highlighted {
+  opacity: 0.65;
+}
+/*
+  =<>= Classes: Text
+*/
+.subtitle {
+  font-size: 1.7em;
+}
+.title {
+  font-size: 2.2em;
 }

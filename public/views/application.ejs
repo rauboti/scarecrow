@@ -5,13 +5,15 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/boti.css" />
-    <link rel="stylesheet" href="/css/classes.css" />
-    <link rel="stylesheet" href="/css/icons.css" />
-    <link rel="stylesheet" href="/css/scarecrow.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/themes.css" />
+    <link rel="stylesheet" href="/css/boti-main.css" />
+    <link rel="stylesheet" href="/css/boti-icons.css" />
+    <link rel="stylesheet" href="/css/boti-themes.css" />
+    <% if (userDevice === 'PHONE') {%>
+      <link rel="stylesheet" href="/css/boti-mobile.css" />
+    <%} else if (userDevice === 'DESKTOP') {%>
+      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <%}%>
+    <link rel="stylesheet" href="/css/boti-extras.css" />
     <nav>
       <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
@@ -32,8 +34,8 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-medium align-center border-rounded is-framed background-black"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
-        <div class="container-medium align-left border-rounded is-framed background-black">
+        <div class="container-medium align-center frame-ghostly background-ghostly"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
+        <div class="container-medium align-left frame-ghostly background-ghostly">
           <div><b># Spec</b></div>
           <div><a href="<%=application[0].spec%>" target="_blank"><u><%=application[0].spec%></u></a><br><br></div>
           <div><b># Armory profile</b></div>
@@ -49,7 +51,7 @@
           <div><b># Anything else?</b></div>
           <div style="white-space: pre-wrap;"><%=application[0].anything_else%></div>
         </div>
-        <div class="container-medium align-center border-rounded is-framed background-black">
+        <div class="container-medium align-center frame-ghostly background-ghostly">
           <form name="frmApplication" method="post">
             <button type="submit" name="back" value="back" class="button-icon-medium icon-back"></button>
             <% if (application[0].status === 'New' || application[0].status === 'Declined') {%>

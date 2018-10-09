@@ -96,6 +96,22 @@
   margin-right: 20%;
 }
 /*
+  =<>= Misc
+*/
+.hover-highlighted:hover {
+  opacity: 1;
+}
+.inactive {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.is-clickable {
+  cursor: pointer;
+}
+.is-expandable {
+  overflow: hidden;
+}
+/*
   =<>= Object form
 */
 .round {

@@ -21,46 +21,10 @@ var isMobile = {
 
 function deviceAdjustment() {
   if( isMobile.any() ) {
-    //Fading out before changes are done
-    //$('section').hide();
-
-    $('input').addClass('input-mobile');
-    $('select').addClass('select-mobile');
-    $('textarea').addClass('textarea-mobile');
-    $('.button-icon-medium').addClass('button-icon-medium-mobile');
-    $('.button-icon-small').addClass('button-icon-small-mobile');
-    $('.container-big').addClass('container-big-mobile');
-    $('.container-medium').addClass('container-medium-mobile');
-    $('.hover-highlighted').addClass('hover-highlighted-mobile');
-    $('.title').addClass('title-mobile');
-    $('.subtitle').addClass('subtitle-mobile');
-
-    //Fading back in after changes are done, to decrease visible resizing at load
-    //$('section').fadeIn();
-
-    //Hiding desktop-only elements
     $('.show-desktop').hide();
   } else {
-    //Fading out before changes are done
-    //$('section').hide();
-
-    $('input').addClass('input-desktop');
-    $('select').addClass('select-desktop');
-    $('textarea').addClass('textarea-desktop');
-    $('.button-icon-medium').addClass('button-icon-medium-desktop');
-    $('.button-icon-small').addClass('button-icon-small-desktop');
-    $('.container-big').addClass('container-big-desktop');
-    $('.container-medium').addClass('container-medium-desktop');
-    $('.hover-highlighted').addClass('hover-highlighted-desktop');
     $('.menu-button-row').children('a').addClass('is-inline-flex');
-    $('.title').addClass('title-desktop');
-    $('.subtitle').addClass('subtitle-desktop');
     $('.show-desktop').addClass('is-inline');
-
-    //Fading back in after changes are done, to decrease visible resizing at load
-    //$('section').fadeIn();
-
-    //Hiding mobile-only elements
     $('.show-mobile').hide();
   }
 }

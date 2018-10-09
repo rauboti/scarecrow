@@ -17,6 +17,9 @@ a:focus {
 body {
   margin-top: 10vh;
 }
+button {
+  border: none;
+}
 html {
   color: white;
   font-family: 'Rajdhani', sans-serif;
@@ -33,7 +36,6 @@ img {
 input {
   font-family: 'Rajdhani', sans-serif;
   margin: 10px;
-  font-size: 1rem;
 }
 input[type="submit"] {
   cursor: pointer;
@@ -47,6 +49,17 @@ nav {
   margin-top: 0;
   text-align: center;
 }
+option, select, textarea {
+  font-family: 'Rajdhani', sans-serif;
+  margin: 10px;
+  font-size: 1rem;
+}
+textarea {
+  resize: none;
+  margin: 0;
+  padding: 0;
+  color: white;
+}
 /*
   =<>= Classes: Buttons
 */
@@ -59,7 +72,7 @@ nav {
   height: 1.3em;
   width: 1.3em;
 }
-.menu-button-icon:hover, .menu-button-text:hover {
+.menu-button-icon:hover, .menu-button-text:hover, .submit-button:hover {
   -webkit-transform: scale(1.075);
   -moz-transform: scale(1.075);
   -ms-transform: scale(1.075);
@@ -74,11 +87,54 @@ nav {
 /*
   =<>= Classes: Containers
 */
+.container-big, .container-page {
+  margin: 10px;
+}
+.container-body, .container-footer {
+  padding: 10px;
+}
+.container-headline {
+  background: rgba(255,255,255,0.3);
+  padding: 5px;
+}
+.container-medium {
+  display: inline-block;
+}
 .container-page {
   height: 80vh;
-  margin: 10px;
   max-height: 80vh;
+}
+.container-popup {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 5px;
+  background-color: black;
 }
 .container-small {
   display: inline-block;
+}
+/*
+  =<>= Classes: Inputs
+*/
+.input-full {
+  width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+/*
+  =<>= Classes: Text
+*/
+.label {
+  color: grey;
+  font-style: italic;
+  font-size: 0.8em;
+}
+.subtitle, .title {
+  text-align: left;
+}
+.underlined {
+  border-bottom: 1px solid grey;
 }

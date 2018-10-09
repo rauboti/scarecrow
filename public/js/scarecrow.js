@@ -163,7 +163,7 @@ var scarecrow = {
         } else if (clicked === 'Confirm') {
           //Confirming the character details, validating the input
           scarecrow.validate.highlight.character.add();
-          if ($('#frmCharName').val() === '' || $('#frmCharClass option:selected').text() === '' || $('#frmCharRole option:selected').text() == '') {
+          if ($('#frmCharName').val() === '' || $('#frmCharLevel').val() === '' || $('#frmCharClass option:selected').text() === '' || $('#frmCharRole option:selected').text() == '') {
             return false;
           } else {
             return true;
@@ -215,6 +215,8 @@ var scarecrow = {
         add: function() {
           $('#frmCharName').val() === '' ? $('#frmCharName').addClass('invalid') : $('#frmCharName').removeClass('invalid');
           $('#frmCharName').val() === '' ? $('#frmCharNameError').html('Field required') : $('#frmCharNameError').html('');
+          $('#frmCharLevel').val() === '' ? $('#frmCharLevel').addClass('invalid') : $('#frmCharLevel').removeClass('invalid');
+          $('#frmCharLevel').val() === '' ? $('#frmCharLevelError').html('Field required') : $('#frmCharLevelError').html('');
           $('#frmCharClass option:selected').text() === '' ? $('#frmCharClass').addClass('invalid') : $('#frmCharClass').removeClass('invalid');
           $('#frmCharClass option:selected').text() === '' ? $('#frmCharClassError').html('Field required') : $('#frmCharClassError').html('');
           $('#frmCharRole option:selected').text() === '' ? $('#frmCharRole').addClass('invalid') : $('#frmCharRole').removeClass('invalid');
@@ -285,64 +287,48 @@ var scarecrow = {
   window: {
     character: {
       add: function(confirmName, confirmValue) {
-        if (isMobile.any()) {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.add();"><div id="popupContainer" class="container-popup-mobile"></div></form>');
-        } else {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.add();"><div id="popupContainer" class="container-popup-desktop"></div></form>');
-        }
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.add();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Add new character</div>'
         + '<div class="container-body">'
-        + '<div>'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Character name</div>'
-        + '<div class="col-60 is-inline"><input id="frmCharName" type="text" name="cName" class="input-ghostly input-popup input-full" /></div><div id="frmCharNameError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><input id="frmCharName" type="text" name="cName" class="input-ghostly input-full" /></div><div id="frmCharNameError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
+        + '<div class="col-90 is-inline margin-sides-5 align-top">'
+        + '<div>Character level</div>'
+        + '<div class="col-60 is-inline"><input id="frmCharLevel" type="text" name="cLevel" class="input-ghostly input-full" /></div><div id="frmCharLevelError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Class</div>'
-        + '<div class="col-60 is-inline"><select id="frmCharClass" name="cClass" class="select-ghostly input-popup input-full"></select></div><div id="frmCharClassError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><select id="frmCharClass" name="cClass" class="select-ghostly input-full"></select></div><div id="frmCharClassError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Role</div>'
-        + '<div class="col-60 is-inline"><select id="frmCharRole" name="cRole" class="select-ghostly input-popup input-full"></select></div><div id="frmCharRoleError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><select id="frmCharRole" name="cRole" class="select-ghostly input-full"></select></div><div id="frmCharRoleError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
         + '</div>'
         );
-        if (isMobile.any()) {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-mobile icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-mobile icon-accept submit-button margin-sides-5"></button>');
-        } else {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-desktop icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-desktop icon-accept submit-button margin-sides-5"></button>');
-        }
+        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
         scarecrow.get.character.classes();
-        $('.input-popup').change(function() {
+        $('.input-full').change(function() {
           scarecrow.validate.highlight.character.add();
         });
       },
       delete: function(confirmName, confirmValue, charID) {
-        if (isMobile.any()) {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.delete();"><div id="popupContainer" class="container-popup-mobile"></div></form>');
-        } else {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.delete();"><div id="popupContainer" class="container-popup-desktop"></div></form>');
-        }
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.delete();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Delete character</div>'
         + '<div class="container-body">Are you sure you want to delete ' + $('#characterName_' + charID).html() + '? All character data will be purged!</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
         + '</div>'
         );
-        if (isMobile.any()) {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-mobile icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '_' + charID + '" class="button-icon-medium-mobile icon-accept submit-button margin-sides-5"></button>');
-        } else {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-desktop icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '_' + charID + '" class="button-icon-medium-desktop icon-accept submit-button margin-sides-5"></button>');
-        }
+        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '_' + charID + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
@@ -361,93 +347,66 @@ var scarecrow = {
     },
     user: {
       delete: function(user, confirmName, confirmValue) {
-        if (isMobile.any()) {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup-mobile"></div></form>');
-        } else {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup-desktop"></div></form>');
-        }
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Delete character</div>'
         + '<div class="container-body">Are you sure you want to delete ' + user + '? All character data will be purged!</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
         + '</div>'
         );
-        if (isMobile.any()) {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-mobile icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-mobile icon-accept submit-button margin-sides-5"></button>');
-        } else {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-desktop icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-desktop icon-accept submit-button margin-sides-5"></button>');
-        }
+        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
       },
       edit: function(userName, email, confirmName, confirmValue) {
-        if (isMobile.any()) {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup-mobile"></div></form>');
-        } else {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup-desktop"></div></form>');
-        }
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Edit user details</div>'
         + '<div class="container-body">'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Username</div>'
-        + '<input id="frmUsername" type="text" name="username" class="input-ghostly col-90 input-popup" placeholder="Username" value="' + userName + '" /><div id="frmUsernameError" class="text-error"></div>'
+        + '<input id="frmUsername" type="text" name="username" class="input-ghostly col-90" placeholder="Username" value="' + userName + '" /><div id="frmUsernameError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Email</div>'
-        + '<input id="frmEmail" type="text" name="email" class="input-ghostly col-90 input-popup" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
+        + '<input id="frmEmail" type="text" name="email" class="input-ghostly col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
         + '</div>'
         );
-        if (isMobile.any()) {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-mobile icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-mobile icon-accept submit-button margin-sides-5"></button>');
-        } else {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-desktop icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-desktop icon-accept submit-button margin-sides-5"></button>');
-        }
+        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
       },
       update: function(user, email, rank, role, confirmName, confirmValue) {
-        if (isMobile.any()) {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup-mobile"></div></form>');
-        } else {
-          $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup-desktop"></div></form>');
-        }
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Edit user details</div>'
         + '<div class="container-body">'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Username</div>'
-        + '<input id="frmUsername" type="text" name="username" class="input-ghostly col-90 input-popup" placeholder="Username" value="' + user + '" /><div id="frmUsernameError" class="text-error"></div>'
+        + '<input id="frmUsername" type="text" name="username" class="input-ghostly col-90" placeholder="Username" value="' + user + '" /><div id="frmUsernameError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Email</div>'
-        + '<input id="frmEmail" type="text" name="email" class="input-ghostly col-90 input-popup" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
+        + '<input id="frmEmail" type="text" name="email" class="input-ghostly col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Rank</div>'
-        + '<div class="is-inline"><select id="frmRank" name="rank" class="select-ghostly input-popup input-full"></select></div><div id="frmRankError" class="text-error"></div>'
+        + '<div class="is-inline"><select id="frmRank" name="rank" class="select-ghostly input-full"></select></div><div id="frmRankError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Role</div>'
-        + '<input id="frmRole" type="text" name="role" class="input-ghostly col-90 input-popup" placeholder="Role" value="' + role + '" /><div id="frmRoleError" class="text-error"></div>'
+        + '<input id="frmRole" type="text" name="role" class="input-ghostly col-90" placeholder="Role" value="' + role + '" /><div id="frmRoleError" class="text-error"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
         + '</div>'
         );
-        if (isMobile.any()) {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-mobile icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-mobile icon-accept submit-button margin-sides-5"></button>');
-        } else {
-          $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium-desktop icon-decline submit-button margin-sides-5"></button>'
-            + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium-desktop icon-accept submit-button margin-sides-5"></button>');
-        }
+        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
         scarecrow.get.user.ranks(rank);
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];

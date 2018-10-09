@@ -5,13 +5,15 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/boti.css" />
-    <link rel="stylesheet" href="/css/classes.css" />
-    <link rel="stylesheet" href="/css/icons.css" />
-    <link rel="stylesheet" href="/css/scarecrow.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/themes.css" />
+    <link rel="stylesheet" href="/css/boti-main.css" />
+    <link rel="stylesheet" href="/css/boti-icons.css" />
+    <link rel="stylesheet" href="/css/boti-themes.css" />
+    <% if (userDevice === 'PHONE') {%>
+      <link rel="stylesheet" href="/css/boti-mobile.css" />
+    <%} else if (userDevice === 'DESKTOP') {%>
+      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <%}%>
+    <link rel="stylesheet" href="/css/boti-extras.css" />
     <nav>
       <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
@@ -32,7 +34,7 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-big align-center border-rounded is-framed background-black">
+        <div class="container-big align-center frame-ghostly background-ghostly">
           <div class="col-80 is-inline align-middle">
             <div class="title is-inline col-100">User Management</div>
           </div>
@@ -41,18 +43,18 @@
           </div>
         </div>
         <div class="is-expandable">
-          <div class="container-medium align-left is-framed border-rounded background-black hover-highlighted">
+          <div class="container-medium align-left frame-ghostly background-ghostly hover-highlighted">
             <div class="col-30 is-inline">Username</div>
             <div class="col-30 is-inline">Rank</div>
             <div class="col-30 is-inline">Role</div>
             <div class="col-10 is-inline"></div>
           </div>
           <% for (var i in userList) {%>
-            <div class="container-medium align-left is-framed border-rounded background-black hover-highlighted">
-              <div class="col-30 is-inline"><%=userList[i].user%></div>
-              <div class="col-30 is-inline"><%=userList[i].rank%></div>
-              <div class="col-30 is-inline"><%=userList[i].role%></div>
-              <div class="col-10 is-inline"><a href="/admin/user/<%=userList[i].id%>"><div class="icon-edit button-icon-small"></div></a></div>
+            <div class="container-medium align-left frame-ghostly background-ghostly hover-highlighted">
+              <div class="col-30 is-inline align-middle"><%=userList[i].user%></div>
+              <div class="col-30 is-inline align-middle"><%=userList[i].rank%></div>
+              <div class="col-30 is-inline align-middle"><%=userList[i].role%></div>
+              <div class="col-10 is-inline-flex align-middle"><a href="/admin/user/<%=userList[i].id%>"><div class="icon-edit button-icon-small"></div></a></div>
             </div>
           <%}%>
         </div>

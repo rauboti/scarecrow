@@ -19,13 +19,14 @@ function router() {
     }
     getPages(rank, function(scMenu){
       (async function dbQuery() {
+        const userDevice = req.device.type.toUpperCase();
         let session;
         if (req.user) {
           session = 'in';
         } else {
           session = 'out';
         }
-        res.render('home', { scMenu, activePage: 'Home', title: '<Scarecrow>', session });
+        res.render('home', { scMenu, activePage: 'Home', title: '<Scarecrow>', userDevice, session });
       }());
     });
   });
@@ -41,8 +42,9 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
+          const userDevice = req.device.type.toUpperCase();
           const userList = await sql.query('SELECT u.id, u.user, u.rank as "rankid", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank ORDER BY u.rank DESC, u.user ASC');
-          res.render('admin', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userList });
+          res.render('admin', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userDevice, userList });
         }());
       });
     });
@@ -57,10 +59,11 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
+          const userDevice = req.device.type.toUpperCase();
           const { id }  = req.params;
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [id]);
-          const characters = await sql.query('SELECT id, name, class, role, main FROM tblCharacter WHERE user_id = ?', [id]);
-          res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', user, characters });
+          const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [id]);
+          res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userDevice, user, characters });
         }());
       });
     })
@@ -80,7 +83,7 @@ function router() {
           }
         } else if (req.body.add) {
           if (req.body.add === 'character') {
-            const result = await sql.query('INSERT INTO tblCharacter (name, class, role, user_id, main) VALUES (?, ?, ?, ?, ?)', [req.body.cName, req.body.cClass, req.body.cRole, req.params.id, 'alt']);
+            const result = await sql.query('INSERT INTO tblCharacter (name, level, class, role, user_id, main) VALUES (?, ?, ?, ?, ?, ?)', [req.body.cName, req.body.cLevel, req.body.cClass, req.body.cRole, req.params.id, 'alt']);
             res.redirect(req.get('referer'));
           }
         } else if (req.body.main) {
@@ -119,8 +122,8 @@ function router() {
             x['level'] = result[i].character_level;
             applications[result[i].status].push(x);
           }
-
-          res.render('applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', applications });
+          const userDevice = req.device.type.toUpperCase();
+          res.render('applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', userDevice, applications });
         }());
       });
     });
@@ -135,9 +138,10 @@ function router() {
       .get((req, res) => {
         getPages(req.user.rank, function(scMenu){
           (async function dbQuery() {
+            const userDevice = req.device.type.toUpperCase();
             const { id }  = req.params;
             const application = await sql.query('SELECT user, status, character_name, character_class, character_role, character_level, spec, armory, raids, preparation, asset, mistakes, anything_else FROM tblApplications WHERE id = ?', [id]);
-            res.render('application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', application });
+            res.render('application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', userDevice, application });
           }());
         });
       })
@@ -164,9 +168,10 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
+          const userDevice = req.device.type.toUpperCase();
           const classes = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
           const username = req.user.user;
-          res.render('apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', username, classes });
+          res.render('apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', userDevice, username, classes });
         }());
       });
     })
@@ -193,7 +198,8 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          res.render('sc', { scMenu, activePage: 'Events', title: '<Scarecrow>' });
+          const userDevice = req.device.type.toUpperCase();
+          res.render('sc', { scMenu, activePage: 'Events', title: '<Scarecrow>', userDevice });
         }());
       });
     });
@@ -208,7 +214,8 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          res.render('sc', { scMenu, activePage: 'Forum', title: '<Scarecrow>' });
+          const userDevice = req.device.type.toUpperCase();
+          res.render('sc', { scMenu, activePage: 'Forum', title: '<Scarecrow>', userDevice });
         }());
       });
     });
@@ -224,8 +231,9 @@ function router() {
     }
     getPages(rank, function(scMenu){
       (async function dbQuery() {
+        const userDevice = req.device.type.toUpperCase();
         const users = await sql.query('SELECT u.user, r.name as "rank", u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id ORDER BY r.name, u.user');
-        res.render('hierarchy', { scMenu, activePage: 'Hierarchy', title: '<Scarecrow>', users });
+        res.render('hierarchy', { scMenu, activePage: 'Hierarchy', userDevice, title: '<Scarecrow>', users });
       }());
     });
   });
@@ -256,9 +264,10 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
+          const userDevice = req.device.type.toUpperCase();
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
-          const characters = await sql.query('SELECT id, name, class, role, main FROM tblCharacter WHERE user_id = ?', [req.user.id]);
-          res.render('profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>' });
+          const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [req.user.id]);
+          res.render('profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>', userDevice });
         }());
       });
     })
@@ -267,7 +276,7 @@ function router() {
         debug(req.body);
         if (req.body.add) {
           if (req.body.add === 'character') {
-            const result = await sql.query('INSERT INTO tblCharacter (name, class, role, user_id, main) VALUES (?, ?, ?, ?, ?)', [req.body.cName, req.body.cClass, req.body.cRole, req.user.id, 'alt']);
+            const result = await sql.query('INSERT INTO tblCharacter (name, level, class, role, user_id, main) VALUES (?, ?, ?, ?, ?, ?)', [req.body.cName, req.body.cLevel, req.body.cClass, req.body.cRole, req.user.id, 'alt']);
           }
         } else if (req.body.edit) {
           if (req.body.edit === 'userInfo') {
@@ -288,6 +297,7 @@ function router() {
     }
     getPages(rank, function(scMenu){
       (async function dbQuery() {
+        const userDevice = req.device.type.toUpperCase();
         const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
         var progression = {};
         for (var i in result) {
@@ -299,7 +309,7 @@ function router() {
           x['status'] = result[i].status;
           progression[result[i].instance].push(x);
         }
-        res.render('progression', { scMenu, activePage: 'Progression', progression, title: '<Scarecrow>' });
+        res.render('progression', { scMenu, activePage: 'Progression', userDevice, progression, title: '<Scarecrow>' });
       }());
     });
   });
@@ -328,7 +338,8 @@ function router() {
       }
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          res.render('signUp', { scMenu, activePage: 'Sign up', title: '<Scarecrow>' });
+          const userDevice = req.device.type.toUpperCase();
+          res.render('signUp', { scMenu, activePage: 'Sign up', userDevice, title: '<Scarecrow>' });
         }());
       });
     })

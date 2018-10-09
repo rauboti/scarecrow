@@ -65,6 +65,7 @@ input, select, textarea {
 }
 .frame-ghostly {
   border: 1px solid rgba(var(--white),0.3);
+  border-radius: var(--ghostly-border-radius);
 }
 .input-ghostly, .select-ghostly, .textarea-ghostly {
   border-radius: var(--ghostly-border-radius);

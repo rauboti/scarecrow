@@ -5,13 +5,15 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="/css/boti.css" />
-    <link rel="stylesheet" href="/css/classes.css" />
-    <link rel="stylesheet" href="/css/icons.css" />
-    <link rel="stylesheet" href="/css/scarecrow.css" />
-    <link rel="stylesheet" href="/css/responsive.css" />
-    <link rel="stylesheet" href="/css/themes.css" />
+    <link rel="stylesheet" href="/css/boti-main.css" />
+    <link rel="stylesheet" href="/css/boti-icons.css" />
+    <link rel="stylesheet" href="/css/boti-themes.css" />
+    <% if (userDevice === 'PHONE') {%>
+      <link rel="stylesheet" href="/css/boti-mobile.css" />
+    <%} else if (userDevice === 'DESKTOP') {%>
+      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <%}%>
+    <link rel="stylesheet" href="/css/boti-extras.css" />
     <nav>
       <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
@@ -33,7 +35,7 @@
     <section>
       <div class="container-page align-center is-scrollable">
         <form name="frmSignIn" action="<%=scMenu['Apply'].path%>" method="post" onsubmit="return scarecrow.validate.application();">
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="col-50 is-inline">
               <div class="align-left">Character name</div>
               <div><input id="frmCharName" type="text" name="characterName" class="input-ghostly col-80" /></div>
@@ -45,7 +47,7 @@
               <div id="frmLevelError" class="text-error align-left"></div>
             </div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="col-50 is-inline">
               <div class="align-left">Class</div>
               <div><select id="frmCharClass" name="characterClass" class="select-ghostly col-90"></select></div>
@@ -57,7 +59,7 @@
               <div id="frmCharRoleError" class="text-error align-left"></div>
             </div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="col-50 is-inline">
               <div class="align-left">Link to your spec</div>
               <div><input id="frmSpecLink" type="text" name="specLink" class="input-ghostly col-80" /></div>
@@ -69,32 +71,32 @@
               <div id="frmArmoryLinkError" class="text-error align-left"></div>
             </div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="align-left">How many of our raids will you be able to attend each week?</div>
             <div><input id="frmNumberOfRaids" type="text" name="numberRaids" class="input-ghostly col-90" /></div>
             <div id="frmNumberOfRaidsError" class="text-error align-left"></div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="align-left">How do you prepare for each raid (progression and farm)?</div>
             <div><textarea id="frmPreparation" name="preparation" class="textarea-ghostly col-90"></textarea></div>
             <div id="frmPreparationError" class="text-error align-left"></div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="align-left">Why are <u>you</u> a vaulable asset to our raiding team?</div>
             <div><textarea id="frmValuableAsset" name="asset" class="textarea-ghostly col-90"></textarea></div>
             <div id="frmValuableAssetError" class="text-error align-left"></div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="align-left">Making a mistake, how do you respond to being called out on it?</div>
             <div><input id="frmMakingMistake" type="text" name="mistake" class="input-ghostly col-90" /></div>
             <div id="frmMakingMistakeError" class="text-error align-left"></div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <div class="align-left">Finally, is there anything else you'd like to add?</div>
             <div><textarea id="frmAnythingElse" name="anythingElse" class="textarea-ghostly col-90"></textarea></div>
             <div id="frmAnythingElseError" class="text-error align-left"></div>
           </div>
-          <div class="container-medium is-framed border-rounded background-black">
+          <div class="container-medium frame-ghostly background-ghostly">
             <input id="btnSubmitApplication" type="submit" class="input-ghostly col-40" value="Submit" />
           </div>
         </form>

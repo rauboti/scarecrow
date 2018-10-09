@@ -1,5 +1,6 @@
 .icon-accept, .icon-add, .icon-arrow-down, .icon-arrow-up, .icon-back, .icon-decline, .icon-delete, .icon-edit, .icon-home, .icon-home-selected, .icon-logo, .icon-m, .icon-menu {
   background-repeat: no-repeat;
+  display: inline-flex;
   cursor: pointer;
 }
 .icon-accept {
