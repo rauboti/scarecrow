@@ -1,0 +1,47 @@
+/*
+  =<>= Elements
+*/
+img {
+  height: 10vw;
+  width: 10vw;
+}
+input, select, textarea {
+  padding: 10px;
+}
+menu {
+  display: inline-block;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid rgba(var(--border-colour-alt), 0.3);
+  border-top: none;
+  font-size: 1.7em;
+}
+nav {
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+section {
+  text-align: center;
+}
+/*
+  =<>= Classes: Buttons
+*/
+.menu-button {
+  display: inline-flex;
+}
+/*
+  =<>= Classes: Buttons
+*/
+.container-page {
+  min-width: 700px;
+  padding: 20px;
+  width: 50%;
+  display: inline-block;
+}
+.container-small {
+  margin: 2px;
+  padding: 5px;
+  width: 30%;
+  min-width: 400px;
+}

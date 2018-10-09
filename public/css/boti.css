@@ -1,68 +1,4 @@
-.align-bottom {
-  vertical-align: bottom;
-}
-.align-center {
-  text-align: center;
-}
-.align-left {
-  text-align: left;
-}
-.align-middle {
-  vertical-align: middle;
-}
-.align-right {
-  text-align: right;
-}
-.align-top {
-  vertical-align: top;
-}
-.background-black {
-  background: rgba(0,0,0,0.85);
-  color: white;
-}
-.background-white {
-  background: rgba(255,255,255,0.85);
-  color: black;
-}
-.border-rounded {
-  border-radius: 5px;
-}
-.col-10 {
-  width: 7.5%;
-}
-.col-20 {
-  width: 17.5%;
-}
-.col-30 {
-  width: 27.5%;
-}
-.col-40 {
-  width: 37.5%;
-}
-.col-50 {
-  width: 47.5%;
-}
-.col-60 {
-  width: 57.5%;
-}
-.col-70 {
-  width: 67.5%;
-}
-.col-80 {
-  width: 77.5%;
-}
-.col-90 {
-  width: 87.5%;
-}
-.col-100 {
-  width: 100%;
-}
-.faded {
-  opacity: 0.5;
-}
-.full-row {
-  display: block;
-}
+
 .hover-highlighted:hover {
   opacity: 1;
 }
@@ -78,25 +14,8 @@
 .is-expandable {
   overflow: hidden;
 }
-.is-framed {
-  border: 1px solid rgba(255,255,255,0.3);
-}
-.is-inline {
-  display: inline-block;
-}
-.is-inline-flex {
-  display: inline-flex;
-}
 .is-hidden {
   opacity: 0;
-}
-.is-scrollable {
-  overflow: scroll;
-  overflow: -moz-scrollbars-none;
-  -ms-overflow-style: none;
-}
-.is-scrollable::-webkit-scrollbar {
-  width: 0 !important;
 }
 .input-full {
   width: 100%;
@@ -108,30 +27,6 @@
   font-style: italic;
   font-size: 0.8em;
 }
-.margin-sides-5 {
-  margin-left: 5%;
-  margin-right: 5%;
-}
-.margin-sides-10 {
-  margin-left: 10%;
-  margin-right: 10%;
-}
-.margin-sides-20 {
-  margin-left: 20%;
-  margin-right: 20%;
-}
-.margin-big {
-  margin: 20px;
-}
-.margin-medium {
-  margin: 10px;
-}
-.margin-small {
-  margin: 5px;
-}
-.margin-top {
-  margin-top: 50px;
-}
 .padding-big {
   padding: 20px;
 }
@@ -140,9 +35,6 @@
 }
 .padding-small {
   padding: 5px;
-}
-.text-error {
-  color: red;
 }
 .title, .subtitle {
   text-align: left;

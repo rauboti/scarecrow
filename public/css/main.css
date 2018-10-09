@@ -24,46 +24,16 @@
   --orange: 255,100,0;
   --black: 0, 0, 0;
 }
-html, body, nav, menu, head, img, section, div, textarea {
+textarea {
   margin: 0;
   padding: 0;
   color: white;
 }
-img {
-  background-size: cover;
-}
-a {
-  text-decoration: inherit;
-  color: inherit;
-}
-a:focus {
-  outline: none;
-  box-shadow: none;
-  border-color:transparent;
-}
-nav {
-  margin-top: 0;
-  text-align: center;
-}
-html {
-  font-family: 'Rajdhani', sans-serif;
-  height: 100vh;
-  width: 100vw;
-  background: url('/img/sc.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-}
-body {
-  margin-top: 10vh;
-}
-input, select, textarea, option {
+
+select, textarea, option {
   font-family: 'Rajdhani', sans-serif;
   margin: 10px;
   font-size: 1rem;
-}
-input[type="submit"] {
-  cursor: pointer;
 }
 textarea {
   resize: none;

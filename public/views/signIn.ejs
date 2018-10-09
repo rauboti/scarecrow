@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html class="is-hidden">
+<html>
   <head>
     <title><%=title%></title>
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
+    <link rel="stylesheet" href="/css/boti-main.css" />
+    <link rel="stylesheet" href="/css/boti-icons.css" />
+    <link rel="stylesheet" href="/css/boti-themes.css" />
+    <% if (userDevice === 'PHONE') {%>
+      <link rel="stylesheet" href="/css/boti-mobile.css" />
+    <%} else if (userDevice === 'DESKTOP') {%>
+      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <%}%>
+    <link rel="stylesheet" href="/css/boti-extras.css" />
+    <!--
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/boti.css" />
     <link rel="stylesheet" href="/css/classes.css" />
@@ -12,8 +22,9 @@
     <link rel="stylesheet" href="/css/scarecrow.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
     <link rel="stylesheet" href="/css/themes.css" />
+    -->
     <nav>
-      <menu class="background-black">
+      <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
         <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
         <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
@@ -21,7 +32,7 @@
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (i == activePage) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text text-selected"><%=i%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-ghostly"><div class="menu-button-text text-selected"><%=i%></div></div></a>
             <%} else {%>
               <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
           <%}}}%>
@@ -32,7 +43,7 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-small align-center background-black border-rounded is-framed">
+        <div class="container-small align-center background-ghostly border-rounded frame-ghostly">
           <form name="frmSignIn" action="<%=scMenu['Sign in'].path%>" method="post" onsubmit="return scarecrow.validate.access.signIn();">
             <img class="round background-white faded margin-big" src="/img/crow.png"></img>
             <div class="is-inline col-90">

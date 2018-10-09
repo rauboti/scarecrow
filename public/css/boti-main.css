@@ -1,0 +1,84 @@
+/*
+  =<>= Elements
+*/
+a, body, div, head, html, img, menu, nav, section {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+a:focus {
+  outline: none;
+  box-shadow: none;
+  border-color:transparent;
+}
+body {
+  margin-top: 10vh;
+}
+html {
+  color: white;
+  font-family: 'Rajdhani', sans-serif;
+  height: 100vh;
+  width: 100vw;
+  background: url('/img/sc.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+img {
+  background-size: cover;
+}
+input {
+  font-family: 'Rajdhani', sans-serif;
+  margin: 10px;
+  font-size: 1rem;
+}
+input[type="submit"] {
+  cursor: pointer;
+}
+menu {
+  background: rgba(0,0,0,0.85);
+}
+nav {
+  position: absolute;
+  top: 0;
+  margin-top: 0;
+  text-align: center;
+}
+/*
+  =<>= Classes: Buttons
+*/
+.menu-button {
+  vertical-align: top;
+  padding: 5px;
+  margin: 5px;
+}
+.menu-button-icon {
+  height: 1.3em;
+  width: 1.3em;
+}
+.menu-button-icon:hover, .menu-button-text:hover {
+  -webkit-transform: scale(1.075);
+  -moz-transform: scale(1.075);
+  -ms-transform: scale(1.075);
+  -o-transform: scale(1.075);
+  transform: scale(1.075);
+}
+/*
+.menu-button-text {
+  display: inline-flex;
+}
+*/
+/*
+  =<>= Classes: Containers
+*/
+.container-page {
+  height: 80vh;
+  margin: 10px;
+  max-height: 80vh;
+}
+.container-small {
+  display: inline-block;
+}

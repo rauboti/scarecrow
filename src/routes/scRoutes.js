@@ -2,6 +2,7 @@
 const express = require('express');
 const debug = require('debug')('app:scRoutes');
 const passport = require('passport');
+const device = require('express-device');
 
 // => defining routes
 const scarecrowRouter = express.Router();
@@ -58,9 +59,7 @@ function router() {
         (async function dbQuery() {
           const { id }  = req.params;
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [id]);
-          //const ranks = await sql.query('SELECT * FROM tblRank');
           const characters = await sql.query('SELECT id, name, class, role, main FROM tblCharacter WHERE user_id = ?', [id]);
-          debug(characters);
           res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', user, characters });
         }());
       });
@@ -241,7 +240,8 @@ function router() {
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          res.render('sc', { scMenu, activePage: 'Loot', title: '<Scarecrow>' });
+          const userDevice = req.device.type.toUpperCase();
+          res.render('sc', { scMenu, activePage: 'Loot', userDevice, title: '<Scarecrow>' });
         }());
       });
     });
@@ -311,7 +311,8 @@ function router() {
       }
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          res.render('signIn', { scMenu, activePage: 'Sign in', title: '<Scarecrow>' });
+          const userDevice = req.device.type.toUpperCase();
+          res.render('signIn', { scMenu, activePage: 'Sign in', userDevice, title: '<Scarecrow>' });
         }());
       });
     })

@@ -1,3 +1,4 @@
+
 /*
     =<>= Mobile =<>=
 */
@@ -9,12 +10,10 @@
   height: 2.5rem;
   width: 2.5rem;
 }
-.container-big-mobile, .container-page-mobile {
+.container-big-mobile {
   padding: 5px;
 }
-.container-page-mobile {
-  font-size: 1.5rem;
-}
+
 .container-big-mobile {
   font-size: 1em;
 }
@@ -24,40 +23,8 @@
  padding: 0.7em;
  margin: 0.1em;
 }
-.container-small-mobile {
-  width: 70%;
-  font-size: 1.7em;
-  padding: 0.7em;
-  margin: 0.1em;
-}
 .hover-highlighted-mobile {
   opacity: 1;
-}
-.img-mobile {
-  height: 30vw;
-  width: 30vw;
-}
-.input-mobile, .select-mobile, .textarea-mobile {
-  padding: 20px;
-  font-size: 2rem;
-}
-.menu-button-mobile {
-  display: block;
-}
-.menu-button-row-mobile {
-  width: 100%;
-}
-.menu-mobile {
-  border-bottom: 1px solid rgba(var(--border-colour-alt), 0.3);
-  font-size: 4vw;
-}
-.nav-mobile {
-  position: absolute;
-  width: 100%;
-  top: 0;
-}
-.section-mobile {
-
 }
 .subtitle-mobile {
   font-size: 2em;
@@ -79,13 +46,10 @@
   height: 30px;
   width: 30px;
 }
-.container-page-desktop {
-  min-width: 700px;
-}
 .container-big-desktop {
   min-width: 600px;
 }
-.container-big-desktop, .container-page-desktop {
+.container-big-desktop {
   padding: 20px;
   width: 50%;
   display: inline-block;
@@ -96,43 +60,8 @@
   width: 40%;
   min-width: 500px;
 }
-.container-small-desktop {
-  margin: 2px;
-  padding: 5px;
-  width: 30%;
-  min-width: 400px;
-}
 .hover-highlighted-desktop {
   opacity: 0.65;
-}
-.img-desktop {
-  height: 10vw;
-  width: 10vw;
-}
-.input-desktop, .select-desktop, .textarea-desktop {
-  padding: 10px;
-}
-.menu-button-desktop {
-  display: inline-flex;
-}
-
-.menu-desktop {
-  display: inline-block;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border: 1px solid rgba(var(--border-colour-alt), 0.3);
-  border-top: none;
-  font-size: 1.7em;
-}
-.nav-desktop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-}
-.section-desktop {
-  text-align: center;
 }
 .subtitle-desktop {
   font-size: 1.7em;

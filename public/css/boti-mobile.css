@@ -1,0 +1,45 @@
+/*
+  =<>= Elements
+*/
+img {
+  height: 30vw;
+  width: 30vw;
+}
+input, select, textarea {
+  padding: 20px;
+  font-size: 2rem;
+}
+menu {
+  border-bottom: 1px solid rgba(var(--border-colour-alt), 0.3);
+  font-size: 4vw;
+}
+nav {
+  width: 100%;
+}
+/*
+  =<>= Classes: Buttons
+*/
+.menu-button {
+  display: block;
+}
+.menu-button-row {
+  width: 100%;
+}
+.selected-page {
+  vertical-align: top;
+  padding: 5px;
+  margin: 5px;
+}
+/*
+  =<>= Classes: Containers
+*/
+.container-page {
+  font-size: 1.5rem;
+  padding: 5px;
+}
+.container-small {
+  width: 70%;
+  font-size: 1.7em;
+  padding: 0.7em;
+  margin: 0.1em;
+}

@@ -1,17 +1,24 @@
+/*
+  =<>= Root variables
+*/
 :root {
+  /* Colours */
   --black: 0, 0, 0;
   --grey: 140, 140, 140;
   --white: 255, 255, 255;
 
   --crimson-red: 255, 40, 0;
   --crimson-grey: 100, 100, 100;
-  --crimson-border-radius: 2px;
 
   --ghostly-blue: 81, 203, 238;
+
+  /* Sizes */
+  --crimson-border-radius: 2px;
+
   --ghostly-border-radius: 5px;
 }
 /*
-    =<>= Cross-theme attribute =<>=
+  =<>= All themes
 */
 input, select, textarea {
   border: none;
@@ -25,9 +32,8 @@ input, select, textarea {
   -o-transition: all 0.30s ease-in-out;
   transition: all 0.30s ease-in-out;
 }
-
 /*
-    =<>= Crimson =<>=
+  =<>= Crimson
 */
 .input-crimson, .select-crimson, .textarea-crimson {
   border-radius: var(--crimson-border-radius);
@@ -47,8 +53,19 @@ input, select, textarea {
   border: 1px solid rgba(var(--crimson-red), 1);
 }
 /*
-    =<>= Ghostly =<>=
+  =<>= Ghostly
 */
+.background-ghostly {
+  background: rgba(var(--black),0.85);
+}
+.button-selected-ghostly {
+  color: rgba(var(--ghostly-blue), 1);
+  box-shadow: 0 0 5px rgba(var(--ghostly-blue), 1);
+  border-bottom: 1px solid rgba(var(--ghostly-blue), 1);
+}
+.frame-ghostly {
+  border: 1px solid rgba(var(--white),0.3);
+}
 .input-ghostly, .select-ghostly, .textarea-ghostly {
   border-radius: var(--ghostly-border-radius);
 }
@@ -68,8 +85,4 @@ input, select, textarea {
 }
 .option-ghostly {
   background-color: black;
-}
-
-.button-type-text {
-  border: 1px solid rgba(255,255,255,0.5);
 }

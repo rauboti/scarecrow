@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/css/responsive.css" />
     <link rel="stylesheet" href="/css/themes.css" />
     <nav>
-      <menu class="background-black">
+      <menu>
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
         <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
         <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
@@ -21,7 +21,7 @@
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (i == activePage) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button menu-button-selected"><div class="menu-button-text"><%=i%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-ghostly"><div class="menu-button-text"><%=i%></div></div></a>
             <%} else {%>
               <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
           <%}}}%>

@@ -1,31 +1,4 @@
 /*
-    =<>= Buttons: Menu =<>=
-*/
-.menu-button, .selected-page {
-  vertical-align: top;
-  padding: 5px;
-  margin: 5px;
-}
-.menu-button-text {
-  display: inline-flex;
-}
-.menu-button-icon {
-  height: 1.3em;
-  width: 1.3em;
-}
-.menu-button-icon:hover, .menu-button-text:hover {
-  -webkit-transform: scale(1.075);
-  -moz-transform: scale(1.075);
-  -ms-transform: scale(1.075);
-  -o-transform: scale(1.075);
-  transform: scale(1.075);
-}
-.menu-button-selected {
-  color: rgba(var(--text-colour-selected), 1);
-  box-shadow: 0 0 5px rgba(var(--border-colour-selected), 1);
-  border-bottom: 1px solid rgba(var(--border-colour-selected), 1);
-}
-/*
     =<>= Buttons: Submit =<>=
 */
 .submit-button {
@@ -40,14 +13,11 @@
 /*
     =<>= Containers =<>=
 */
-.container-page {
-  height: 80vh;
-  max-height: 80vh;
-}
-.container-page, .container-big {
+
+.container-big {
   margin: 10px;
 }
-.container-medium, .container-small {
+.container-medium {
   display: inline-block;
 }
 .container-popup-desktop, .container-popup-mobile {
@@ -92,7 +62,4 @@
 }
 .text-selected {
   color: rgba(var(--clr-selected), 1);
-}
-.round {
-  border-radius: 50vh;
 }

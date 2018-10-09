@@ -1,6 +1,6 @@
 var clicked;
-deviceAdjustment();
 $(document).ready(function() {
+  deviceAdjustment();
   $('.is-expandable').hide();
   $('.is-clickable').click(function() {
     clicked = $(this);

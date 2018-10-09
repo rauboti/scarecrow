@@ -2,6 +2,8 @@ var scarecrow = {
   get: {
     character: {
       classes: function() {
+
+        //=<>= Getting available character classes, and their available roles, from the database to populate dropdownmenus
         var data = { request: 'getCharacterClasses' };
         $.ajax({
           type: 'POST',
@@ -9,22 +11,12 @@ var scarecrow = {
           contentType: 'application/json',
           url: location.origin + '/api',
           success: function(classes) {
-            $('#slctCharClass').html('<option class="option-ghostly" selected></option>');
+            //If it succeeds, populate the dropdownmenu
             $('#frmCharClass').html('<option class="option-ghostly" selected></option>');
             for (var i in classes) {
-              $('#slctCharClass').append('<option class="option-ghostly">' + classes[i].name + '</option>')
               $('#frmCharClass').append('<option class="option-ghostly">' + classes[i].name + '</option>')
             }
-            $('#slctCharClass').change(function() {
-              $('#slctCharRole').html('<option class="option-ghostly" selected></option>');
-              for (var i in classes) {
-                if (classes[i].name === $('#slctCharClass :selected').text()) {
-                  classes[i].isDamage !== 0 ? $('#slctCharRole').append('<option class="option-ghostly">Damage</option>') : '';
-                  classes[i].isSupport !== 0 ? $('#slctCharRole').append('<option class="option-ghostly">Support</option>') : '';
-                  classes[i].isTank !== 0 ? $('#slctCharRole').append('<option class="option-ghostly">Tank</option>') : '';
-                }
-              }
-            });
+            //Change role dropdown if the Class-dropdown changes
             $('#frmCharClass').change(function() {
               $('#frmCharRole').html('<option class="option-ghostly" selected></option>');
               for (var i in classes) {
@@ -41,6 +33,8 @@ var scarecrow = {
     },
     user: {
       ranks: function(currentRank) {
+
+        //=<>= Getting available guild ranks from the database to populate dropdownmenus
         var data = { request: 'getUserRanks' };
         $.ajax({
           type: 'POST',
@@ -48,8 +42,10 @@ var scarecrow = {
           contentType: 'application/json',
           url: location.origin + '/api',
           success: function(ranks) {
+            //If it succeeds, populate the dropdownmenu
             for (var i in ranks) {
               if (ranks[i].name === currentRank) {
+                //Select the rank the user already has
                 $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-ghostly" selected>' + ranks[i].name + '</option>');
               } else {
                 $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-ghostly">' + ranks[i].name + '</option>');
@@ -63,6 +59,8 @@ var scarecrow = {
   validate: {
     access: {
       signIn: function() {
+
+        //=<>= Validating the sign in-form, returning false with error codes if username and/or password has not been put
         var userValid = true;
         var pwValid = true;
         $('.text-error').removeClass('col-90');
@@ -88,6 +86,8 @@ var scarecrow = {
         }
       },
       signUp: function() {
+
+        //=<>= Validating the sign up-form, returning false with error codes if username and/or password & confirm password has not been put
         let userValid = true;
         let pwValid = true;
         $('.text-error').removeClass('col-90');
@@ -121,30 +121,32 @@ var scarecrow = {
       },
     },
     application: function() {
-      $('#txtCharName').val() === '' ? $('#txtCharName').addClass('invalid') : $('#txtCharName').removeClass('invalid');
-      $('#txtCharName').val() === '' ? $('#txtCharNameError').html('Field required') : $('#txtCharNameError').html('');
-      $('#slctCharClass option:selected').text() === '' ? $('#slctCharClass').addClass('invalid') : $('#slctCharClass').removeClass('invalid');
-      $('#slctCharClass option:selected').text() === '' ? $('#slctCharClassError').html('Field required') : $('#slctCharClassError').html('');
-      $('#slctCharRole option:selected').text() === '' ? $('#slctCharRole').addClass('invalid') : $('#slctCharRole').removeClass('invalid');
-      $('#slctCharRole option:selected').text() === '' ? $('#slctCharRoleError').html('Field required') : $('#slctCharRoleError').html('');
-      $('#txtLevel').val() === ''? $('#txtLevel').addClass('invalid') : $('#txtLevel').removeClass('invalid');
-      $('#txtLevel').val() === '' ? $('#txtLevelError').html('Field required') : $('#txtLevelError').html('');
-      $('#txtSpecLink').val() === '' ? $('#txtSpecLink').addClass('invalid') : $('#txtSpekLink').removeClass('invalid');
-      $('#txtSpecLink').val() === '' ? $('#txtSpecLinkError').html('Field required') : $('#txtSpecLinkError').html('');
-      $('#txtArmoryLink').val() === '' ? $('#txtArmoryLink').addClass('invalid') : $('#txtArmoryLink').removeClass('invalid');
-      $('#txtArmoryLink').val() === '' ? $('#txtArmoryLinkError').html('Field required') : $('#txtArmoryLinkError').html('');
-      $('#txtNumberOfRaids').val() === '' ? $('#txtNumberOfRaids').addClass('invalid') : $('#txtNumberOfRaids').removeClass('invalid');
-      $('#txtNumberOfRaids').val() === '' ? $('#txtNumberOfRaidsError').html('Field required') : $('#txtNumberOfRaidsError').html('');
-      $('#txtPreparation').val() === '' ? $('#txtPreparation').addClass('invalid') : $('#txtPreparation').removeClass('invalid');
-      $('#txtPreparation').val() === '' ? $('#txtPreparationError').html('Field required') : $('#txtPreparationError').html('');
-      $('#txtValuableAsset').val() === '' ? $('#txtValuableAsset').addClass('invalid') : $('#txtValuableAsset').removeClass('invalid');
-      $('#txtValuableAsset').val() === '' ? $('#txtValuableAssetError').html('Field required') : $('#txtValuableAssetError').html('');
-      $('#txtMakingMistake').val() === '' ? $('#txtMakingMistake').addClass('invalid') : $('#txtMakingMistake').removeClass('invalid');
-      $('#txtMakingMistake').val() === '' ? $('#txtMakingMistakeError').html('Field required') : $('#txtMakingMistakeError').html('');
-      $('#txtAnythingElse').val() === '' ? $('#txtAnythingElse').addClass('invalid') : $('#txtAnythingElse').removeClass('invalid');
-      $('#txtAnythingElse').val() === '' ? $('#txtAnythingElseError').html('Field required') : $('#txtAnythingElseError').html('');
 
-      if ($('#txtCharName').val() === '' || $('#slctCharClass option:selected').text() === '' || $('#slctCharRole option:selected').text() === '' || $('#txtLevel').val() === '' || $('#txtSpecLink').val() === '' || $('#txtArmoryLink').val() === '' || $('#txtNumberOfRaids').val() === '' || $('#txtPreparation').val() === '' || $('#txtValuableAsset').val() === '' || $('#txtMakingMistake').val() === '' || $('#txtAnythingElse').val() === '') {
+      //=<>= Validating the apply-form, returning false with error codes if one of the fields has not been put
+      $('#frmCharName').val() === '' ? $('#frmCharName').addClass('invalid') : $('#frmCharName').removeClass('invalid');
+      $('#frmCharName').val() === '' ? $('#frmCharNameError').html('Field required') : $('#frmCharNameError').html('');
+      $('#frmCharClass option:selected').text() === '' ? $('#frmCharClass').addClass('invalid') : $('#frmCharClass').removeClass('invalid');
+      $('#frmCharClass option:selected').text() === '' ? $('#frmCharClassError').html('Field required') : $('#frmCharClassError').html('');
+      $('#frmCharRole option:selected').text() === '' ? $('#frmCharRole').addClass('invalid') : $('#frmCharRole').removeClass('invalid');
+      $('#frmCharRole option:selected').text() === '' ? $('#frmCharRoleError').html('Field required') : $('#frmCharRoleError').html('');
+      $('#frmLevel').val() === ''? $('#frmLevel').addClass('invalid') : $('#frmLevel').removeClass('invalid');
+      $('#frmLevel').val() === '' ? $('#frmLevelError').html('Field required') : $('#frmLevelError').html('');
+      $('#frmSpecLink').val() === '' ? $('#frmSpecLink').addClass('invalid') : $('#frmSpekLink').removeClass('invalid');
+      $('#frmSpecLink').val() === '' ? $('#frmSpecLinkError').html('Field required') : $('#frmSpecLinkError').html('');
+      $('#frmArmoryLink').val() === '' ? $('#frmArmoryLink').addClass('invalid') : $('#frmArmoryLink').removeClass('invalid');
+      $('#frmArmoryLink').val() === '' ? $('#frmArmoryLinkError').html('Field required') : $('#frmArmoryLinkError').html('');
+      $('#frmNumberOfRaids').val() === '' ? $('#frmNumberOfRaids').addClass('invalid') : $('#frmNumberOfRaids').removeClass('invalid');
+      $('#frmNumberOfRaids').val() === '' ? $('#frmNumberOfRaidsError').html('Field required') : $('#frmNumberOfRaidsError').html('');
+      $('#frmPreparation').val() === '' ? $('#frmPreparation').addClass('invalid') : $('#frmPreparation').removeClass('invalid');
+      $('#frmPreparation').val() === '' ? $('#frmPreparationError').html('Field required') : $('#frmPreparationError').html('');
+      $('#frmValuableAsset').val() === '' ? $('#frmValuableAsset').addClass('invalid') : $('#frmValuableAsset').removeClass('invalid');
+      $('#frmValuableAsset').val() === '' ? $('#frmValuableAssetError').html('Field required') : $('#frmValuableAssetError').html('');
+      $('#frmMakingMistake').val() === '' ? $('#frmMakingMistake').addClass('invalid') : $('#frmMakingMistake').removeClass('invalid');
+      $('#frmMakingMistake').val() === '' ? $('#frmMakingMistakeError').html('Field required') : $('#frmMakingMistakeError').html('');
+      $('#frmAnythingElse').val() === '' ? $('#frmAnythingElse').addClass('invalid') : $('#frmAnythingElse').removeClass('invalid');
+      $('#frmAnythingElse').val() === '' ? $('#frmAnythingElseError').html('Field required') : $('#frmAnythingElseError').html('');
+
+      if ($('#frmCharName').val() === '' || $('#frmCharClass option:selected').text() === '' || $('#frmCharRole option:selected').text() === '' || $('#frmLevel').val() === '' || $('#frmSpecLink').val() === '' || $('#frmArmoryLink').val() === '' || $('#frmNumberOfRaids').val() === '' || $('#frmPreparation').val() === '' || $('#frmValuableAsset').val() === '' || $('#frmMakingMistake').val() === '' || $('#frmAnythingElse').val() === '') {
         return false;
       } else {
         return true;
@@ -152,10 +154,14 @@ var scarecrow = {
     },
     character: {
       add: function() {
+
+        //=<>= Validation while adding new character
         if (clicked === 'ShowWindow') {
+          //Opening popup for character details
           scarecrow.window.toggle.background();
           scarecrow.window.character.add('add', 'character');
         } else if (clicked === 'Confirm') {
+          //Confirming the character details, validating the input
           scarecrow.validate.highlight.character.add();
           if ($('#frmCharName').val() === '' || $('#frmCharClass option:selected').text() === '' || $('#frmCharRole option:selected').text() == '') {
             return false;
@@ -163,11 +169,10 @@ var scarecrow = {
             return true;
           }
         } else if (clicked === 'Decline') {
+          //Declining the character
           scarecrow.window.toggle.background();
           scarecrow.window.close.popup();
           return false;
-        } else if (clicked.split('_')[0] === 'ChangeMainCharacter') {
-          return true;
         }
         return false;
       },
