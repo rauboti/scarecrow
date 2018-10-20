@@ -15,31 +15,31 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 // => defining routes
-const scarecrowRouter = require('./src/routes/scRoutes')();
+const router = require('./src/routes/scRoutes')();
 
 // => extra logging (morgan), parsing av POST requests (body-parser) & favicon
-app.use(morgan('tiny'));
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session({ secret: 'scarecrow' }));
+app.use(morgan('tiny'))
+.use(bodyParser.json())
+.use(bodyParser.urlencoded({ extended: false }))
+.use(cookieParser())
+.use(session({ secret: 'scarecrow', saveUninitialized: false, resave: false }));
 require('./src/config/passport.js')(app);
-app.use(favicon(path.join(__dirname, '/public/ico', 'favicon.ico')));
-app.use(device.capture());
+app.use(favicon(path.join(__dirname, '/public/ico', 'favicon.ico')))
+.use(device.capture());
 
 // => static folder for source files
-app.use(express.static(path.join(__dirname, '/public')));
-app.use('/css', express.static(path.join(__dirname, '/src/css')));
-app.use('/js', express.static(path.join(__dirname, '/src/js')));
-app.use('/img', express.static(path.join(__dirname, '/src/img')));
-app.use('/ico', express.static(path.join(__dirname, '/src/ico')));
+app.use(express.static(path.join(__dirname, '/public')))
+.use('/css', express.static(path.join(__dirname, '/src/css')))
+.use('/js', express.static(path.join(__dirname, '/src/js')))
+.use('/img', express.static(path.join(__dirname, '/src/img')))
+.use('/ico', express.static(path.join(__dirname, '/src/ico')))
 
 // => setting up EJS as a template engine
-app.set('views', './public/views');
-app.set('view engine', 'ejs');
+app.set('views', './public/views')
+.set('view engine', 'ejs');
 
-// => using the scarecrow router
-app.use('/', scarecrowRouter);
+//binding the router to the root
+app.use('/', router);
 
 // => listening to port
 app.listen(port, () => {

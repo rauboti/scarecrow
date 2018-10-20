@@ -111,6 +111,12 @@
 .is-expandable {
   overflow: hidden;
 }
+.overflow {
+  overflow: visible;
+}
+.pos-absolute {
+  position: absolute;
+}
 /*
   =<>= Object form
 */

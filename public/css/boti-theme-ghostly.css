@@ -1,0 +1,65 @@
+/*
+  =<>= Root variables
+*/
+:root {
+  /* Colours */
+  --clrBackgroundBox: 0, 0, 0;
+  --clrBackgroundInput: 255, 255, 255;
+  --clrBorder: 255, 255, 255;
+  --clrFocus: 81, 203, 238;
+  --clrTextMain: 255, 255, 255;
+  --clrTextAlt: 0, 0, 0;
+
+  /* Sizes */
+  --radBorder: 5px;
+}
+/*
+  =<>= Initials
+*/
+input, select, textarea, button {
+  border: none;
+  background: none;
+  outline: none;
+}
+.input-themed, .select-themed, .textarea-themed {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  transition: all 0.30s ease-in-out;
+}
+.background-themed, .menu-themed {
+  background: rgba(var(--clrBackgroundBox),0.85);
+}
+.button-selected-themed {
+  color: rgba(var(--clrFocus), 1);
+  box-shadow: 0 0 5px rgba(var(--clrFocus), 1);
+  border-bottom: 1px solid rgba(var(--clrFocus), 1);
+}
+.frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"] {
+  border: 1px solid;
+}
+.frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"], .menu-themed {
+  border-color: rgba(var(--clrBorder),0.3);
+}
+.frame-themed, .input-themed, .select-themed, .textarea-themed {
+  border-radius: var(--radBorder);
+}
+.input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed {
+  background: rgba(var(--clrBackgroundInput), 0.05);
+  color: rgba(var(--clrTextMain), 1);
+}
+.input-themed[type="submit"] {
+  background: rgba(var(--clrBackgroundInput), 0.7);
+  color: rgba(var(--clrTextAlt), 1);
+}
+.option-themed {
+  background-color: rgba(var(--clrBackgroundBox),1);
+}
+/*
+  =<>= Focuses
+*/
+.input-themed:focus, .select-themed:focus, .textarea-themed:focus {
+  box-shadow: 0 0 5px rgba(var(--clrFocus), 1);
+  border: 1px solid rgba(var(--clrFocus), 1);
+}

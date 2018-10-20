@@ -1,4 +1,11 @@
 /*
+  =<>= Root variables
+*/
+:root {
+  /* Sizes */
+  --container-medium-padding: 10px;
+}
+/*
   =<>= Elements
 */
 img {
@@ -13,7 +20,7 @@ menu {
   display: inline-block;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  border: 1px solid rgba(var(--border-colour-alt), 0.3);
+  border: 1px solid;
   border-top: none;
   font-size: 1.7em;
 }
@@ -51,10 +58,23 @@ section {
   display: inline-block;
 }
 .container-medium {
-  margin: 2px;
-  padding: 5px;
+  margin: 5px;
+  padding: var(--container-medium-padding);
   width: 40%;
   min-width: 500px;
+}
+.container-medium-title-corner {
+  font-size: 1em;
+  padding: 0em;
+  margin-top: calc(-1 * var(--container-medium-padding));
+  margin-left: calc(-1 * var(--container-medium-padding));
+  margin-right: calc(-1 * var(--container-medium-padding));
+  border: none;
+  border-top-left-radius: calc(0.8 * var(--radBorder));
+  border-bottom-right-radius: calc(0.8 * var(--radBorder));
+  background: rgba(var(--clrBackgroundInput), 0.3);
+  width: 30%;
+  text-align: center;
 }
 .container-page {
   min-width: 700px;

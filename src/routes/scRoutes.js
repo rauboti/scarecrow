@@ -14,56 +14,62 @@ function router() {
   // => root of the scarecrow router
   scarecrowRouter.route('/').get((req, res) => {
     let rank = 0;
-    if (req.user) {
-      rank = req.user.rank;
-    }
+    req.user && (rank = req.user.rank);
+
     getPages(rank, function(scMenu){
       (async function dbQuery() {
-        const userDevice = req.device.type.toUpperCase();
-        let session;
-        if (req.user) {
-          session = 'in';
-        } else {
-          session = 'out';
-        }
-        res.render('home', { scMenu, activePage: 'Home', title: '<Scarecrow>', userDevice, session });
+        const uDevice = req.device.type.toUpperCase();
+
+        res.render('home', { scMenu, activePage: 'Home', title: '<Scarecrow>', uDevice });
       }());
     });
   });
   // => The rest of the routes, pages you might want to open up
   scarecrowRouter.route('/admin')
     .all((req, res, next) => {
-      if(req.user && req.user.rank === 8) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
+          const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
+          const uDevice = req.device.type.toUpperCase();
           const userList = await sql.query('SELECT u.id, u.user, u.rank as "rankid", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank ORDER BY u.rank DESC, u.user ASC');
-          res.render('admin', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userDevice, userList });
+
+          res.render('admin', { user, scMenu, activePage: 'Admin', title: '<Scarecrow>', userList, uDevice});
         }());
       });
+    })
+    .post((req, res) => {
+      (async function dbQuery() {
+        debug(req.body);
+        if (req.body.add) {
+          if (req.body.add === 'event') {
+            let ID = createID();
+            let appExcists = await sql.query('SELECT * from tblEvent WHERE id = ?', [ID]);
+            while (appExcists.length !== 0) {
+              ID = createID();
+              appExcists = await sql.query('SELECT * from tblEvent WHERE id = ?', [ID]);
+            }
+            const date = new Date(req.body.date);
+            const result = await sql.query('INSERT INTO tblEvent (id, instance, time) VALUES (?, ?, ?)', [ID, parseInt(req.body.instance), date]);
+          }
+          res.redirect(req.get('referer'));
+        }
+      }());
     });
   scarecrowRouter.route('/admin/user/:id')
     .all((req, res, next) => {
-      if(req.user && req.user.rank === 8) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user && req.user.rank === 8 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
+          const uDevice = req.device.type.toUpperCase();
           const { id }  = req.params;
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [id]);
           const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [id]);
-          res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', userDevice, user, characters });
+          res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', uDevice, user, characters });
         }());
       });
     })
@@ -98,11 +104,7 @@ function router() {
     });
   scarecrowRouter.route('/applications')
     .all((req, res, next) => {
-      if(req.user && req.user.rank >= 6) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
@@ -122,26 +124,22 @@ function router() {
             x['level'] = result[i].character_level;
             applications[result[i].status].push(x);
           }
-          const userDevice = req.device.type.toUpperCase();
-          res.render('applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', userDevice, applications });
+          const uDevice = req.device.type.toUpperCase();
+          res.render('applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', uDevice, applications });
         }());
       });
     });
     scarecrowRouter.route('/applications/:id')
       .all((req, res, next) => {
-        if(req.user && req.user.rank >= 6) {
-          next();
-        } else {
-          res.redirect('/signIn');
-        }
+        req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn')
       })
       .get((req, res) => {
         getPages(req.user.rank, function(scMenu){
           (async function dbQuery() {
-            const userDevice = req.device.type.toUpperCase();
+            const uDevice = req.device.type.toUpperCase();
             const { id }  = req.params;
             const application = await sql.query('SELECT user, status, character_name, character_class, character_role, character_level, spec, armory, raids, preparation, asset, mistakes, anything_else FROM tblApplications WHERE id = ?', [id]);
-            res.render('application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', userDevice, application });
+            res.render('application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', uDevice, application });
           }());
         });
       })
@@ -159,19 +157,15 @@ function router() {
       });
   scarecrowRouter.route('/apply')
     .all((req, res, next) => {
-      if(req.user && req.user.rank >= 1) {
-        next();
-      } else {
-        res.redirect('/signUp');
-      }
+      req.user && req.user.rank >= 1 ? next() : res.redirect('/signUp')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
+          const uDevice = req.device.type.toUpperCase();
           const classes = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
           const username = req.user.user;
-          res.render('apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', userDevice, username, classes });
+          res.render('apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', uDevice, username, classes });
         }());
       });
     })
@@ -189,33 +183,37 @@ function router() {
     });
   scarecrowRouter.route('/events')
     .all((req, res, next) => {
-      if(req.user && req.user.rank >= 2) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user && req.user.rank >= 2 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
-          res.render('sc', { scMenu, activePage: 'Events', title: '<Scarecrow>', userDevice });
+          const uDevice = req.device.type.toUpperCase();
+          const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance ORDER BY e.time ASC');
+
+          var events = {}
+          for (var i in result) {
+            d = new Date(result[i].time)
+            var x = {}
+            x['instance'] = result[i].name;
+            x['day'] = Weekday(d.getDay());
+            x['date'] = d.getDate();
+            x['month'] = d.getMonth()+1;
+            events[i] = x;
+          }
+          res.render('events', { scMenu, activePage: 'Events', title: '<Scarecrow>', uDevice, events });
         }());
       });
     });
   scarecrowRouter.route('/forum')
     .all((req, res, next) => {
-      if(req.user) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
-          res.render('sc', { scMenu, activePage: 'Forum', title: '<Scarecrow>', userDevice });
+          const uDevice = req.device.type.toUpperCase();
+          res.render('sc', { scMenu, activePage: 'Forum', title: '<Scarecrow>', uDevice });
         }());
       });
     });
@@ -226,48 +224,39 @@ function router() {
   });
   scarecrowRouter.route('/hierarchy').get((req, res) => {
     let rank = 0;
-    if (req.user) {
-      rank = req.user.rank;
-    }
+    req.user && (rank = req.user.rank)
+
     getPages(rank, function(scMenu){
       (async function dbQuery() {
-        const userDevice = req.device.type.toUpperCase();
+        const uDevice = req.device.type.toUpperCase();
         const users = await sql.query('SELECT u.user, r.name as "rank", u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id ORDER BY r.name, u.user');
-        res.render('hierarchy', { scMenu, activePage: 'Hierarchy', userDevice, title: '<Scarecrow>', users });
+        res.render('hierarchy', { scMenu, activePage: 'Hierarchy', uDevice, title: '<Scarecrow>', users });
       }());
     });
   });
   scarecrowRouter.route('/loot')
     .all((req, res, next) => {
-      if(req.user) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
-          res.render('sc', { scMenu, activePage: 'Loot', userDevice, title: '<Scarecrow>' });
+          const uDevice = req.device.type.toUpperCase();
+          res.render('sc', { scMenu, activePage: 'Loot', uDevice, title: '<Scarecrow>' });
         }());
       });
     });
   scarecrowRouter.route('/profile')
     .all((req, res, next) => {
-      if(req.user) {
-        next();
-      } else {
-        res.redirect('/signIn');
-      }
+      req.user ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
+          const uDevice = req.device.type.toUpperCase();
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
           const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [req.user.id]);
-          res.render('profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>', userDevice });
+          res.render('profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>', uDevice });
         }());
       });
     })
@@ -292,12 +281,11 @@ function router() {
     });
   scarecrowRouter.route('/progression').get((req, res) => {
     let rank = 0;
-    if (req.user) {
-      rank = req.user.rank;
-    }
+    req.user && (rank = req.user.rank)
+
     getPages(rank, function(scMenu){
       (async function dbQuery() {
-        const userDevice = req.device.type.toUpperCase();
+        const uDevice = req.device.type.toUpperCase();
         const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
         var progression = {};
         for (var i in result) {
@@ -309,20 +297,19 @@ function router() {
           x['status'] = result[i].status;
           progression[result[i].instance].push(x);
         }
-        res.render('progression', { scMenu, activePage: 'Progression', userDevice, progression, title: '<Scarecrow>' });
+        res.render('progression', { scMenu, activePage: 'Progression', uDevice, progression, title: '<Scarecrow>' });
       }());
     });
   });
   scarecrowRouter.route('/signIn')
     .get((req, res) => {
       let rank = 0;
-      if (req.user) {
-        rank = req.user.rank;
-      }
+      req.user && (rank = req.user.rank)
+
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
-          res.render('signIn', { scMenu, activePage: 'Sign in', userDevice, title: '<Scarecrow>' });
+          const uDevice = req.device.type.toUpperCase();
+          res.render('signIn', { scMenu, activePage: 'Sign in', uDevice, title: '<Scarecrow>' });
         }());
       });
     })
@@ -333,13 +320,12 @@ function router() {
   scarecrowRouter.route('/signUp')
     .get((req, res) => {
       let rank = 0;
-      if (req.user) {
-        rank = req.user.rank;
-      }
+      req.user && (rank = req.user.rank)
+
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          const userDevice = req.device.type.toUpperCase();
-          res.render('signUp', { scMenu, activePage: 'Sign up', userDevice, title: '<Scarecrow>' });
+          const uDevice = req.device.type.toUpperCase();
+          res.render('signUp', { scMenu, activePage: 'Sign up', uDevice, title: '<Scarecrow>' });
         }());
       });
     })
@@ -364,6 +350,9 @@ function router() {
     (async function dbQuery() {
       if (req.body.request === 'getCharacterClasses') {
         const result = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
+        res.json(result);
+      } else if (req.body.request === 'getInstances') {
+        const result = await sql.query('SELECT id, name FROM tblInstance');
         res.json(result);
       } else if (req.body.request === 'getUserRanks') {
         const result = await sql.query('SELECT * FROM tblRank');
@@ -400,6 +389,12 @@ function createID() {
     return digits.charAt(Math.floor(Math.random() * digits.length));
   }
   return rndLtr() + rndLtr() + rndLtr() + rndLtr() + '-' + rndLtr() + rndLtr() +  rndLtr() + rndLtr() + rndLtr() + rndLtr() + rndLtr() + '-' + rndLtr() + rndLtr() + rndLtr() + rndLtr() + rndLtr();
+}
+
+const Weekday = (n) => {
+  var d = new Array(7);
+  d[0] = "Sun"; d[1] = "Mon"; d[2] = "Tue"; d[3] = "Wed"; d[4] = "Thu"; d[5] = "Fri"; d[6] = "Sat";
+  return d[n];
 }
 
 module.exports = router;

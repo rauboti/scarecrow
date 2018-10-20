@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title><%=title%></title>
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
     <link rel="stylesheet" href="/css/boti-main.css" />
     <link rel="stylesheet" href="/css/boti-icons.css" />
-    <link rel="stylesheet" href="/css/boti-themes.css" />
-    <% if (userDevice === 'PHONE') {%>
+    <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
+    <% if (uDevice === 'PHONE') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (userDevice === 'DESKTOP') {%>
+    <%} else if (uDevice === 'DESKTOP') {%>
       <link rel="stylesheet" href="/css/boti-desktop.css" />
     <%}%>
     <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav>
-      <menu>
+    <nav class="pos-absolute">
+      <menu class="menu-themed">
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
+        <div class="show-mobile col-60 is-inline selected-page"><%=activePage%></div>
         <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
         <div class="menu-button-row show-desktop">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (i == activePage) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-ghostly"><div class="menu-button-text text-selected"><%=i%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=i%></div></div></a>
             <%} else {%>
               <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
           <%}}}%>
@@ -34,8 +35,8 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-medium align-center frame-ghostly background-ghostly"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
-        <div class="container-medium align-left frame-ghostly background-ghostly">
+        <div class="container-medium align-center frame-themed background-themed"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
+        <div class="container-medium align-left frame-themed background-themed">
           <div><b># Spec</b></div>
           <div><a href="<%=application[0].spec%>" target="_blank"><u><%=application[0].spec%></u></a><br><br></div>
           <div><b># Armory profile</b></div>
@@ -51,7 +52,7 @@
           <div><b># Anything else?</b></div>
           <div style="white-space: pre-wrap;"><%=application[0].anything_else%></div>
         </div>
-        <div class="container-medium align-center frame-ghostly background-ghostly">
+        <div class="container-medium align-center frame-themed background-themed">
           <form name="frmApplication" method="post">
             <button type="submit" name="back" value="back" class="button-icon-medium icon-back"></button>
             <% if (application[0].status === 'New' || application[0].status === 'Declined') {%>

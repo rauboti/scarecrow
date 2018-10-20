@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title><%=title%></title>
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
     <link rel="stylesheet" href="/css/boti-main.css" />
     <link rel="stylesheet" href="/css/boti-icons.css" />
-    <link rel="stylesheet" href="/css/boti-themes.css" />
-    <% if (userDevice === 'PHONE') {%>
+    <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
+    <% if (uDevice === 'PHONE') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (userDevice === 'DESKTOP') {%>
+    <%} else if (uDevice === 'DESKTOP') {%>
       <link rel="stylesheet" href="/css/boti-desktop.css" />
     <%}%>
     <link rel="stylesheet" href="/css/boti-classes.css" />
     <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav>
-      <menu>
+    <nav class="pos-absolute">
+      <menu class="menu-themed">
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-70 is-inline selected-page"><%=activePage%></div>
+        <div class="show-mobile col-60 is-inline selected-page"><%=activePage%></div>
         <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
         <div class="menu-button-row show-desktop">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (i == activePage) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-ghostly"><div class="menu-button-text"><%=i%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text"><%=i%></div></div></a>
             <%} else {%>
               <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
           <%}}}%>
@@ -36,7 +37,7 @@
     <section>
       <div class="container-page align-center is-scrollable">
         <form id="frmUserInformation" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.user.userInfo();">
-          <div class="container-big frame-ghostly background-ghostly">
+          <div class="container-big frame-themed background-themed">
             <div class="col-30 is-inline margin-sides-10 align-top">
               <div id="txtUsername" class="align-left underlined"><%=user[0].user%></div>
               <div class="align-left label">Username</div>
@@ -57,19 +58,19 @@
           </div>
         </form>
         <% if (user[0].rank > 1) {%>
-          <div class="container-big align-middle frame-ghostly background-ghostly">
+          <div class="container-big align-middle frame-themed background-themed">
             <%for (var i in characters) {%>
-              <div class="container-medium align-left frame-ghostly">
+              <div class="container-medium align-left frame-themed">
                 <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
-                  <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
-                  <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-30 clr<%=characters[i].class%>"><%=characters[i].name%></div>
-                  <div class="is-inline align-middle col-30"><%=characters[i].level%> <%=characters[i].class%></div>
                   <% if (characters[i].main === 'main') {%>
-                    <div class="is-inline align-middle col-20">Main</div>
-                  <%} else if (characters[i].main === 'alt') {%>
-                    <div class="is-inline align-middle col-20"></div>
+                    <div class="container-medium-title-corner">Main</div>
                   <%}%>
-                  <div class="is-inline-flex align-middle col-10"><button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button></div>
+                  <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
+                  <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
+                  <div class="is-inline align-middle col-40"><%=characters[i].level%> <%=characters[i].class%></div>
+                  <div class="is-inline-flex align-middle">
+                    <button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button>
+                  </div>
                 </form>
               </div>
             <%}%>

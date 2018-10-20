@@ -1,4 +1,11 @@
 /*
+  =<>= Root variables
+*/
+:root {
+  /* Sizes */
+  --container-medium-padding: 0.7em;
+}
+/*
   =<>= Elements
 */
 img {
@@ -6,12 +13,12 @@ img {
   width: 30vw;
 }
 input, select, textarea {
-  padding: 20px;
-  font-size: 2rem;
+  padding: 10px;
+  font-size: 1.2rem;
 }
 menu {
-  border-bottom: 1px solid rgba(var(--border-colour-alt), 0.3);
-  font-size: 4vw;
+  border-bottom: 1px solid;
+  font-size: 2rem;
 }
 nav {
   width: 100%;
@@ -30,44 +37,57 @@ textarea {
   width: 100%;
 }
 .selected-page {
-  vertical-align: top;
+  vertical-align: middle;
   padding: 5px;
   margin: 5px;
 }
 .button-icon-medium {
-  height: 3rem;
-  width: 3rem;
-}
-.button-icon-small {
   height: 2.5rem;
   width: 2.5rem;
+}
+.button-icon-small {
+  height: 2rem;
+  width: 2rem;
 }
 /*
   =<>= Classes: Containers
 */
-.container-big {
-  font-size: 1em;
+.container-page, .container-big, .container-popup {
+  font-size: 1.1em;
 }
 .container-big, .container-page {
   padding: 5px;
 }
+.container-medium, .container-small {
+
+}
 .container-medium {
  width: 85%;
- font-size: 1em;
- padding: 0.7em;
+ padding: var(--container-medium-padding);
  margin: 0.1em;
 }
+.container-medium-title-corner {
+  position: relative;
+  top: 0;
+  margin-top: calc(-1 * var(--container-medium-padding));
+  margin-left: calc(-1 * var(--container-medium-padding));
+  margin-right: calc(-1 * var(--container-medium-padding));
+  border: none;
+  border-top-left-radius: calc(0.8 * var(--radBorder));
+  border-bottom-right-radius: calc(0.8 * var(--radBorder));
+  background: rgba(var(--clrBackgroundInput), 0.3);
+  width: 30%;
+  text-align: center;
+}
 .container-page {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 .container-popup {
   top: 20vh;
   width: 80%;
-  font-size: 2rem;
 }
 .container-small {
   width: 70%;
-  font-size: 1.7em;
   padding: 0.7em;
   margin: 0.1em;
 }
@@ -81,5 +101,5 @@ textarea {
   =<>= Classes: Text
 */
 .subtitle, .title {
-  font-size: 2em;
+  font-size: 1.2em;
 }

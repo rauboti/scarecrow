@@ -12,24 +12,42 @@ var scarecrow = {
           url: location.origin + '/api',
           success: function(classes) {
             //If it succeeds, populate the dropdownmenu
-            $('#frmCharClass').html('<option class="option-ghostly" selected></option>');
+            $('#frmCharClass').html('<option class="option-themed" selected></option>');
             for (var i in classes) {
-              $('#frmCharClass').append('<option class="option-ghostly">' + classes[i].name + '</option>')
+              $('#frmCharClass').append('<option class="option-themed">' + classes[i].name + '</option>')
             }
             //Change role dropdown if the Class-dropdown changes
             $('#frmCharClass').change(function() {
-              $('#frmCharRole').html('<option class="option-ghostly" selected></option>');
+              $('#frmCharRole').html('<option class="option-themed" selected></option>');
               for (var i in classes) {
                 if (classes[i].name === $('#frmCharClass :selected').text()) {
-                  classes[i].isDamage !== 0 ? $('#frmCharRole').append('<option class="option-ghostly">Damage</option>') : '';
-                  classes[i].isSupport !== 0 ? $('#frmCharRole').append('<option class="option-ghostly">Support</option>') : '';
-                  classes[i].isTank !== 0 ? $('#frmCharRole').append('<option class="option-ghostly">Tank</option>') : '';
+                  classes[i].isDamage !== 0 ? $('#frmCharRole').append('<option class="option-themed">Damage</option>') : '';
+                  classes[i].isSupport !== 0 ? $('#frmCharRole').append('<option class="option-themed">Support</option>') : '';
+                  classes[i].isTank !== 0 ? $('#frmCharRole').append('<option class="option-themed">Tank</option>') : '';
                 }
               }
             });
           }
         });
       }
+    },
+    instances: function() {
+
+      //=<>= Getting instances from the database to populate dropdownmenus
+      var data = { request: 'getInstances' };
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: location.origin + '/api',
+        success: function(instances) {
+          console.log(instances);
+          $('#frmInstance').html('<option class="option-themed" selected></option>');
+          for (var i in instances) {
+            $('#frmInstance').append('<option class="option-themed" value="' + instances[i].id + '">' + instances[i].name + '</option>')
+          }
+        }
+      });
     },
     user: {
       ranks: function(currentRank) {
@@ -46,9 +64,9 @@ var scarecrow = {
             for (var i in ranks) {
               if (ranks[i].name === currentRank) {
                 //Select the rank the user already has
-                $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-ghostly" selected>' + ranks[i].name + '</option>');
+                $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed" selected>' + ranks[i].name + '</option>');
               } else {
-                $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-ghostly">' + ranks[i].name + '</option>');
+                $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed">' + ranks[i].name + '</option>');
               }
             }
           }
@@ -207,6 +225,26 @@ var scarecrow = {
         return false;
       }
     },
+    event: {
+      add: function() {
+        if (clicked === 'ShowWindow') {
+          scarecrow.window.toggle.background();
+          scarecrow.window.event.add('add', 'event');
+        } else if (clicked === 'Confirm') {
+          scarecrow.validate.highlight.event.add();
+          if ($('#frmDate').val() === '' || $('#frmInstance option:selected').text() === '') {
+            return false;
+          } else {
+            return true;
+          }
+        } else if (clicked === 'Decline') {
+          scarecrow.window.toggle.background();
+          scarecrow.window.close.popup();
+          return false;
+        }
+        return false;
+      }
+    },
     highlight: {
       access: {
 
@@ -221,6 +259,14 @@ var scarecrow = {
           $('#frmCharClass option:selected').text() === '' ? $('#frmCharClassError').html('Field required') : $('#frmCharClassError').html('');
           $('#frmCharRole option:selected').text() === '' ? $('#frmCharRole').addClass('invalid') : $('#frmCharRole').removeClass('invalid');
           $('#frmCharRole option:selected').text() === '' ? $('#frmCharRoleError').html('Field required') : $('#frmCharRoleError').html('');
+        }
+      },
+      event: {
+        add: function() {
+          $('#frmDate').val() === '' ? $('#frmDate').addClass('invalid') : $('#frmDate').removeClass('invalid');
+          $('#frmDate').val() === '' ? $('#frmDateError').html('Field required') : $('#frmDateError').html('');
+          $('#frmInstance option:selected').text() === '' ? $('#frmInstance').addClass('invalid') : $('#frmInstance').removeClass('invalid');
+          $('#frmInstance option:selected').text() === '' ? $('#frmInstanceError').html('Field required') : $('#frmInstanceError').html('');
         }
       }
     },
@@ -292,19 +338,19 @@ var scarecrow = {
         + '<div class="container-body">'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Character name</div>'
-        + '<div class="col-60 is-inline"><input id="frmCharName" type="text" name="cName" class="input-ghostly input-full" /></div><div id="frmCharNameError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><input id="frmCharName" type="text" name="cName" class="input-themed input-full" /></div><div id="frmCharNameError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Character level</div>'
-        + '<div class="col-60 is-inline"><input id="frmCharLevel" type="text" name="cLevel" class="input-ghostly input-full" /></div><div id="frmCharLevelError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><input id="frmCharLevel" type="text" name="cLevel" class="input-themed input-full" /></div><div id="frmCharLevelError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Class</div>'
-        + '<div class="col-60 is-inline"><select id="frmCharClass" name="cClass" class="select-ghostly input-full"></select></div><div id="frmCharClassError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><select id="frmCharClass" name="cClass" class="select-themed input-full"></select></div><div id="frmCharClassError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '<div class="col-90 is-inline margin-sides-5 align-top">'
         + '<div>Role</div>'
-        + '<div class="col-60 is-inline"><select id="frmCharRole" name="cRole" class="select-ghostly input-full"></select></div><div id="frmCharRoleError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="col-60 is-inline"><select id="frmCharRole" name="cRole" class="select-themed input-full"></select></div><div id="frmCharRoleError" class="text-error is-inline col-30 margin-sides-5"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
@@ -339,6 +385,32 @@ var scarecrow = {
         $('#frmPopup').remove();
       }
     },
+    event: {
+      add: function(confirmName, confirmValue) {
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.event.add();"><div id="popupContainer" class="container-popup"></div></form>');
+        $('#popupContainer').append('<div class="container-headline">Add new event</div>'
+        + '<div class="container-body">'
+        + '<div class="col-90 is-inline margin-sides-5 align-top">'
+        + '<div>Time</div>'
+        + '<div class="col-70 is-inline"><input id="frmDate" type="text" name="date" class="input-themed input-full" /></div><div id="frmDateError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '</div>'
+        + '<div class="col-90 is-inline margin-sides-5 align-top">'
+        + '<div>Instance</div>'
+        + '<div class="col-70 is-inline"><select id="frmInstance" name="instance" class="select-themed input-full"></select></div><div id="frmInstanceError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '</div>'
+        + '</div>'
+        + '<div id="frmPopupFooter" class="container-footer align-center">'
+        + '</div>'
+        );
+        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
+        scarecrow.get.instances();
+        $('.submit-button').click(function() {
+          clicked = $(this).attr('id').split('btn')[1];
+        });
+        $('#frmDate').datepicker({timepicker:'true', language:'en', dateFormat:'D M dd yyyy'});
+      }
+    },
     toggle: {
       background: function() {
         $('menu').toggleClass('inactive');
@@ -365,11 +437,11 @@ var scarecrow = {
         + '<div class="container-body">'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Username</div>'
-        + '<input id="frmUsername" type="text" name="username" class="input-ghostly col-90" placeholder="Username" value="' + userName + '" /><div id="frmUsernameError" class="text-error"></div>'
+        + '<input id="frmUsername" type="text" name="username" class="input-themed col-90" placeholder="Username" value="' + userName + '" /><div id="frmUsernameError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Email</div>'
-        + '<input id="frmEmail" type="text" name="email" class="input-ghostly col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
+        + '<input id="frmEmail" type="text" name="email" class="input-themed col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
@@ -387,19 +459,19 @@ var scarecrow = {
         + '<div class="container-body">'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Username</div>'
-        + '<input id="frmUsername" type="text" name="username" class="input-ghostly col-90" placeholder="Username" value="' + user + '" /><div id="frmUsernameError" class="text-error"></div>'
+        + '<input id="frmUsername" type="text" name="username" class="input-themed col-90" placeholder="Username" value="' + user + '" /><div id="frmUsernameError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Email</div>'
-        + '<input id="frmEmail" type="text" name="email" class="input-ghostly col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
+        + '<input id="frmEmail" type="text" name="email" class="input-themed col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Rank</div>'
-        + '<div class="is-inline"><select id="frmRank" name="rank" class="select-ghostly input-full"></select></div><div id="frmRankError" class="text-error"></div>'
+        + '<div class="is-inline"><select id="frmRank" name="rank" class="select-themed input-full"></select></div><div id="frmRankError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Role</div>'
-        + '<input id="frmRole" type="text" name="role" class="input-ghostly col-90" placeholder="Role" value="' + role + '" /><div id="frmRoleError" class="text-error"></div>'
+        + '<input id="frmRole" type="text" name="role" class="input-themed col-90" placeholder="Role" value="' + role + '" /><div id="frmRoleError" class="text-error"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
