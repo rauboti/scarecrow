@@ -2,16 +2,22 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title><%=title%></title>
+    <title><%=conf.title%></title>
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
     <link rel="stylesheet" href="/css/boti-main.css" />
     <link rel="stylesheet" href="/css/boti-icons.css" />
-    <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <% if (uDevice === 'PHONE') {%>
+    <% if (conf.theme === 'ghostly') {%>
+      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%>
+      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%>
+      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
+    <%}%>
+    <% if (conf.device === 'phone') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (uDevice === 'DESKTOP') {%>
+    <%} else if (conf.device === 'desktop') {%>
       <link rel="stylesheet" href="/css/boti-desktop.css" />
     <%}%>
     <link rel="stylesheet" href="/css/boti-classes.css" />
@@ -19,12 +25,12 @@
     <nav class="pos-absolute">
       <menu class="menu-themed">
         <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-60 is-inline selected-page"><%=activePage%></div>
+        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
         <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
         <div class="menu-button-row show-desktop">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
-              if (i == activePage) {%>
+              if (i == conf.page) {%>
               <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text"><%=i%></div></div></a>
             <%} else {%>
               <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>

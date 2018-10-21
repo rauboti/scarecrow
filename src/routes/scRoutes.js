@@ -15,12 +15,20 @@ function router() {
   scarecrowRouter.route('/').get((req, res) => {
     let rank = 0;
     req.user && (rank = req.user.rank);
+    req.user ? theme = req.user.theme : theme = 'ghostly';
 
     getPages(rank, function(scMenu){
       (async function dbQuery() {
-        const uDevice = req.device.type.toUpperCase();
 
-        res.render('home', { scMenu, activePage: 'Home', title: '<Scarecrow>', uDevice });
+        const conf = {
+          device: req.device.type.toLowerCase(),
+          page: 'Home',
+          rank: rank,
+          theme: theme,
+          title: '<Scarecrow>'
+        }
+
+        res.render('home', { scMenu, conf});
       }());
     });
   });
@@ -30,13 +38,21 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
-          const uDevice = req.device.type.toUpperCase();
           const userList = await sql.query('SELECT u.id, u.user, u.rank as "rankid", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank ORDER BY u.rank DESC, u.user ASC');
 
-          res.render('admin', { user, scMenu, activePage: 'Admin', title: '<Scarecrow>', userList, uDevice});
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Admin',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+
+          res.render('admin', { scMenu, userList, conf});
         }());
       });
     })
@@ -63,13 +79,23 @@ function router() {
       req.user && req.user.rank === 8 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
           const { id }  = req.params;
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [id]);
           const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [id]);
-          res.render('user', { scMenu, activePage: 'Admin', title: '<Scarecrow>', uDevice, user, characters });
+
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Admin',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+
+          res.render('user', { scMenu, conf, user, characters });
         }());
       });
     })
@@ -107,6 +133,8 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const result = await sql.query('SELECT id, status, character_name, character_class, character_role, character_level FROM tblApplications');
@@ -124,8 +152,16 @@ function router() {
             x['level'] = result[i].character_level;
             applications[result[i].status].push(x);
           }
-          const uDevice = req.device.type.toUpperCase();
-          res.render('applications', { scMenu, activePage: 'Applications', title: '<Scarecrow>', uDevice, applications });
+
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Applications',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+
+          res.render('applications', { scMenu, conf, applications });
         }());
       });
     });
@@ -134,12 +170,22 @@ function router() {
         req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn')
       })
       .get((req, res) => {
+        req.user && (rank = req.user.rank);
+        req.user ? theme = req.user.theme : theme = 'ghostly';
         getPages(req.user.rank, function(scMenu){
           (async function dbQuery() {
-            const uDevice = req.device.type.toUpperCase();
             const { id }  = req.params;
             const application = await sql.query('SELECT user, status, character_name, character_class, character_role, character_level, spec, armory, raids, preparation, asset, mistakes, anything_else FROM tblApplications WHERE id = ?', [id]);
-            res.render('application', { scMenu, activePage: 'Applications', title: '<Scarecrow>', uDevice, application });
+
+            const conf = {
+              device: req.device.type.toLowerCase(),
+              page: 'Application',
+              rank: rank,
+              theme: theme,
+              title: '<Scarecrow>'
+            }
+
+            res.render('application', { scMenu, conf, application });
           }());
         });
       })
@@ -160,12 +206,22 @@ function router() {
       req.user && req.user.rank >= 1 ? next() : res.redirect('/signUp')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
           const classes = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
           const username = req.user.user;
-          res.render('apply', { scMenu, activePage: 'Apply', title: '<Scarecrow>', uDevice, username, classes });
+
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Apply',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+
+          res.render('apply', { scMenu, conf, username, classes });
         }());
       });
     })
@@ -186,9 +242,10 @@ function router() {
       req.user && req.user.rank >= 2 ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
           const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance ORDER BY e.time ASC');
 
           var events = {}
@@ -201,7 +258,16 @@ function router() {
             x['month'] = d.getMonth()+1;
             events[i] = x;
           }
-          res.render('events', { scMenu, activePage: 'Events', title: '<Scarecrow>', uDevice, events });
+
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Events',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+
+          res.render('events', { scMenu, conf, events });
         }());
       });
     });
@@ -210,27 +276,36 @@ function router() {
       req.user ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
-          res.render('sc', { scMenu, activePage: 'Forum', title: '<Scarecrow>', uDevice });
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Forum',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+          res.render('sc', { scMenu, conf });
         }());
       });
     });
-  scarecrowRouter.route('/forum/:id').get((req, res) => {
-    const forumID = req.params.id;
-    // const {id} = req.params;
-    res.render('sc', { scMenu, activePage: 'Forum' });
-  });
   scarecrowRouter.route('/hierarchy').get((req, res) => {
-    let rank = 0;
-    req.user && (rank = req.user.rank)
+    req.user ? rank = req.user.rank : rank = 0;
+    req.user ? theme = req.user.theme : theme = 'ghostly';
 
     getPages(rank, function(scMenu){
       (async function dbQuery() {
-        const uDevice = req.device.type.toUpperCase();
         const users = await sql.query('SELECT u.user, r.name as "rank", u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id ORDER BY r.name, u.user');
-        res.render('hierarchy', { scMenu, activePage: 'Hierarchy', uDevice, title: '<Scarecrow>', users });
+        const conf = {
+          device: req.device.type.toLowerCase(),
+          page: 'Hierarchy',
+          rank: rank,
+          theme: theme,
+          title: '<Scarecrow>'
+        }
+        res.render('hierarchy', { scMenu, conf, users });
       }());
     });
   });
@@ -239,10 +314,18 @@ function router() {
       req.user ? next() : res.redirect('/signIn')
     })
     .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
-          res.render('sc', { scMenu, activePage: 'Loot', uDevice, title: '<Scarecrow>' });
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Loot',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+          res.render('sc', { scMenu, conf });
         }());
       });
     });
@@ -252,11 +335,19 @@ function router() {
     })
     .get((req, res) => {
       getPages(req.user.rank, function(scMenu){
+        req.user && (rank = req.user.rank);
+        req.user ? theme = req.user.theme : theme = 'ghostly';
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
           const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
           const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [req.user.id]);
-          res.render('profile', { scMenu, activePage: 'Profile', characters, user, title: '<Scarecrow>', uDevice });
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Profile',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+          res.render('profile', { scMenu, conf, characters, user });
         }());
       });
     })
@@ -280,12 +371,12 @@ function router() {
       }());
     });
   scarecrowRouter.route('/progression').get((req, res) => {
-    let rank = 0;
-    req.user && (rank = req.user.rank)
+    req.user ? rank = req.user.rank : rank = 0;
+    req.user ? theme = req.user.theme : theme = 'ghostly';
 
     getPages(rank, function(scMenu){
       (async function dbQuery() {
-        const uDevice = req.device.type.toUpperCase();
+
         const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
         var progression = {};
         for (var i in result) {
@@ -297,19 +388,32 @@ function router() {
           x['status'] = result[i].status;
           progression[result[i].instance].push(x);
         }
-        res.render('progression', { scMenu, activePage: 'Progression', uDevice, progression, title: '<Scarecrow>' });
+        const conf = {
+          device: req.device.type.toLowerCase(),
+          page: 'Progression',
+          rank: rank,
+          theme: theme,
+          title: '<Scarecrow>'
+        }
+        res.render('progression', { scMenu, conf, progression });
       }());
     });
   });
   scarecrowRouter.route('/signIn')
     .get((req, res) => {
-      let rank = 0;
-      req.user && (rank = req.user.rank)
+      req.user ? rank = req.user.rank : rank = 0;
+      req.user ? theme = req.user.theme : theme = 'ghostly';
 
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
-          res.render('signIn', { scMenu, activePage: 'Sign in', uDevice, title: '<Scarecrow>' });
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Sign in',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+          res.render('signIn', { scMenu, conf });
         }());
       });
     })
@@ -319,13 +423,19 @@ function router() {
     }));
   scarecrowRouter.route('/signUp')
     .get((req, res) => {
-      let rank = 0;
-      req.user && (rank = req.user.rank)
+      req.user ? rank = req.user.rank : rank = 0;
+      req.user ? theme = req.user.theme : theme = 'ghostly';
 
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          const uDevice = req.device.type.toUpperCase();
-          res.render('signUp', { scMenu, activePage: 'Sign up', uDevice, title: '<Scarecrow>' });
+          const conf = {
+            device: req.device.type.toLowerCase(),
+            page: 'Sign in',
+            rank: rank,
+            theme: theme,
+            title: '<Scarecrow>'
+          }
+          res.render('signUp', { scMenu, conf });
         }());
       });
     })
