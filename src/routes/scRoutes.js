@@ -448,7 +448,7 @@ function router() {
           ID = createID();
           userExcists = await sql.query('SELECT * from tblUser WHERE id = ?', [ID]);
         }
-        const newUser = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank) VALUES (?, ?, ?, ?, 1)', [ID, req.body.username, req.body.password, req.body.email]);
+        const newUser = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank, theme) VALUES (?, ?, ?, ?, 1, "ghostly")', [ID, req.body.username, req.body.password, req.body.email]);
         const getUser = await sql.query('SELECT id, user, rank FROM tblUser WHERE user = ? AND pw = ?', [req.body.username, req.body.password]);
         const user = getUser[0];
         req.login(user, () => {
