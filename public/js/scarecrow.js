@@ -49,6 +49,28 @@ var scarecrow = {
         }
       });
     },
+    themes: function(theme) {
+      console.log(theme);
+      //=<>= Getting themes from the database to populate dropdownmenus
+      var data = { request: 'getThemes' };
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: location.origin + '/api',
+        success: function(themes) {
+          console.log(themes);
+          $('#frmTheme').html('<option class="option-themed" selected></option>');
+          for (var i in themes) {
+            if (themes[i].name.toLowerCase() === theme.toLowerCase()) {
+              $('#frmTheme').append('<option class="option-themed" value="' + themes[i].name.toLowerCase() + '" selected>' + themes[i].name + '</option>')
+            } else {
+              $('#frmTheme').append('<option class="option-themed" value="' + themes[i].name.toLowerCase() + '">' + themes[i].name + '</option>')
+            }
+          }
+        }
+      });
+    },
     user: {
       ranks: function(currentRank) {
 
@@ -311,13 +333,15 @@ var scarecrow = {
       userInfo: function() {
         if (clicked === 'ShowWindow') {
           scarecrow.window.toggle.background();
-          scarecrow.window.user.edit($('#txtUsername').text(), $('#txtEmail').text(), 'edit', 'userInfo');
+          scarecrow.window.user.edit($('#txtUsername').text(), $('#txtEmail').text(), $('#txtTheme').text(), 'edit', 'userInfo');
           return false;
         } else if (clicked === 'Confirm') {
           $('#frmUsername').val() === '' ? $('#frmUsername').addClass('invalid') : $('#frmUsername').removeClass('invalid');
           $('#frmUsername').val() === '' ? $('#frmUsernameError').html('Field required') : $('#frmUsernameError').html('');
+          $('#frmTheme').text() === '' ? $('#frmTheme').addClass('invalid') : $('#frmTheme').removeClass('invalid');
+          $('#frmTheme').text() === '' ? $('#frmThemeError').html('Field required') : $('#frmThemeError').html('');;
 
-          if ($('#frmUsername').val() === '') {
+          if ($('#frmUsername').val() === '' || $('#frmTheme').text() === '') {
             return false;
           } else {
             return true;
@@ -431,17 +455,21 @@ var scarecrow = {
           clicked = $(this).attr('id').split('btn')[1];
         });
       },
-      edit: function(userName, email, confirmName, confirmValue) {
+      edit: function(userName, email, theme, confirmName, confirmValue) {
         $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Edit user details</div>'
         + '<div class="container-body">'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Username</div>'
-        + '<input id="frmUsername" type="text" name="username" class="input-themed col-90" placeholder="Username" value="' + userName + '" /><div id="frmUsernameError" class="text-error"></div>'
+        + '<div class="is-inline col-90"><input id="frmUsername" type="text" name="username" class="input-themed col-90" placeholder="Username" value="' + userName + '" /></div><div id="frmUsernameError" class="text-error"></div>'
         + '</div>'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
         + '<div>Email</div>'
-        + '<input id="frmEmail" type="text" name="email" class="input-themed col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
+        + '<div class="is-inline col-90"><input id="frmEmail" type="text" name="email" class="input-themed col-90" placeholder="Email" value="' + email + '" /></div><div id="frmEmailError" class="text-error"></div>'
+        + '</div>'
+        + '<div class="col-40 is-inline margin-sides-5 align-top">'
+        + '<div>Theme</div>'
+        + '<div class="is-inline col-90"><select id="frmTheme" name="theme" class="select-themed input-full"></select></div><div id="frmThemeError" class="text-error"></div>'
         + '</div>'
         + '</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
@@ -449,6 +477,7 @@ var scarecrow = {
         );
         $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
         + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
+        scarecrow.get.themes(theme);
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });

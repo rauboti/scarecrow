@@ -338,7 +338,7 @@ function router() {
         req.user && (rank = req.user.rank);
         req.user ? theme = req.user.theme : theme = 'ghostly';
         (async function dbQuery() {
-          const user = await sql.query('SELECT u.user, u.rank, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
+          const user = await sql.query('SELECT u.user, u.rank, u.theme, r.name as "rankName", u.email, u.role FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [req.user.id]);
           const characters = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [req.user.id]);
           const conf = {
             device: req.device.type.toLowerCase(),
@@ -360,7 +360,8 @@ function router() {
           }
         } else if (req.body.edit) {
           if (req.body.edit === 'userInfo') {
-            const result = await sql.query('UPDATE tblUser SET user = ?, email = ? WHERE id = ?', [req.body.username, req.body.email, req.user.id]);
+            const result = await sql.query('UPDATE tblUser SET user = ?, email = ?, theme = ? WHERE id = ?', [req.body.username, req.body.email, req.body.theme, req.user.id]);
+            req.user.theme = req.body.theme;
           }
         } else if (req.body.delete) {
           if (req.body.delete.split('_')[0] === 'character') {
@@ -463,6 +464,9 @@ function router() {
         res.json(result);
       } else if (req.body.request === 'getInstances') {
         const result = await sql.query('SELECT id, name FROM tblInstance');
+        res.json(result);
+      } else if (req.body.request === 'getThemes') {
+        const result = await sql.query('SELECT * FROM tblTheme');
         res.json(result);
       } else if (req.body.request === 'getUserRanks') {
         const result = await sql.query('SELECT * FROM tblRank');
