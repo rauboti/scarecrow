@@ -10,11 +10,14 @@ function localStrategy() {
       passwordField: 'password'
     }, (username, password, done) => {
       (async function dbQuery() {
-        const result = await sql.query('SELECT id, user, rank, theme FROM tblUser WHERE user = ? AND pw = ?', [username, password]);
-        if (result === undefined || result.length === 0) {
+        const uResult = await sql.query('SELECT id, user, rank, theme FROM tblUser WHERE user = ? AND pw = ?', [username, password]);
+
+        if (uResult === undefined || uResult.length === 0) {
           return done(null, false);
         } else {
-          const user = result[0]
+          const user = uResult[0]
+          const cResult = await sql.query('SELECT id FROM tblCharacter WHERE user_id = ? AND main = 1', [user.id])
+          cResult[0] && (user['main'] = cResult[0].id)
           return done(null, user);
         }
       }());

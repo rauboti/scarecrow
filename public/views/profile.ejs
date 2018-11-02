@@ -47,12 +47,14 @@
             <div class="col-30 is-inline margin-sides-10 align-top">
               <div id="txtUsername" class="align-left underlined"><%=user[0].user%></div>
               <div class="align-left label">Username</div>
-              <div class="align-left underlined"><%=user[0].rankName%></div>
-              <div class="align-left label">Guild rank</div>
+              <% if (user[0].email !== null && user[0].email !== '' && user[0].email !== undefined) {%>
+                <div id="txtEmail" class="align-left underlined"><%=user[0].email%></div>
+                <div class="align-left label">E-mail</div>
+              <%}%>
             </div>
             <div class="col-30 is-inline margin-sides-10 align-top">
-              <div id="txtEmail" class="align-left underlined"><%=user[0].email%></div>
-              <div class="align-left label">E-mail</div>
+              <div class="align-left underlined"><%=user[0].rankName%></div>
+              <div class="align-left label">Guild rank</div>
               <% if (user[0].role !== null && user[0].role !== '' && user[0].role !== undefined) {%>
                 <div class="align-left underlined"><%=user[0].role%></div>
                 <div class="align-left label">Role</div>
@@ -70,25 +72,28 @@
         <% if (user[0].rank > 1) {%>
           <div class="container-big align-middle frame-themed background-themed">
             <%for (var i in characters) {%>
-              <div class="container-medium align-left frame-themed">
-                <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
-                  <% if (characters[i].main === 'main') {%>
-                    <div class="container-medium-title-corner">Main</div>
-                  <%}%>
-                  <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
-                  <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
-                  <div class="is-inline align-middle col-40"><%=characters[i].level%> <%=characters[i].class%></div>
-                  <div class="is-inline-flex align-middle">
-                    <button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button>
-                  </div>
+              <% if (characters[i].main === 1) {%>
+                <div class="container-medium align-left frame-groove-themed">
+              <%} else {%>
+                <div class="container-medium align-left frame-themed">
+              <%}%>
+                  <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
+                    <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
+                    <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
+                    <div class="is-inline align-middle col-40"><%=characters[i].level%> <%=characters[i].class%></div>
+                    <div class="is-inline-flex align-middle">
+                      <button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button>
+                    </div>
+                  </form>
+                </div>
+            <%}%>
+            <% if (characters.length < 3) {%>
+              <div>
+                <form name="frmAddCharacters" method="post" onsubmit="return scarecrow.validate.character.add();">
+                  <button id="btnShowWindow" type="submit" name="add" value="character" class="button-icon-medium icon-add submit-button"></button>
                 </form>
               </div>
             <%}%>
-            <div>
-              <form name="frmAddCharacters" method="post" onsubmit="return scarecrow.validate.character.add();">
-                <button id="btnShowWindow" type="submit" name="add" value="character" class="button-icon-medium icon-add submit-button"></button>
-              </form>
-            </div>
           </div>
         <%}%>
       </div>

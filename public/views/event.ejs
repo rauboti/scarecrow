@@ -8,6 +8,7 @@
     <!-- CSS source files -->
     <link rel="stylesheet" href="/css/boti-main.css" />
     <link rel="stylesheet" href="/css/boti-icons.css" />
+    <link rel="stylesheet" href="/css/boti-classes.css" />
     <% if (conf.theme === 'ghostly') {%>
       <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
     <%} else if (conf.theme === 'crimson') {%>
@@ -40,13 +41,39 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <% for (var i in events) {%>
-          <a href="/event/<%=events[i].id%>">
-            <div class="container-medium align-left frame-themed background-themed">
-              <div class="title is-inline col-70"><%=events[i].instance%></div>
-              <div class="subtitle is-inline col-30"><%=events[i].day%> <%=events[i].date%>/<%=events[i].month%></div>
-            </div>
-          </a>
+        <div class="container-medium frame-themed background-themed">
+          <div class="title is-inline col-50"><%=event.instance%></div>
+          <div class="subtitle is-inline col-30"><%=event.day%> <%=event.date%>/<%=event.month%></div>
+        </div>
+        <div class="container-medium frame-themed background-themed">
+          <div class="container-small align-left frame-themed">
+            <div class="container-small-title-corner">Tanks (<%=event.tank.length%>/<%=event.max.tanks%>)</div>
+            <% for (var att in event.tank) {%>
+              <div class="col-30 is-inline"><span><%=event.tank[att].idx%>. </span><span class="clr<%=event.tank[att].class%>"><%=event.tank[att].name%></span></div>
+            <%}%>
+          </div>
+          <div class="container-small align-left frame-themed">
+            <div class="container-small-title-corner">Healers (<%=event.support.length%>/<%=event.max.support%>)</div>
+            <% for (var att in event.support) {%>
+              <div class="col-30 is-inline"><span><%=event.support[att].idx%>. </span><span class="clr<%=event.support[att].class%>"><%=event.support[att].name%></span></div>
+            <%}%>
+          </div>
+          <div class="container-small align-left frame-themed">
+            <div class="container-small-title-corner">Damage (<%=event.damage.length%>/<%=event.max.damage%>)</div>
+            <% for (var att in event.damage) {%>
+              <div class="col-30 is-inline"><span><%=event.damage[att].idx%>. </span><span class="clr<%=event.damage[att].class%>"><%=event.damage[att].name%></span></div>
+            <%}%>
+          </div>
+        </div>
+        <% if (conf.main) {%>
+        <div class="container-medium frame-themed background-themed">
+          <form name="frmEvent" method="post">
+            <button type="submit" name="back" value="back" class="button-icon-medium icon-back submit-button"></button>
+            <% if (!conf.signed) {%>
+            <button type="submit" name="accept" value="accept" class="button-icon-medium icon-accept submit-button"></button>
+            <%}%>
+          </form>
+        </div>
         <%}%>
       </div>
     </section>

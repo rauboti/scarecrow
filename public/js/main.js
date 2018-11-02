@@ -19,7 +19,7 @@ $(document).ready(function() {
     }
   });
   $('.submit-button').click(function() {
-    clicked = $(this).attr('id').split('btn')[1];
+    $(this).is('[id]') && (clicked = $(this).attr('id').split('btn')[1]);
   });
   $('.icon-menu').click(function() {
     $('.menu-button-row').slideToggle(500);

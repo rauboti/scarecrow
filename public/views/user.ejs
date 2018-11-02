@@ -67,17 +67,20 @@
         </form>
         <div class="container-big align-middle frame-themed background-themed">
           <%for (var i in characters) {%>
+            <% if (characters[i].main === 1) {%>
+              <div class="container-medium align-left frame-groove-themed">
+              <%} else {%>
             <div class="container-medium align-left frame-themed">
+              <%}%>
               <form name="frmUpdateCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
-                <% if (characters[i].main === 'main') {%>
-                  <div class="container-medium-title-corner">Main</div>
-                <%}%>
+
+
                 <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
                 <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
                 <div class="is-inline align-middle col-30"><%=characters[i].level%> <%=characters[i].class%></div>
                 <div class="is-inline-flex align-middle ">
                   <button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button>
-                  <% if (characters[i].main === 'alt') {%>
+                  <% if (characters[i].main === 0) {%>
                     <button id="btnMain_<%=characters[i].id%>" type="submit" name="main" value="main_<%=characters[i].id%>" class="icon-m button-icon-small submit-button"></button>
                   <%}%>
                 </div>

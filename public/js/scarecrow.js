@@ -4,12 +4,12 @@ var scarecrow = {
       classes: function() {
 
         //=<>= Getting available character classes, and their available roles, from the database to populate dropdownmenus
-        var data = { request: 'getCharacterClasses' };
+        var data = { request: 'classes' };
         $.ajax({
           type: 'POST',
           data: JSON.stringify(data),
           contentType: 'application/json',
-          url: location.origin + '/api',
+          url: location.origin + '/api/get',
           success: function(classes) {
             //If it succeeds, populate the dropdownmenu
             $('#frmCharClass').html('<option class="option-themed" selected></option>');
@@ -34,12 +34,12 @@ var scarecrow = {
     instances: function() {
 
       //=<>= Getting instances from the database to populate dropdownmenus
-      var data = { request: 'getInstances' };
+      var data = { request: 'instances' };
       $.ajax({
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: location.origin + '/api',
+        url: location.origin + '/api/get',
         success: function(instances) {
           console.log(instances);
           $('#frmInstance').html('<option class="option-themed" selected></option>');
@@ -49,15 +49,37 @@ var scarecrow = {
         }
       });
     },
-    themes: function(theme) {
-      console.log(theme);
-      //=<>= Getting themes from the database to populate dropdownmenus
-      var data = { request: 'getThemes' };
+    ranks: function(currentRank) {
+
+      //=<>= Getting available guild ranks from the database to populate dropdownmenus
+      var data = { request: 'ranks' };
       $.ajax({
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: location.origin + '/api',
+        url: location.origin + '/api/get',
+        success: function(ranks) {
+          //If it succeeds, populate the dropdownmenu
+          for (var i in ranks) {
+            if (ranks[i].name === currentRank) {
+              //Select the rank the user already has
+              $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed" selected>' + ranks[i].name + '</option>');
+            } else {
+              $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed">' + ranks[i].name + '</option>');
+            }
+          }
+        }
+      });
+    },
+    themes: function(theme) {
+
+      //=<>= Getting themes from the database to populate dropdownmenus
+      var data = { request: 'themes' };
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: location.origin + '/api/get',
         success: function(themes) {
           console.log(themes);
           $('#frmTheme').html('<option class="option-themed" selected></option>');
@@ -70,30 +92,6 @@ var scarecrow = {
           }
         }
       });
-    },
-    user: {
-      ranks: function(currentRank) {
-
-        //=<>= Getting available guild ranks from the database to populate dropdownmenus
-        var data = { request: 'getUserRanks' };
-        $.ajax({
-          type: 'POST',
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          url: location.origin + '/api',
-          success: function(ranks) {
-            //If it succeeds, populate the dropdownmenu
-            for (var i in ranks) {
-              if (ranks[i].name === currentRank) {
-                //Select the rank the user already has
-                $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed" selected>' + ranks[i].name + '</option>');
-              } else {
-                $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed">' + ranks[i].name + '</option>');
-              }
-            }
-          }
-        });
-      }
     }
   },
   validate: {
@@ -103,20 +101,23 @@ var scarecrow = {
         //=<>= Validating the sign in-form, returning false with error codes if username and/or password has not been put
         var userValid = true;
         var pwValid = true;
-        $('.text-error').removeClass('col-90');
-        $('.text-error').removeClass('is-inline');
+        $('.text-error')
+          .removeClass('col-90')
+          .removeClass('is-inline');
         $('#usernameError').html('');
         $('#passwordError').html('');
         if ($('#username').val() === '') {
-          $('#usernameError').html('Username required');
-          $('#usernameError').addClass('col-90');
-          $('#usernameError').addClass('is-inline');
+          $('#usernameError')
+            .html('Username required')
+            .addClass('col-90')
+            .addClass('is-inline');
           userValid = false;
         }
         if ($('#password').val() === '') {
-          $('#passwordError').html('Password required')
-          $('#passwordError').addClass('col-90');
-          $('#passwordError').addClass('is-inline');
+          $('#passwordError')
+            .html('Password required')
+            .addClass('col-90')
+            .addClass('is-inline');
           pwValid = false;
         }
         if (!userValid || !pwValid) {
@@ -443,7 +444,7 @@ var scarecrow = {
     },
     user: {
       delete: function(user, confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.delete();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Delete character</div>'
         + '<div class="container-body">Are you sure you want to delete ' + user + '? All character data will be purged!</div>'
         + '<div id="frmPopupFooter" class="container-footer align-center">'
@@ -483,7 +484,7 @@ var scarecrow = {
         });
       },
       update: function(user, email, rank, role, confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.update();"><div id="popupContainer" class="container-popup"></div></form>');
         $('#popupContainer').append('<div class="container-headline">Edit user details</div>'
         + '<div class="container-body">'
         + '<div class="col-40 is-inline margin-sides-5 align-top">'
@@ -508,7 +509,7 @@ var scarecrow = {
         );
         $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
         + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        scarecrow.get.user.ranks(rank);
+        scarecrow.get.ranks(rank);
         $('.submit-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });

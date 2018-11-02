@@ -57,7 +57,7 @@
           </div>
           <div class="is-expandable">
             <% for (var application in applications[status]) {%>
-              <a href="/applications/<%=applications[status][application].id%>">
+              <a href="/application/<%=applications[status][application].id%>">
                 <div class="container-medium align-left frame-themed background-themed hover-highlighted">
                   <%=applications[status][application].name%> - Level <%=applications[status][application].level%> <%=applications[status][application].class%> (<%=applications[status][application].role%>)
                 </div>

@@ -39,10 +39,15 @@ input, select, textarea, button {
 .frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"] {
   border: 1px solid;
 }
+.frame-groove-themed {
+  border-width: 5px;
+  border-style: groove;
+  border-color: rgba(var(--clrBorder),0.4);
+}
 .frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"], .menu-themed {
   border-color: rgba(var(--clrBorder),0.3);
 }
-.frame-themed, .input-themed, .select-themed, .textarea-themed {
+.frame-themed, .frame-groove-themed, .input-themed, .select-themed, .textarea-themed {
   border-radius: var(--radBorder);
 }
 .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed {

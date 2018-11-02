@@ -4,6 +4,7 @@
 :root {
   /* Sizes */
   --container-medium-padding: 10px;
+  --container-small-padding: 5px;
 }
 /*
   =<>= Elements
@@ -76,6 +77,19 @@ section {
   width: 30%;
   text-align: center;
 }
+.container-small-title-corner {
+  font-size: 1em;
+  padding: 0em;
+  margin-top: calc(-1 * var(--container-small-padding));
+  margin-left: calc(-1 * var(--container-small-padding));
+  margin-right: calc(-1 * var(--container-small-padding));
+  border: none;
+  border-top-left-radius: calc(0.8 * var(--radBorder));
+  border-bottom-right-radius: calc(0.8 * var(--radBorder));
+  background: rgba(var(--clrBackgroundInput), 0.3);
+  width: 30%;
+  text-align: center;
+}
 .container-page {
   min-width: 700px;
 }
@@ -86,7 +100,7 @@ section {
 }
 .container-small {
   margin: 2px;
-  padding: 5px;
+  padding: var(--container-small-padding);
   width: 30%;
   min-width: 400px;
 }

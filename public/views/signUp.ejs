@@ -45,15 +45,15 @@
           <form name="frmSignIn" action="<%=scMenu['signUp'].path%>" method="post" onsubmit="return scarecrow.validate.access.signUp();">
             <img class="round background-white faded margin-big" src="/img/crow.png"></img>
             <div class="is-inline col-90">
-              <input id="username" type="text" name="username" class="input-themed col-90" placeholder="Username" />
+              <input id="username" type="text" name="username" class="input-themed col-90" placeholder="Username" tabindex="1"/>
               <div id="usernameError" class="text-error col-90 align-left"></div>
             </div>
             <div class="is-inline col-90">
-              <input id="password" type="password" name="password" class="input-themed col-90" placeholder="Password" />
+              <input id="password" type="password" name="password" class="input-themed col-90" placeholder="Password" tabindex="2"/>
               <div id="passwordError" class="text-error col-90 align-left"></div>
             </div>
             <div class="is-inline col-90">
-              <input id="password_confirm" type="password" name="password_confirm" class="input-themed col-90" placeholder="Confirm password" />
+              <input id="password_confirm" type="password" name="password_confirm" class="input-themed col-90" placeholder="Confirm password" tabindex="3"/>
               <div id="passwordConfirmError" class="text-error col-90 align-left"></div>
             </div>
             <div class="full-row">
