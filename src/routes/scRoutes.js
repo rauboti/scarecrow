@@ -245,7 +245,7 @@ function router() {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           var events = {}
-          const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance ORDER BY e.time ASC');
+          const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance WHERE e.time >= CURDATE() ORDER BY e.time ASC');
 
           for (var i in result) {
             d = new Date(result[i].time)
