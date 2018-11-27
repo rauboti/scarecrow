@@ -63,3 +63,28 @@
 .clrWarrior {
   color: rgba(199, 156, 110, 1);
 }
+
+/*
+    =<>= Item quality =<>=
+*/
+.clr-artifact {
+  color: rgba(230, 204, 128, 1);
+}
+.clr-legendary {
+  color: rgba(255, 128, 0, 1);
+}
+.clr-epic {
+  color: rgba(163, 53, 238, 1);
+}
+.clr-rare {
+  color: rgba(0, 112, 221, 1);
+}
+.clr-uncommon {
+  color: rgba(30, 255, 0, 1);
+}
+.clr-common {
+  color: rgba(255, 255, 255, 1);
+}
+.clr-poor {
+  color: rgba(157, 157, 157, 1);
+}

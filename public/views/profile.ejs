@@ -45,23 +45,23 @@
         <form id="frmUserInformation" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.user.userInfo();">
           <div class="container-big frame-themed background-themed">
             <div class="col-30 is-inline margin-sides-10 align-top">
-              <div id="txtUsername" class="align-left underlined"><%=user[0].user%></div>
+              <div id="txtUsername" class="align-left underlined"><%=user['details'].name%></div>
               <div class="align-left label">Username</div>
-              <% if (user[0].email !== null && user[0].email !== '' && user[0].email !== undefined) {%>
-                <div id="txtEmail" class="align-left underlined"><%=user[0].email%></div>
+              <% if (user['details'].email !== null && user['details'].email !== '' && user['details'].email !== undefined) {%>
+                <div id="txtEmail" class="align-left underlined"><%=user['details'].email%></div>
                 <div class="align-left label">E-mail</div>
               <%}%>
             </div>
             <div class="col-30 is-inline margin-sides-10 align-top">
-              <div class="align-left underlined"><%=user[0].rankName%></div>
+              <div class="align-left underlined"><%=user['details'].rankName%></div>
               <div class="align-left label">Guild rank</div>
-              <% if (user[0].role !== null && user[0].role !== '' && user[0].role !== undefined) {%>
-                <div class="align-left underlined"><%=user[0].role%></div>
+              <% if (user['details'].role !== null && user['details'].role !== '' && user['details'].role !== undefined) {%>
+                <div class="align-left underlined"><%=user['details'].role%></div>
                 <div class="align-left label">Role</div>
               <%}%>
             </div>
             <div class="col-30 is-inline margin-sides-10 align-top">
-              <div id="txtTheme" class="align-left underlined"><%=user[0].theme.charAt(0).toUpperCase()+user[0].theme.slice(1)%></div>
+              <div id="txtTheme" class="align-left underlined"><%=user['details'].theme.charAt(0).toUpperCase()+user['details'].theme.slice(1)%></div>
               <div class="align-left label">Theme</div>
             </div>
             <div>
@@ -69,31 +69,44 @@
             </div>
           </div>
         </form>
-        <% if (user[0].rank > 1) {%>
+        <% if (user['details'].rank > 1) {%>
           <div class="container-big align-middle frame-themed background-themed">
-            <%for (var i in characters) {%>
-              <% if (characters[i].main === 1) {%>
+            <%for (var i in user['characters']) {%>
+              <% if (user['characters'][i].main === 1) {%>
                 <div class="container-medium align-left frame-groove-themed">
               <%} else {%>
                 <div class="container-medium align-left frame-themed">
               <%}%>
                   <form name="frmDeleteCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
-                    <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
-                    <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
-                    <div class="is-inline align-middle col-40"><%=characters[i].level%> <%=characters[i].class%></div>
+                    <div class="is-inline align-middle col-10 role<%=user['characters'][i].role%>"></div>
+                    <div id="characterName_<%=user['characters'][i].id%>" class="is-inline align-middle col-40 clr<%=user['characters'][i].class%>"><%=user['characters'][i].name%></div>
+                    <div class="is-inline align-middle col-40"><%=user['characters'][i].level%> <%=user['characters'][i].class%></div>
                     <div class="is-inline-flex align-middle">
-                      <button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button>
+                      <button id="btnShowWindow_<%=user['characters'][i].id%>" type="submit" name="delete" value="character_<%=user['characters'][i].id%>" class="icon-delete button-icon-small submit-button"></button>
                     </div>
                   </form>
                 </div>
             <%}%>
-            <% if (characters.length < 3) {%>
+            <% if (user['characters'].length < 3) {%>
               <div>
                 <form name="frmAddCharacters" method="post" onsubmit="return scarecrow.validate.character.add();">
                   <button id="btnShowWindow" type="submit" name="add" value="character" class="button-icon-medium icon-add submit-button"></button>
                 </form>
               </div>
             <%}%>
+          </div>
+          <div class="container-big align-middle frame-themed background-themed">
+            <form id="frmWishList" name="frmWishList" method="post">
+              <% for (var slot in user['wishlist']) {%>
+                <div class="itemSlotHeadline"><%=slot%></div>
+                <% for (var item in user['wishlist'][slot]) {%>
+                  <a href="https://classic.wowhead.com/item=<%=user['wishlist'][slot][item].item%>/" target="_blank"><div class="itemBox clr-<%=user['wishlist'][slot][item].quality%>"><strong><%=user['wishlist'][slot][item].name%></strong></div></a><button type="submit" name="wlDelete" value="<%=user['wishlist'][slot][item].id%>" class="itemListButton icon-delete submit-button"></button>
+                <%}%>
+              <%}%>
+            </form>
+            <form id="frmAddItem" name="frmAddItem" method="post" onsubmit="return scarecrow.validate.item.add();">
+              <button id="btnShowSearchBar" type="submit" name="add" value="item" class="button-icon-medium icon-add submit-button"></button>
+            </form>
           </div>
         <%}%>
       </div>
@@ -104,6 +117,8 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/profile.js"></script>
+
+    <script src="http://wow.zamimg.com/widgets/power.js"></script>
   </foot>
 </html>

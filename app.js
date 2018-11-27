@@ -10,6 +10,8 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const device = require('express-device');
+const parseString = require('xml2js').parseString;
+const http = require('http');
 
 const app = express();
 const port = process.env.PORT || 4000;

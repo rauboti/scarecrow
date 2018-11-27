@@ -42,23 +42,23 @@
     <section>
       <div class="container-page align-center is-scrollable">
         <div class="container-big align-center">
-          <% for (var i in users) {
-            if (users[i].rank === 'Guild Master') {%>
+          <% for (var i in officers) {
+            if (officers[i].rank === 'Guild Master') {%>
               <div class="container-medium align-left frame-themed background-themed">
                 <div class="col-30 is-inline">Guild Master</div>
-                <div class="col-30 is-inline"><%=users[i].user%></div>
+                <div class="col-30 is-inline"><%=officers[i].char%></div>
                 <div class="col-40 is-inline"></div>
               </div>
             <%}
           }%>
         </div>
         <div class="container-big align-center">
-          <% for (var i in users) {
-            if (users[i].rank === 'Officer') {%>
+          <% for (var i in officers) {
+            if (officers[i].rank === 'Officer' || officers[i].rank === 'Admin') {%>
               <div class="container-medium align-left frame-themed background-themed">
                 <div class="col-30 is-inline">Officer</div>
-                <div class="col-40 is-inline"><%=users[i].user%></div>
-                <div class="is-inline"><%=users[i].role%></div>
+                <div class="col-40 is-inline"><%=officers[i].char%></div>
+                <div class="is-inline"><%=officers[i].role%></div>
               </div>
             <%}
           }%>

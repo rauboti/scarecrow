@@ -45,19 +45,19 @@
         <form id="frmUserInformation" name="frmUserInfo" method="post" onsubmit="return scarecrow.validate.user.update();">
           <div class="container-big frame-themed background-themed">
             <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtUsername" class="align-left underlined"><%=user[0].user%></div>
+              <div id="txtUsername" class="align-left underlined"><%=user['details'].name%></div>
               <div class="align-left label">Username</div>
             </div>
             <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtEmail" class="align-left underlined"><%=user[0].email%></div>
+              <div id="txtEmail" class="align-left underlined"><%=user['details'].email%></div>
               <div class="align-left label">E-mail</div>
             </div>
             <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtRank" class="align-left underlined"><%=user[0].rankName%></div>
+              <div id="txtRank" class="align-left underlined"><%=user['details'].rankName%></div>
               <div class="align-left label">Guild rank</div>
             </div>
             <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtRole" class="align-left underlined"><%=user[0].role%></div>
+              <div id="txtRole" class="align-left underlined"><%=user['details'].role%></div>
               <div class="align-left label">Role</div>
             </div>
             <div>
@@ -66,8 +66,8 @@
           </div>
         </form>
         <div class="container-big align-middle frame-themed background-themed">
-          <%for (var i in characters) {%>
-            <% if (characters[i].main === 1) {%>
+          <%for (var i in user['characters']) {%>
+            <% if (user['characters'][i].main === 1) {%>
               <div class="container-medium align-left frame-groove-themed">
               <%} else {%>
             <div class="container-medium align-left frame-themed">
@@ -75,13 +75,13 @@
               <form name="frmUpdateCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
 
 
-                <div class="is-inline align-middle col-10 role<%=characters[i].role%>"></div>
-                <div id="characterName_<%=characters[i].id%>" class="is-inline align-middle col-40 clr<%=characters[i].class%>"><%=characters[i].name%></div>
-                <div class="is-inline align-middle col-30"><%=characters[i].level%> <%=characters[i].class%></div>
+                <div class="is-inline align-middle col-10 role<%=user['characters'][i].role%>"></div>
+                <div id="characterName_<%=user['characters'][i].id%>" class="is-inline align-middle col-40 clr<%=user['characters'][i].class%>"><%=user['characters'][i].name%></div>
+                <div class="is-inline align-middle col-30"><%=user['characters'][i].level%> <%=user['characters'][i].class%></div>
                 <div class="is-inline-flex align-middle ">
-                  <button id="btnShowWindow_<%=characters[i].id%>" type="submit" name="delete" value="character_<%=characters[i].id%>" class="icon-delete button-icon-small submit-button"></button>
-                  <% if (characters[i].main === 0) {%>
-                    <button id="btnMain_<%=characters[i].id%>" type="submit" name="main" value="main_<%=characters[i].id%>" class="icon-m button-icon-small submit-button"></button>
+                  <button id="btnShowWindow_<%=user['characters'][i].id%>" type="submit" name="delete" value="character_<%=user['characters'][i].id%>" class="icon-delete button-icon-small submit-button"></button>
+                  <% if (user['characters'][i].main === 0) {%>
+                    <button id="btnMain_<%=user['characters'][i].id%>" type="submit" name="main" value="main_<%=user['characters'][i].id%>" class="icon-m button-icon-small submit-button"></button>
                   <%}%>
                 </div>
               </form>

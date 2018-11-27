@@ -62,13 +62,13 @@
             </div>
           </div>
           <div class="is-expandable">
-            <% for (var i in userList) {%>
+            <% for (var i in users) {%>
               <div class="container-medium align-left frame-themed background-themed hover-highlighted">
-                <div class="col-30 is-inline align-middle"><%=userList[i].user%></div>
-                <div class="col-30 is-inline align-middle"><%=userList[i].rank%></div>
-                <div class="col-30 is-inline align-middle"><%=userList[i].role%></div>
+                <div class="col-30 is-inline align-middle"><%=users[i].user%></div>
+                <div class="col-30 is-inline align-middle"><%=users[i].rank%></div>
+                <div class="col-30 is-inline align-middle"><%=users[i].role%></div>
                 <div class="col-10 is-inline-flex align-middle">
-                  <a href="/admin/user/<%=userList[i].id%>">
+                  <a href="/admin/user/<%=users[i].id%>">
                     <button type="button" name="edit" value="user" class="button-icon-small icon-edit submit-button"></button>
                   </a>
                 </div>

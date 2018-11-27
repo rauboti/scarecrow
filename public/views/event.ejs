@@ -42,7 +42,7 @@
     <section>
       <div class="container-page align-center is-scrollable">
         <div class="container-medium frame-themed background-themed">
-          <div class="title is-inline col-50"><%=event.instance%></div>
+          <div class="title is-inline col-70"><%=event.instance%></div>
           <div class="subtitle is-inline col-30"><%=event.day%> <%=event.date%>/<%=event.month%></div>
         </div>
         <div class="container-medium frame-themed background-themed">
@@ -69,7 +69,7 @@
         <div class="container-medium frame-themed background-themed">
           <form name="frmEvent" method="post">
             <button type="submit" name="back" value="back" class="button-icon-medium icon-back submit-button"></button>
-            <% if (!conf.signed) {%>
+            <% if (!event.signed) {%>
             <button type="submit" name="accept" value="accept" class="button-icon-medium icon-accept submit-button"></button>
             <%}%>
           </form>

@@ -31,6 +31,16 @@ var scarecrow = {
         });
       }
     },
+    instance: function(instances) {
+      var data = { request: 'instances' };
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: location.origin + '/api/get',
+        success: instances
+      });
+    },
     instances: function() {
 
       //=<>= Getting instances from the database to populate dropdownmenus
@@ -41,12 +51,23 @@ var scarecrow = {
         contentType: 'application/json',
         url: location.origin + '/api/get',
         success: function(instances) {
-          console.log(instances);
           $('#frmInstance').html('<option class="option-themed" selected></option>');
           for (var i in instances) {
             $('#frmInstance').append('<option class="option-themed" value="' + instances[i].id + '">' + instances[i].name + '</option>')
           }
         }
+      });
+    },
+    items: function(query, items) {
+
+      // Getting items from the database
+      var data = { request: 'items', query: query}
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: location.origin + '/api/get',
+        success: items
       });
     },
     ranks: function(currentRank) {
@@ -268,6 +289,21 @@ var scarecrow = {
         return false;
       }
     },
+    item: {
+      add: function() {
+        console.log(clicked)
+        if (clicked === 'ShowSearchBar') {
+          scarecrow.window.toggle.background();
+          scarecrow.window.item.add()
+        } else if (clicked.split('_')[0] === 'Add') {
+          return true;
+        } else if (clicked === 'Decline') {
+          scarecrow.window.toggle.background();
+          scarecrow.window.close.popup();
+        }
+        return false;
+      }
+    },
     highlight: {
       access: {
 
@@ -408,6 +444,52 @@ var scarecrow = {
     close: {
       popup: function() {
         $('#frmPopup').remove();
+      }
+    },
+    item: {
+      add: function() {
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.item.add();" autocomplete="off"><div id="popupContainer" class="container-popup align-center">'
+        + '<input id="txtItemSearch" type="text" name="item" class="input-themed col-80" placeholder="Type to search.." autocomplete="off" />'
+        + '<div id="itemList" class="itemList"></div>'
+        + '<div id="frmPopupFooter" class="container-footer align-center">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
+        + '</div></div></form>');
+
+        $('.submit-button').click(function() {
+          clicked = $(this).attr('id').split('btn')[1];
+        });
+        //gets available instances and sends the callback to a callback-function
+        scarecrow.get.instance(getInstances)
+        var searchTimer;
+        $('#txtItemSearch').keyup(function() {
+          clearTimeout(searchTimer)
+          var query = this.value;
+          searchTimer = setTimeout(function() {
+            if (query.length > 4) {
+              scarecrow.get.items(query, getItems);
+            }
+          }, 300);
+        });
+        var instances;
+        //Handles the callback from the instances query
+        function getInstances(response) { instances = response; }
+        //Handles the callback from the items query
+        function getItems(response) {
+          console.log(response)
+          $('#itemList').html('');
+          for (var slot in response) {
+            for (var item in response[slot]) {
+              $('#itemList').append('<a href="https://classic.wowhead.com/item=' + response[slot][item].id + '/" target="_blank"><div class="itemBox clr-'+ response[slot][item].quality +'"><strong>'+response[slot][item].name+'</strong></div></a><button id="btnAdd_' + response[slot][item].id + '" type="submit" name="wlAdd" value="' + response[slot][item].id + '" class="itemListButton icon-add submit-button"></button>')
+            }
+          }
+          var height = ($('#itemList').children('a').height()+10) + 'px';
+          $('#itemList').children('.itemListButton').each(function() {
+            $(this).css({'height': height, 'width': height});
+          });
+          $('.submit-button').click(function() {
+            clicked = $(this).attr('id').split('btn')[1];
+          });
+        }
       }
     },
     event: {
