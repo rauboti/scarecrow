@@ -198,22 +198,26 @@ const local = module.exports = {
     get: {
       details: async function(user) {
         var obj = {}
-        var result = await sql.query('SELECT u.user as "name", u.rank, r.name as "rankName", u.email, u.role, u.theme FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [user.id]);
+        var result = await sql.query('SELECT u.user as "name", u.rank, r.name as "rankName", u.email, u.role, u.theme FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [user]);
         obj['details'] = result[0]
-        result = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [user.id]);
+        result = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ?', [user]);
         obj['characters'] = result
-        result = await sql.query('SELECT w.id, w.item, i.slot, i.name, i.quality FROM tblWishlist w JOIN tblItem i ON w.item = i.id WHERE char_id = ?', [user.main])
-        const itemlist = {}
-        for (var item in result) {
-          if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
-          var x = {}
-          x['id'] = result[item].id;
-          x['item'] = result[item].item;
-          x['name'] = result[item].name;
-          x['quality'] = result[item].quality;
-          itemlist[result[item].slot].push(x)
+        for (var char in obj['characters']) {
+          if (obj['characters'][char].main === 1) {
+            result = await sql.query('SELECT w.id, w.item, i.slot, i.name, i.quality FROM tblWishlist w JOIN tblItem i ON w.item = i.id WHERE char_id = ?', [obj['characters'][char].id])
+            const itemlist = {}
+            for (var item in result) {
+              if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
+              var x = {}
+              x['id'] = result[item].id;
+              x['item'] = result[item].item;
+              x['name'] = result[item].name;
+              x['quality'] = result[item].quality;
+              itemlist[result[item].slot].push(x)
+            }
+            obj['wishlist'] = itemlist
+          }
         }
-        obj['wishlist'] = itemlist
         return obj;
       }
     },

@@ -54,6 +54,7 @@ function router() {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const user = await DB.user.get.details(req.params.id);
+          debug(user)
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('user', { scMenu, conf, user });
         }())
@@ -221,7 +222,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const user = await DB.user.get.details(req.user);
+          const user = await DB.user.get.details(req.user.id);
           /*
           const itemid = 16802;
           var url = 'https://classic.wowhead.com/item=' + itemid + '&xml';
