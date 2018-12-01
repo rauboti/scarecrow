@@ -15,6 +15,10 @@
       <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
     <%} else if (conf.theme === 'toxic') {%>
       <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%>
+      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%>
+      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
     <%}%>
     <% if (conf.device === 'phone') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
@@ -43,61 +47,53 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <form id="frmUserInformation" name="frmUserInfo" method="post" onsubmit="return scarecrow.validate.user.update();">
-          <div class="container-big frame-themed background-themed">
-            <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtUsername" class="align-left underlined"><%=user['details'].name%></div>
-              <div class="align-left label">Username</div>
-            </div>
-            <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtEmail" class="align-left underlined"><%=user['details'].email%></div>
-              <div class="align-left label">E-mail</div>
-            </div>
-            <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtRank" class="align-left underlined"><%=user['details'].rankName%></div>
-              <div class="align-left label">Guild rank</div>
-            </div>
-            <div class="col-30 is-inline margin-sides-10 align-bottom">
-              <div id="txtRole" class="align-left underlined"><%=user['details'].role%></div>
-              <div class="align-left label">Role</div>
-            </div>
-            <div>
-              <button id="btnShowWindow" type="submit" name="edit" value="userInfo" class="button-icon-medium icon-edit submit-button"></button>
+        <div class="rolloutContainer">
+          <div class="rolloutContainerHead">
+            <div class="rolloutContainerHead-title">General information</div>
+            <div class="rolloutContainerHead-buttonRow">
+              <button id="btnShowGeneral" type="button" name="expand" value="users" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
+              <button id="btnEditGeneral" type="submit" name="edit" value="userInfo" class="rolloutContainerHead-button icon-edit"></button>
             </div>
           </div>
-        </form>
-        <div class="container-big align-middle frame-themed background-themed">
-          <%for (var i in user['characters']) {%>
-            <% if (user['characters'][i].main === 1) {%>
-              <div class="container-medium align-left frame-groove-themed">
-              <%} else {%>
-            <div class="container-medium align-left frame-themed">
-              <%}%>
-              <form name="frmUpdateCharacters" method="post" onsubmit="return scarecrow.validate.character.edit();">
-
-
-                <div class="is-inline align-middle col-10 role<%=user['characters'][i].role%>"></div>
-                <div id="characterName_<%=user['characters'][i].id%>" class="is-inline align-middle col-40 clr<%=user['characters'][i].class%>"><%=user['characters'][i].name%></div>
-                <div class="is-inline align-middle col-30"><%=user['characters'][i].level%> <%=user['characters'][i].class%></div>
-                <div class="is-inline-flex align-middle ">
-                  <button id="btnShowWindow_<%=user['characters'][i].id%>" type="submit" name="delete" value="character_<%=user['characters'][i].id%>" class="icon-delete button-icon-small submit-button"></button>
-                  <% if (user['characters'][i].main === 0) {%>
-                    <button id="btnMain_<%=user['characters'][i].id%>" type="submit" name="main" value="main_<%=user['characters'][i].id%>" class="icon-m button-icon-small submit-button"></button>
-                  <%}%>
-                </div>
-              </form>
+          <div id="rolloutGeneral" class="rolloutContainerBody">
+            <div class="rolloutContainerBody-body">
+              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">User:</div><div id="txtUsername" class="rolloutContainerBody-itemValue"><%=user['details'].name%></div></div>
+              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">E-mail:</div><div id="txtEmail" class="rolloutContainerBody-itemValue"><%=user['details'].email%></div></div>
+              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">Rank:</div><div id="txtRank" class="rolloutContainerBody-itemValue"><%=user['details'].rankName%></div></div>
+              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">Role:</div><div id="txtRole" class="rolloutContainerBody-itemValue"><%=user['details'].role%></div></div>
             </div>
-          <%}%>
-          <div>
-            <form name="frmAddCharacters" method="post" onsubmit="return scarecrow.validate.character.add();">
-              <button id="btnShowWindow" type="submit" name="add" value="character" class="button-icon-medium icon-add submit-button"></button>
-            </form>
           </div>
         </div>
-        <div class="container-big align-middle frame-themed background-themed">
-          <form id="frmUserActions" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.user.delete();">
-            <button id="btnBack" type="submit" name="back" value="back" class="button-icon-medium icon-back submit-button"></button>
-            <button id="btnShowWindow" type="submit" name="delete" value="user" class="button-icon-medium icon-delete submit-button"></button>
+        <div class="rolloutContainer">
+          <div class="rolloutContainerHead">
+            <div class="rolloutContainerHead-title">Characters</div>
+            <div class="rolloutContainerHead-buttonRow">
+              <button id="btnShowCharacters" type="button" name="expand" value="characters" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
+              <% if (user['characters'].length < 3) {%>
+              <button id="btnAddCharacter" type="submit" name="add" value="character" class="rolloutContainerHead-button icon-add"></button>
+              <%}%>
+            </div>
+          </div>
+          <div id="rolloutCharacters" class="rolloutContainerBody">
+            <div class="rolloutContainerBody-body">
+              <%for (var i in user['characters']) {%>
+              <div class="charContainer">
+                <div class="is-inline align-middle col-10 role<%=user['characters'][i].role%>"></div>
+                <div class="charContainer-details">
+                  <div id="txtCName_<%=user['characters'][i].id%>" class="is-inline align-middle clr<%=user['characters'][i].class%>"><%=user['characters'][i].name%></div>
+                  <div class="is-inline align-middle">(<span id="txtCLevel_<%=user['characters'][i].id%>"><%=user['characters'][i].level%></span> <span><%=user['characters'][i].class%></span>)</div>
+                </div>
+                <button id="delete_<%=user['characters'][i].id%>" type="submit" value="<%=user['characters'][i].id%>" class="charContainer-button icon-delete"></button>
+                <button id="edit_<%=user['characters'][i].id%>" main="<%=user['characters'][i].main%>" type="submit" value="<%=user['characters'][i].id%>" class="charContainer-button icon-edit"></button>
+              </div>
+              <%}%>
+            </div>
+          </div>
+        </div>
+        <div class="quickMenuContainer">
+          <form id="frmUserActions" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.quickmenu();">
+            <button id="btnBack" type="submit" name="back" value="back" class="quickMenu-button icon-back"></button>
+            <button id="btnDelete" type="submit" name="delete" value="user" class="quickMenu-button icon-delete"></button>
           </form>
         </div>
       </div>
@@ -108,6 +104,6 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/user.js"></script>
   </foot>
 </html>

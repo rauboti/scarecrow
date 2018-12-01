@@ -19,15 +19,11 @@ $(document).ready(function() {
   });
   $('#btnEditGeneral').click(function() {
     scarecrow.window.toggle.background();
-    scarecrow.window.user.edit(false, $('#txtUsername').text(), $('#txtEmail').text(), $('#txtTheme').text(), false, false);
+    scarecrow.window.user.edit(true, $('#txtUsername').text(), $('#txtEmail').text(), false, $('#txtRank').text(), $('#txtRole').text());
   });
   $('#btnAddCharacter').click(function() {
     scarecrow.window.toggle.background();
     scarecrow.window.character.add();
-  });
-  $('#btnItemSearch').click(function() {
-    scarecrow.window.toggle.background();
-    scarecrow.window.item.add()
   });
   $('.charContainer-button').click(function() {
     action = $(this).attr('id').split('_')[0];
@@ -37,9 +33,13 @@ $(document).ready(function() {
       scarecrow.window.character.delete(character);
     } else if (action === 'edit') {
       scarecrow.window.toggle.background();
-      scarecrow.window.character.edit(false, character, $(this).attr('main'));
+      scarecrow.window.character.edit(true, character, $(this).attr('main'));
     }
   });
+  $('.quickMenu-button').click(function() {
+    clicked = $(this).attr('id').split('btn')[1];
+  })
+
   $('.icon-menu').click(function() {
     $('.menu-button-row').slideToggle(500);
   });

@@ -4,6 +4,7 @@
 :root {
   /* Sizes */
   --container-medium-padding: 0.7em;
+  --charContainer-padding: 0.2em;
 }
 /*
   =<>= Elements
@@ -91,6 +92,20 @@ textarea {
   padding: 0.7em;
   margin: 0.1em;
 }
+.popupContainer {
+  top: 20vh;
+  width: 80%;
+}
+.popupContainer-headline {
+  padding: 5px;
+}
+.popupContainer-body {
+  padding: 5px;
+}
+.popupContainer-button {
+  height: 3em;
+  width: 3em;
+}
 /*
   =<>= Classes: Mouseovers
 */
@@ -102,4 +117,141 @@ textarea {
 */
 .subtitle, .title {
   font-size: 1.2em;
+}
+/*
+  =<>= Classes: Characters
+*/
+.charContainer {
+  margin: 0.1em;
+  padding: var(--charContainer-padding);
+  text-align: left;
+  border-radius: 5px;
+}
+.charContainer-button {
+  vertical-align: middle;
+  height: 2em;
+  width: 2em;
+  display: inline-block;
+}
+.charContainer-details {
+  display: inline-block;
+  vertical-align: middle;
+  width: 65%;
+}
+/*
+  =<>= Classes: Profile
+*/
+.rolloutContainer {
+  margin: 10px;
+}
+
+.rolloutContainerHead {
+  padding: 2px;
+  font-size: 1em;
+  text-align: left;
+}
+.rolloutContainerHead-title {
+  display: inline-block;
+  width: 70%;
+  text-align: left;
+  vertical-align: middle;
+  font-size: 1.4em;
+}
+.rolloutContainerHead-buttonRow {
+  display: inline-block;
+  vertical-align: middle;
+}
+.rolloutContainerHead-button {
+  height: 2rem;
+  width: 2rem;
+}
+.rolloutContainerBody {
+  padding: 2px;
+  font-size: 1em;
+  text-align: center;
+  overflow: hidden;
+}
+.rolloutContainerBody-body {
+  text-align: left;
+
+}
+.rolloutContainerBody-row {
+  text-align: center;
+}
+.rolloutContainerBody-halfColumn {
+  display: inline-block;
+  width: 47.5%;
+}
+.rolloutContainerBody-item {
+
+}
+.rolloutContainerBody-itemHead {
+  font-style: italic;
+  color: grey;
+  margin: 5px;
+  font-size: 0.8em;
+  vertical-align: bottom;
+}
+.rolloutContainerBody-itemValue {
+  margin: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  width: 85%;
+  vertical-align: bottom;
+}
+.quickMenuContainer {
+  padding: 5px;
+  display: inline-block;
+}
+.quickMenu-button {
+  height: 2rem;
+  width: 2rem;
+}
+.userContainer {
+  text-align: left;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  display: inline-block;
+  width: 80%;
+  vertical-align: middle;
+}
+.userList {
+  text-align: center;
+  max-height: 20vh;
+  overflow-y: scroll;
+}
+.userList::-webkit-scrollbar {
+  width: 0 !important;
+}
+.userContainer-user {
+  vertical-align: middle;
+  display: inline-block;
+  width: 30%;
+}
+.userContainer-guildPosition {
+  vertical-align: middle;
+  display: inline-block;
+  width: 40%;
+}
+.userContainer-rank {
+  display: inline-block;
+  margin: 1%;
+}
+.userContainer-role {
+  display: inline-block;
+  font-style: italic;
+  color: grey;
+  margin: 1%;
+}
+.appContainer {
+  text-align: left;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+}
+.instanceContainer {
+  text-align: left;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
 }

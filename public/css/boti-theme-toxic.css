@@ -10,6 +10,20 @@
   --clrTextMain: 255, 255, 255;
   --clrTextAlt: 0, 0, 0;
 
+  --clrAppBackground: 200, 255, 40;
+  --clrAppBorder: 200, 255, 40;
+  --clrCharBackground: 200, 255, 40;
+  --clrCharBorder: 200, 255, 40;
+  --clrContainerBackground: 0, 0, 0;
+  --clrContainerBorder: 200, 255, 40;
+  --clrInstanceBackground: 200, 255, 40;
+  --clrInstanceBorder: 200, 255, 40;
+  --clrItemBackground: 200, 255, 40;
+  --clrItemBorder: 200, 255, 40;
+  --clrUserBackground: 200, 255, 40;
+  --clrUserBorder: 200, 255, 40;
+
+
   /* Sizes */
   --radBorder: 5px;
 }
@@ -21,7 +35,7 @@ input, select, textarea, button {
   background: none;
   outline: none;
 }
-.input-themed, .select-themed, .textarea-themed {
+input, select, .input-themed, .select-themed, .textarea-themed {
   -webkit-transition: all 0.30s ease-in-out;
   -moz-transition: all 0.30s ease-in-out;
   -ms-transition: all 0.30s ease-in-out;
@@ -36,7 +50,7 @@ input, select, textarea, button {
   box-shadow: 0 0 5px rgba(var(--clrFocus), 1);
   border-bottom: 1px solid rgba(var(--clrFocus), 1);
 }
-.frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"] {
+input[type="text"], input[type="password"], input[type="submit"], select, .frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"] {
   border: 1px solid;
 }
 .frame-groove-themed {
@@ -44,27 +58,84 @@ input, select, textarea, button {
   border-style: groove;
   border-color: rgba(var(--clrBorder),0.4);
 }
-.frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"], .menu-themed {
+input[type="text"], input[type="password"], input[type="submit"], select, .frame-themed, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed, .input-themed[type="submit"], .menu-themed {
   border-color: rgba(var(--clrBorder),0.3);
 }
-.frame-themed, .frame-groove-themed, .input-themed, .select-themed, .textarea-themed {
+input, select, .frame-themed, .frame-groove-themed, .input-themed, .select-themed, .textarea-themed {
   border-radius: var(--radBorder);
 }
-.input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed {
+input[type="text"], input[type="password"], select, .input-themed[type="text"], .input-themed[type="password"], .select-themed, .textarea-themed {
   background: rgba(var(--clrBackgroundInput), 0.05);
   color: rgba(var(--clrTextMain), 1);
 }
-.input-themed[type="submit"] {
+input[type="submit"], .input-themed[type="submit"] {
   background: rgba(var(--clrBackgroundInput), 0.7);
   color: rgba(var(--clrTextAlt), 1);
 }
-.option-themed {
+option, .option-themed {
   background-color: rgba(var(--clrBackgroundBox),1);
 }
 /*
   =<>= Focuses
 */
-.input-themed:focus, .select-themed:focus, .textarea-themed:focus {
+input:focus, select:focus, .input-themed:focus, .select-themed:focus, .textarea-themed:focus {
   box-shadow: 0 0 5px rgba(var(--clrFocus), 1);
   border: 1px solid rgba(var(--clrFocus), 1);
+}
+/*
+  =<>= Characters
+*/
+.charContainer {
+  background: -moz-linear-gradient(top, rgba(var(--clrCharBackground), .15) 0%, rgba(var(--clrCharBackground), 0)  50%, rgba(var(--clrCharBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrCharBackground), .15) 0%, rgba(var(--clrCharBackground), 0) 50%, rgba(var(--clrCharBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrCharBackground), .15) 0%, rgba(var(--clrCharBackground), 0) 50%, rgba(var(--clrCharBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrCharBorder), .15);
+
+}
+/*
+  =<>= Items
+*/
+.itemContainer {
+  background: -moz-linear-gradient(top, rgba(var(--clrItemBackground), .15) 0%, rgba(var(--clrItemBackground), 0)  50%, rgba(var(--clrItemBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrItemBackground), .15) 0%, rgba(var(--clrItemBackground), 0) 50%, rgba(var(--clrItemBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrItemBackground), .15) 0%, rgba(var(--clrItemBackground), 0) 50%, rgba(var(--clrItemBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrItemBorder), .15);
+}
+/*
+  =<>= Users
+*/
+.userContainer {
+  background: -moz-linear-gradient(top, rgba(var(--clrUserBackground), .15) 0%, rgba(var(--clrUserBackground), 0)  50%, rgba(var(--clrUserBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrUserBackground), .15) 0%, rgba(var(--clrUserBackground), 0) 50%, rgba(var(--clrUserBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrUserBackground), .15) 0%, rgba(var(--clrUserBackground), 0) 50%, rgba(var(--clrUserBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrUserBorder), .15);
+}
+/*
+  =<>= Applications
+*/
+.appContainer {
+  background: -moz-linear-gradient(top, rgba(var(--clrAppBackground), .15) 0%, rgba(var(--clrAppBackground), 0)  50%, rgba(var(--clrAppBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrAppBackground), .15) 0%, rgba(var(--clrAppBackground), 0) 50%, rgba(var(--clrAppBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrAppBackground), .15) 0%, rgba(var(--clrAppBackground), 0) 50%, rgba(var(--clrAppBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrAppBorder), .15);
+}
+/*
+  =<>= Instances
+*/
+.instanceContainer {
+  background: -moz-linear-gradient(top, rgba(var(--clrInstanceBackground), .15) 0%, rgba(var(--clrInstanceBackground), 0)  50%, rgba(var(--clrInstanceBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrInstanceBackground), .15) 0%, rgba(var(--clrInstanceBackground), 0) 50%, rgba(var(--clrInstanceBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrInstanceBackground), .15) 0%, rgba(var(--clrInstanceBackground), 0) 50%, rgba(var(--clrInstanceBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrInstanceBackground), .15);
+}
+/*
+  =<>= Containers
+*/
+.rolloutContainerHead, .rolloutContainerBody-body, .rolloutContainerBody-item, .popupContainer, .quickMenuContainer {
+  background: rgba(var(--clrContainerBackground), 0.85);
+  border: 1px solid rgba(var(--clrContainerBorder), 0.3);
+  border-radius: var(--radBorder);
+}
+.popupContainer-headline {
+  background: rgba(var(--clrBackgroundInput), 0.3);
 }

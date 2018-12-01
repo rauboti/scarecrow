@@ -15,6 +15,10 @@
       <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
     <%} else if (conf.theme === 'toxic') {%>
       <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%>
+      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%>
+      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
     <%}%>
     <% if (conf.device === 'phone') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
@@ -43,39 +47,33 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <div class="container-big align-center frame-themed background-themed">
-          <form name="frmAddEvent" method="post" onsubmit="return scarecrow.validate.event.add();">
-            <div class="col-80 is-inline align-middle">
-              <div class="title is-inline col-100">Add new event</div>
+        <div class="rolloutContainer">
+          <div class="rolloutContainerHead">
+            <div class="rolloutContainerHead-title">Add new Event</div>
+            <div class="rolloutContainerHead-buttonRow">
+              <button id="btnAddEvent" type="button" name="add" value="event" class="rolloutContainerHead-button icon-add"></button>
             </div>
-            <div class="is-inline-flex align-middle">
-              <button id="btnShowWindow" type="submit" name="add" value="event" class="button-icon-medium icon-add submit-button"></button>
-            </div>
-          </form>
+          </div>
         </div>
+
         <% if (conf.rank > 7) {%>
-          <div class="container-big align-center frame-themed background-themed">
-            <div class="col-80 is-inline align-middle">
-              <div class="title is-inline col-100">User Management</div>
-            </div>
-            <div class="is-inline-flex align-middle">
-              <button type="button" name="expand" value="users" class="button-icon-medium icon-arrow-down submit-button is-clickable"></button>
+        <div class="rolloutContainer">
+          <div class="rolloutContainerHead">
+            <div class="rolloutContainerHead-title">Users</div>
+            <div class="rolloutContainerHead-buttonRow">
+              <button id="btnShowUsers" type="button" name="expand" value="users" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
             </div>
           </div>
-          <div class="is-expandable">
-            <% for (var i in users) {%>
-              <div class="container-medium align-left frame-themed background-themed hover-highlighted">
-                <div class="col-30 is-inline align-middle"><%=users[i].user%></div>
-                <div class="col-30 is-inline align-middle"><%=users[i].rank%></div>
-                <div class="col-30 is-inline align-middle"><%=users[i].role%></div>
-                <div class="col-10 is-inline-flex align-middle">
-                  <a href="/admin/user/<%=users[i].id%>">
-                    <button type="button" name="edit" value="user" class="button-icon-small icon-edit submit-button"></button>
-                  </a>
-                </div>
+          <div id="rolloutUsers" class="rolloutContainerBody">
+            <div class="rolloutContainerBody-body">
+              <div class="rolloutContainerBody-row">
+                <input id="txtUserSearch" type="text" name="user" class="col-80" placeholder="Type to search.." autocomplete="off" />
               </div>
-            <%}%>
+              <div id="userList" class="userList">
+              </div>
+            </div>
           </div>
+        </div>
         <%}%>
       </div>
     </section>
@@ -87,6 +85,6 @@
     <script src="/js/datepicker.en.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/admin.js"></script>
   </foot>
 </html>

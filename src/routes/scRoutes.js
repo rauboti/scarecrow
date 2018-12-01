@@ -31,9 +31,8 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function showPage() {
-          const users = await DB.users.getAll();
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('admin', {scMenu, conf, users});
+          res.render('admin', {scMenu, conf});
         }())
       })})
     .post((req, res) => {
@@ -54,7 +53,6 @@ function router() {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const user = await DB.user.get.details(req.params.id);
-          debug(user)
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('user', { scMenu, conf, user });
         }())
@@ -68,17 +66,17 @@ function router() {
           res.redirect(req.get('referer'));
         } else if (req.body.back) {
           res.redirect('/admin');
-        } else if (req.body.delete && req.body.delete.split('_')[0] === 'character') {
-          const Del = await DB.character.delete(req.body.delete.split('_')[1], req.params.id);
+        } else if (req.body.delete && req.body.delete === 'character') {
+          const Del = await DB.character.delete(req.body, req.user.id)
           res.redirect(req.get('referer'));
         } else if (req.body.delete && req.body.delete === 'user') {
           const Del = await DB.user.delete(req.params.id);
           res.redirect('/admin');
-        } else if (req.body.main) {
-          const Main = await DB.character.set.main(req.body.main.split('_')[1], req.params.id)
-          res.redirect(req.get('referer'));
-        } else if (req.body.update && req.body.update === 'general') {
+        } else if (req.body.editUser) {
           const Update = await DB.user.set.details(req.body, req.params.id, true)
+          res.redirect(req.get('referer'));
+        } else if (req.body.editChar) {
+          const Edit = await DB.character.set.details(req.body, req.user.id, true)
           res.redirect(req.get('referer'));
         }
       }())});
@@ -176,19 +174,6 @@ function router() {
         }
       }())});
 
-  pagerouter.route('/forum')                          // => forum page
-    .all((req, res, next) => {
-      req.user ? next() : res.redirect('/signIn') })
-    .get((req, res) => {
-      req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
-      getPages(req.user.rank, function(scMenu){
-        (async function dbQuery() {
-          const conf = { device: req.device.type.toLowerCase(), page: 'Forum', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('sc', { scMenu, conf });
-        }());
-      })});
-
   pagerouter.route('/hierarchy')                      // => hierarchy page
     .get((req, res) => {
       req.user ? rank = req.user.rank : rank = 0;
@@ -258,16 +243,16 @@ function router() {
         debug(req.body);
         if (req.body.add && req.body.add === 'character') {
           const Add = await DB.character.add(req.body, req.user.id, 0)
-        } else if (req.body.delete && req.body.delete.split('_')[0] === 'character') {
-          const Delete = await DB.character.delete(req.body.delete.split('_')[1], req.user.id)
-        } else if (req.body.edit && req.body.edit === 'userInfo') {
-          const Update = await DB.user.set.details(req.body, req.user.id, false)
+        } else if (req.body.delete) {
+          const Delete = await DB.character.delete(req.body, req.user.id)
+        } else if (req.body.editChar) {
+          const Edit = await DB.character.set.details(req.body, req.user.id, false)
+        } else if (req.body.editUser) {
+          const Edit = await DB.user.set.details(req.body, req.user.id, false)
           req.user.theme = req.body.theme;
         } else if (req.body.wlAdd) {
-          debug(req.body.wlAdd)
           const Wishlist = await DB.wishlist.add(req.body.wlAdd, req.user.main);
         } else if (req.body.wlDelete) {
-          debug(req.body.wlDelete)
           const Wishlist = await DB.wishlist.delete(req.body.wlDelete, req.user.main);
         }
         res.redirect(req.get('referer'));
@@ -327,6 +312,7 @@ function router() {
         req.body.request === 'items' && (result = await DB.query.items(req.body.query))
         req.body.request === 'ranks' && (result = await DB.ranks.getAll())
         req.body.request === 'themes' && (result = await DB.themes.getAll())
+        req.body.request === 'users' && (result = await DB.query.users(req.body.query))
         res.json(result);
       }())});
 

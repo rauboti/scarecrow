@@ -19,6 +19,9 @@
 .faded {
   opacity: 0.5;
 }
+.faded-strong {
+  opacity: 0.3;
+}
 .full-row {
   display: block;
 }

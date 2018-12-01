@@ -1,118 +1,36 @@
 var scarecrow = {
   get: {
     character: {
-      classes: function() {
-
+      classes: function(classes) { // --|--@ Complete
         //=<>= Getting available character classes, and their available roles, from the database to populate dropdownmenus
         var data = { request: 'classes' };
-        $.ajax({
-          type: 'POST',
-          data: JSON.stringify(data),
-          contentType: 'application/json',
-          url: location.origin + '/api/get',
-          success: function(classes) {
-            //If it succeeds, populate the dropdownmenu
-            $('#frmCharClass').html('<option class="option-themed" selected></option>');
-            for (var i in classes) {
-              $('#frmCharClass').append('<option class="option-themed">' + classes[i].name + '</option>')
-            }
-            //Change role dropdown if the Class-dropdown changes
-            $('#frmCharClass').change(function() {
-              $('#frmCharRole').html('<option class="option-themed" selected></option>');
-              for (var i in classes) {
-                if (classes[i].name === $('#frmCharClass :selected').text()) {
-                  classes[i].isDamage !== 0 ? $('#frmCharRole').append('<option class="option-themed">Damage</option>') : '';
-                  classes[i].isSupport !== 0 ? $('#frmCharRole').append('<option class="option-themed">Support</option>') : '';
-                  classes[i].isTank !== 0 ? $('#frmCharRole').append('<option class="option-themed">Tank</option>') : '';
-                }
-              }
-            });
-          }
-        });
+        $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: classes });
       }
     },
-    instance: function(instances) {
+    instances: function(instances) { // --|--@ Complete
+      //=<>= Getting instances from the database
       var data = { request: 'instances' };
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: location.origin + '/api/get',
-        success: instances
-      });
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: instances });
     },
-    instances: function() {
-
-      //=<>= Getting instances from the database to populate dropdownmenus
-      var data = { request: 'instances' };
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: location.origin + '/api/get',
-        success: function(instances) {
-          $('#frmInstance').html('<option class="option-themed" selected></option>');
-          for (var i in instances) {
-            $('#frmInstance').append('<option class="option-themed" value="' + instances[i].id + '">' + instances[i].name + '</option>')
-          }
-        }
-      });
-    },
-    items: function(query, items) {
-
+    items: function(query, items) { // --|--@ Complete
       // Getting items from the database
       var data = { request: 'items', query: query}
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: location.origin + '/api/get',
-        success: items
-      });
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: items });
     },
-    ranks: function(currentRank) {
-
-      //=<>= Getting available guild ranks from the database to populate dropdownmenus
+    ranks: function(ranks) { // --|--@ Complete
+      //=<>= Getting available guild ranks from the database
       var data = { request: 'ranks' };
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: location.origin + '/api/get',
-        success: function(ranks) {
-          //If it succeeds, populate the dropdownmenu
-          for (var i in ranks) {
-            if (ranks[i].name === currentRank) {
-              //Select the rank the user already has
-              $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed" selected>' + ranks[i].name + '</option>');
-            } else {
-              $('#frmRank').append('<option value="' + ranks[i].id + '" class="option-themed">' + ranks[i].name + '</option>');
-            }
-          }
-        }
-      });
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: ranks });
     },
-    themes: function(theme) {
-
-      //=<>= Getting themes from the database to populate dropdownmenus
+    themes: function(themes) { // --|--@ Complete
+      //Getting available themes from the database
       var data = { request: 'themes' };
-      $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: location.origin + '/api/get',
-        success: function(themes) {
-          console.log(themes);
-          $('#frmTheme').html('<option class="option-themed" selected></option>');
-          for (var i in themes) {
-            if (themes[i].name.toLowerCase() === theme.toLowerCase()) {
-              $('#frmTheme').append('<option class="option-themed" value="' + themes[i].name.toLowerCase() + '" selected>' + themes[i].name + '</option>')
-            } else {
-              $('#frmTheme').append('<option class="option-themed" value="' + themes[i].name.toLowerCase() + '">' + themes[i].name + '</option>')
-            }
-          }
-        }
-      });
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: themes });
+    },
+    users: function(query, users) {
+      //Getting users from the database
+      var data = { request : 'users', query: query };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: users})
     }
   },
   validate: {
@@ -215,17 +133,12 @@ var scarecrow = {
       }
     },
     character: {
-      add: function() {
-
+      add: function() { // --|--@ Complete
         //=<>= Validation while adding new character
-        if (clicked === 'ShowWindow') {
-          //Opening popup for character details
-          scarecrow.window.toggle.background();
-          scarecrow.window.character.add('add', 'character');
-        } else if (clicked === 'Confirm') {
+        if (clicked === 'Confirm') {
           //Confirming the character details, validating the input
-          scarecrow.validate.highlight.character.add();
-          if ($('#frmCharName').val() === '' || $('#frmCharLevel').val() === '' || $('#frmCharClass option:selected').text() === '' || $('#frmCharRole option:selected').text() == '') {
+          //scarecrow.validate.highlight.character.add();
+          if ($('#frmCName').val() === '' || $('#frmCLevel').val() === '') {
             return false;
           } else {
             return true;
@@ -236,46 +149,30 @@ var scarecrow = {
           scarecrow.window.close.popup();
           return false;
         }
-        return false;
       },
-      delete: function() {
-        if (clicked.split('_')[0] === 'ShowWindow') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.character.delete('delete', 'character', clicked.split('_')[1]);
-          return false;
-        } else if (clicked === 'Confirm') {
+      delete: function() { // --|--@ Complete
+        if (clicked === 'Confirm') {
           return true;
         } else if (clicked === 'Decline') {
           scarecrow.window.toggle.background();
           scarecrow.window.close.popup();
           return false;
         }
-        return false;
       },
       edit: function() {
-        if (clicked.split('_')[0] === 'ShowWindow') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.character.delete('delete', 'character', clicked.split('_')[1]);
-          return false;
-        } else if (clicked.split('_')[0] === 'Main') {
-          return true;
-        } else if (clicked === 'Confirm') {
+        if (clicked === 'Confirm') {
           return true;
         } else if (clicked === 'Decline') {
           scarecrow.window.toggle.background();
           scarecrow.window.close.popup();
           return false;
         }
-        return false;
       }
     },
     event: {
       add: function() {
-        if (clicked === 'ShowWindow') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.event.add('add', 'event');
-        } else if (clicked === 'Confirm') {
-          scarecrow.validate.highlight.event.add();
+        if (clicked === 'Confirm') {
+          //scarecrow.validate.highlight.event.add();
           if ($('#frmDate').val() === '' || $('#frmInstance option:selected').text() === '') {
             return false;
           } else {
@@ -286,16 +183,12 @@ var scarecrow = {
           scarecrow.window.close.popup();
           return false;
         }
-        return false;
       }
     },
     item: {
       add: function() {
         console.log(clicked)
-        if (clicked === 'ShowSearchBar') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.item.add()
-        } else if (clicked.split('_')[0] === 'Add') {
+        if (clicked.split('_')[0] === 'Add') {
           return true;
         } else if (clicked === 'Decline') {
           scarecrow.window.toggle.background();
@@ -330,13 +223,8 @@ var scarecrow = {
       }
     },
     user: {
-      delete: function() {
-        console.log(clicked);
-        if (clicked === 'ShowWindow') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.user.delete($('#txtUsername').text(), 'delete', 'user');
-          return false;
-        } else if (clicked === 'Confirm') {
+      delete: function() {  // --|--@ Complete
+        if (clicked === 'Confirm') {
           return true;
         } else if (clicked === 'Decline') {
           scarecrow.window.toggle.background();
@@ -344,99 +232,132 @@ var scarecrow = {
           return false;
         }
       },
-      update: function() {
-        if (clicked === 'ShowWindow') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.user.update($('#txtUsername').text(), $('#txtEmail').text(), $('#txtRank').text(), $('#txtRole').text(), 'update', 'general');
-          return false;
-        } else if (clicked === 'Confirm') {
-          $('#frmUsername').val() === '' ? $('#frmUsername').addClass('invalid') : $('#frmUsername').removeClass('invalid');
-          $('#frmUsername').val() === '' ? $('#frmUsernameError').html('Field required') : $('#frmUsernameError').html('');
-          $('#frmRank').text() === '' ? $('#frmRank').addClass('invalid') : $('#frmRank').removeClass('invalid');
-          $('#frmRank').text() === '' ? $('#frmRankError').html('Field required') : $('#frmRankError').html('');
-
-          if ($('#frmUsername').val() === '' || $('#frmRank').text() === '') {
-            return false;
-          } else {
-            return true;
-          }
-        } else if (clicked === 'Decline') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.close.popup();
-          return false;
-        }
-        return false;
-      },
-      userInfo: function() {
-        if (clicked === 'ShowWindow') {
-          scarecrow.window.toggle.background();
-          scarecrow.window.user.edit($('#txtUsername').text(), $('#txtEmail').text(), $('#txtTheme').text(), 'edit', 'userInfo');
-          return false;
-        } else if (clicked === 'Confirm') {
-          $('#frmUsername').val() === '' ? $('#frmUsername').addClass('invalid') : $('#frmUsername').removeClass('invalid');
-          $('#frmUsername').val() === '' ? $('#frmUsernameError').html('Field required') : $('#frmUsernameError').html('');
-          $('#frmTheme').text() === '' ? $('#frmTheme').addClass('invalid') : $('#frmTheme').removeClass('invalid');
-          $('#frmTheme').text() === '' ? $('#frmThemeError').html('Field required') : $('#frmThemeError').html('');;
-
-          if ($('#frmUsername').val() === '' || $('#frmTheme').text() === '') {
-            return false;
-          } else {
-            return true;
-          }
+      edit: function() {  // --|--@ Complete
+        if (clicked === 'Confirm') {
+          var frmComplete = true;
+          $('#frmUsername').val() === '' ? frmComplete = false : frmComplete = true;
+          return frmComplete;
         } else if (clicked === 'Decline') {
           scarecrow.window.toggle.background();
           scarecrow.window.close.popup();
           return false;
         }
       }
+    },
+    quickmenu: function() {  // --|--@ Complete
+      if (clicked === 'Back') {
+        return true;
+      } else if (clicked === 'Delete') {
+        scarecrow.window.toggle.background();
+        scarecrow.window.user.delete($('#txtUsername').text());
+        return false;
+      }
     }
   },
   window: {
     character: {
-      add: function(confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.add();"><div id="popupContainer" class="container-popup"></div></form>');
-        $('#popupContainer').append('<div class="container-headline">Add new character</div>'
-        + '<div class="container-body">'
-        + '<div class="col-90 is-inline margin-sides-5 align-top">'
-        + '<div>Character name</div>'
-        + '<div class="col-60 is-inline"><input id="frmCharName" type="text" name="cName" class="input-themed input-full" /></div><div id="frmCharNameError" class="text-error is-inline col-30 margin-sides-5"></div>'
+      add: function() {  // --|--@ Complete
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.add();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Add new character</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Name</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmCName" type="text" name="cName" class="input-full" autocomplete="off" /></div>'
         + '</div>'
-        + '<div class="col-90 is-inline margin-sides-5 align-top">'
-        + '<div>Character level</div>'
-        + '<div class="col-60 is-inline"><input id="frmCharLevel" type="text" name="cLevel" class="input-themed input-full" /></div><div id="frmCharLevelError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Level</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmCLevel" type="text" name="cLevel" class="input-full" autocomplete="off" /></div>'
         + '</div>'
-        + '<div class="col-90 is-inline margin-sides-5 align-top">'
-        + '<div>Class</div>'
-        + '<div class="col-60 is-inline"><select id="frmCharClass" name="cClass" class="select-themed input-full"></select></div><div id="frmCharClassError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Class</div>'
+        + '<div class="popupContainer-rowValue"><select id="frmCClass" name="cClass" class="input-full"></select></div>'
         + '</div>'
-        + '<div class="col-90 is-inline margin-sides-5 align-top">'
-        + '<div>Role</div>'
-        + '<div class="col-60 is-inline"><select id="frmCharRole" name="cRole" class="select-themed input-full"></select></div><div id="frmCharRoleError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Role</div>'
+        + '<div class="popupContainer-rowValue"><select id="frmCRole" name="cRole" class="input-full"></select></div>'
         + '</div>'
         + '</div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '<button id="btnConfirm" type="submit" name="add" value="character" class="popupContainer-button icon-accept"></button>'
         + '</div>'
-        );
-        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        $('.submit-button').click(function() {
+        + '</div></form>');
+
+        scarecrow.get.character.classes(initClasses);
+        function initClasses(classes) {
+          for (var i in classes) {
+            $('#frmCClass').append('<option>' + classes[i].name + '</option>')
+          }
+          initRoles();
+          //Change role dropdown if the Class-dropdown changes
+          $('#frmCClass').change(function() {
+            initRoles();
+          });
+          function initRoles() {
+            $('#frmCRole').html('');
+            for (var i in classes) {
+              if (classes[i].name === $('#frmCClass :selected').text()) {
+                classes[i].isDamage !== 0 ? $('#frmCRole').append('<option>Damage</option>') : '';
+                classes[i].isSupport !== 0 ? $('#frmCRole').append('<option>Support</option>') : '';
+                classes[i].isTank !== 0 ? $('#frmCRole').append('<option>Tank</option>') : '';
+              }
+            }
+          }
+        }
+
+        $('.popupContainer-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
-        scarecrow.get.character.classes();
-        $('.input-full').change(function() {
-          scarecrow.validate.highlight.character.add();
+
+        //$('.input-full').change(function() {
+        //  scarecrow.validate.highlight.character.add();
+        //});
+      },
+      delete: function(charID) { // --|--@ Complete
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.delete();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Delete character</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row">Are you sure you want to delete <font color="red">' + $('#txtCName_' + charID).html() + '</font>? All character data will be purged!</div>'
+        + '</div>'
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '<button id="btnConfirm" type="submit" name="delete" value="' + charID + '" class="popupContainer-button icon-accept"></button>'
+        + '</div>'
+        + '</div></form>');
+
+        $('.popupContainer-button').click(function() {
+          clicked = $(this).attr('id').split('btn')[1];
         });
       },
-      delete: function(confirmName, confirmValue, charID) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.delete();"><div id="popupContainer" class="container-popup"></div></form>');
-        $('#popupContainer').append('<div class="container-headline">Delete character</div>'
-        + '<div class="container-body">Are you sure you want to delete ' + $('#characterName_' + charID).html() + '? All character data will be purged!</div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
+      edit: function(admin, charID, main) { // --|--@ Complete
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.edit();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Edit character</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Name</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmCName" type="text" name="cName" class="input-full" value="' + $('#txtCName_' + charID).html() + '" autocomplete="off" /></div>'
         + '</div>'
-        );
-        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '_' + charID + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        $('.submit-button').click(function() {
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Level</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmCLevel" type="text" name="cLevel" class="input-full" value="' + $('#txtCLevel_' + charID).html() + '" autocomplete="off" /></div>'
+        + '</div>'
+        + '</div>'
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '<button id="btnConfirm" type="submit" name="editChar" value="' + charID + '" class="popupContainer-button icon-accept"></button>'
+        + '</div>'
+        + '</div></form>');
+
+        if (admin) {
+          $('.popupContainer-body').append('<div class="popupContainer-row"><div class="popupContainer-rowPrompt"></div><div class="popupContainer-rowValue"><select id="frmMain" name="cMain" class="input-full"></select></div></div>');
+          if (main == 1) {
+            $('#frmMain').append('<option value="1" selected>Main</option><option value="0">Alt</option>')
+          } else {
+            $('#frmMain').append('<option value="1">Main</option><option value="0" selected>Alt</option>')
+          }
+        }
+
+        $('.popupContainer-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
       }
@@ -447,72 +368,79 @@ var scarecrow = {
       }
     },
     item: {
-      add: function() {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.item.add();" autocomplete="off"><div id="popupContainer" class="container-popup align-center">'
-        + '<input id="txtItemSearch" type="text" name="item" class="input-themed col-80" placeholder="Type to search.." autocomplete="off" />'
-        + '<div id="itemList" class="itemList"></div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
-        + '<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '</div></div></form>');
+      add: function() { // --|--@ Complete
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.item.add();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Add to wishlist</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row"><input id="txtItemSearch" type="text" name="item" class="input-themed col-80" placeholder="Type to search.." autocomplete="off" /></div>'
+        + '</div>'
+        + '<div class="popupContainer-row"><div id="itemList" class="itemList"></div></div>'
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '</div>'
+        + '</div></form>');
 
-        $('.submit-button').click(function() {
+        $('.popupContainer-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
         //gets available instances and sends the callback to a callback-function
-        scarecrow.get.instance(getInstances)
+        scarecrow.get.instances(initInstances)
         var searchTimer;
         $('#txtItemSearch').keyup(function() {
           clearTimeout(searchTimer)
           var query = this.value;
           searchTimer = setTimeout(function() {
             if (query.length > 4) {
-              scarecrow.get.items(query, getItems);
+              scarecrow.get.items(query, initItems);
             }
           }, 300);
         });
         var instances;
         //Handles the callback from the instances query
-        function getInstances(response) { instances = response; }
+        function initInstances(response) { instances = response; }
         //Handles the callback from the items query
-        function getItems(response) {
+        function initItems(response) {
           console.log(response)
           $('#itemList').html('');
           for (var slot in response) {
             for (var item in response[slot]) {
-              $('#itemList').append('<a href="https://classic.wowhead.com/item=' + response[slot][item].id + '/" target="_blank"><div class="itemBox clr-'+ response[slot][item].quality +'"><strong>'+response[slot][item].name+'</strong></div></a><button id="btnAdd_' + response[slot][item].id + '" type="submit" name="wlAdd" value="' + response[slot][item].id + '" class="itemListButton icon-add submit-button"></button>')
+              $('#itemList').append('<a href="https://classic.wowhead.com/item=' + response[slot][item].id + '/" target="_blank"><div class="itemContainer clr-'+ response[slot][item].quality +'"><strong>'+response[slot][item].name+'</strong></div></a><button id="btnAdd_' + response[slot][item].id + '" type="submit" name="wlAdd" value="' + response[slot][item].id + '" class="itemList-button icon-add"></button>')
             }
           }
-          var height = ($('#itemList').children('a').height()+10) + 'px';
-          $('#itemList').children('.itemListButton').each(function() {
-            $(this).css({'height': height, 'width': height});
-          });
-          $('.submit-button').click(function() {
+          $('.itemList-button').click(function() {
             clicked = $(this).attr('id').split('btn')[1];
           });
         }
       }
     },
     event: {
-      add: function(confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.event.add();"><div id="popupContainer" class="container-popup"></div></form>');
-        $('#popupContainer').append('<div class="container-headline">Add new event</div>'
-        + '<div class="container-body">'
-        + '<div class="col-90 is-inline margin-sides-5 align-top">'
-        + '<div>Time</div>'
-        + '<div class="col-70 is-inline"><input id="frmDate" type="text" name="date" class="input-themed input-full" /></div><div id="frmDateError" class="text-error is-inline col-30 margin-sides-5"></div>'
+      add: function() {
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.event.add();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Add new event</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Time</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmDate" type="text" name="date" class="input-full" autocomplete="off" /></div>'
         + '</div>'
-        + '<div class="col-90 is-inline margin-sides-5 align-top">'
-        + '<div>Instance</div>'
-        + '<div class="col-70 is-inline"><select id="frmInstance" name="instance" class="select-themed input-full"></select></div><div id="frmInstanceError" class="text-error is-inline col-30 margin-sides-5"></div>'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Instance</div>'
+        + '<div class="popupContainer-rowValue"><select id="frmInstance" name="instance" class="input-full"></select></div>'
         + '</div>'
         + '</div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '<button id="btnConfirm" type="submit" name="add" value="event" class="popupContainer-button icon-accept"></button>'
         + '</div>'
-        );
-        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        scarecrow.get.instances();
-        $('.submit-button').click(function() {
+        + '</div></form>');
+
+        scarecrow.get.instances(initInstances);
+        function initInstances(instances) {
+          $('#frmInstance').html('<option selected></option>');
+          for (var i in instances) {
+            $('#frmInstance').append('<option value="' + instances[i].id + '">' + instances[i].name + '</option>')
+          }
+        }
+        $('.popupContainer-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
         $('#frmDate').datepicker({timepicker:'true', language:'en', dateFormat:'D M dd yyyy'});
@@ -525,74 +453,68 @@ var scarecrow = {
       }
     },
     user: {
-      delete: function(user, confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.delete();"><div id="popupContainer" class="container-popup"></div></form>');
-        $('#popupContainer').append('<div class="container-headline">Delete character</div>'
-        + '<div class="container-body">Are you sure you want to delete ' + user + '? All character data will be purged!</div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
+      delete: function(username) { // --|--@ Complete
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.character.delete();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Delete user</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row">Are you sure you want to delete <font color="red">' + username + '</font>? All user and character data will be purged!</div>'
         + '</div>'
-        );
-        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        $('.submit-button').click(function() {
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '<button id="btnConfirm" type="submit" name="delete" value="user" class="popupContainer-button icon-accept"></button>'
+        + '</div>'
+        + '</div></form>');
+
+        $('.popupContainer-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
       },
-      edit: function(userName, email, theme, confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.userInfo();"><div id="popupContainer" class="container-popup"></div></form>');
-        $('#popupContainer').append('<div class="container-headline">Edit user details</div>'
-        + '<div class="container-body">'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Username</div>'
-        + '<div class="is-inline col-90"><input id="frmUsername" type="text" name="username" class="input-themed col-90" placeholder="Username" value="' + userName + '" /></div><div id="frmUsernameError" class="text-error"></div>'
+      edit: function(admin, username, email, theme, rank, role) { // --|--@ Complete
+        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.edit();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+        + '<div class="popupContainer-headline">Edit general information</div>'
+        + '<div class="popupContainer-body">'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Username</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmUsername" type="text" name="username" class="input-full" value="' + username + '" autocomplete="off" /></div>'
         + '</div>'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Email</div>'
-        + '<div class="is-inline col-90"><input id="frmEmail" type="text" name="email" class="input-themed col-90" placeholder="Email" value="' + email + '" /></div><div id="frmEmailError" class="text-error"></div>'
-        + '</div>'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Theme</div>'
-        + '<div class="is-inline col-90"><select id="frmTheme" name="theme" class="select-themed input-full"></select></div><div id="frmThemeError" class="text-error"></div>'
+        + '<div class="popupContainer-row">'
+        + '<div class="popupContainer-rowPrompt">Email</div>'
+        + '<div class="popupContainer-rowValue"><input id="frmEmail" type="text" name="email" class="input-full" value="' + email + '" autocomplete="off" /></div>'
         + '</div>'
         + '</div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
+        + '<div class="popupContainer-row">'
+        + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button icon-decline"></button>'
+        + '<button id="btnConfirm" type="submit" name="editUser" value="general" class="popupContainer-button icon-accept"></button>'
         + '</div>'
-        );
-        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        scarecrow.get.themes(theme);
-        $('.submit-button').click(function() {
-          clicked = $(this).attr('id').split('btn')[1];
-        });
-      },
-      update: function(user, email, rank, role, confirmName, confirmValue) {
-        $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return scarecrow.validate.user.update();"><div id="popupContainer" class="container-popup"></div></form>');
-        $('#popupContainer').append('<div class="container-headline">Edit user details</div>'
-        + '<div class="container-body">'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Username</div>'
-        + '<input id="frmUsername" type="text" name="username" class="input-themed col-90" placeholder="Username" value="' + user + '" /><div id="frmUsernameError" class="text-error"></div>'
-        + '</div>'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Email</div>'
-        + '<input id="frmEmail" type="text" name="email" class="input-themed col-90" placeholder="Email" value="' + email + '" /><div id="frmEmailError" class="text-error"></div>'
-        + '</div>'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Rank</div>'
-        + '<div class="is-inline"><select id="frmRank" name="rank" class="select-themed input-full"></select></div><div id="frmRankError" class="text-error"></div>'
-        + '</div>'
-        + '<div class="col-40 is-inline margin-sides-5 align-top">'
-        + '<div>Role</div>'
-        + '<input id="frmRole" type="text" name="role" class="input-themed col-90" placeholder="Role" value="' + role + '" /><div id="frmRoleError" class="text-error"></div>'
-        + '</div>'
-        + '</div>'
-        + '<div id="frmPopupFooter" class="container-footer align-center">'
-        + '</div>'
-        );
-        $('#frmPopupFooter').append('<button id="btnDecline" type="submit" name="back" value="back" class="button-icon-medium icon-decline submit-button margin-sides-5"></button>'
-        + '<button id="btnConfirm" type="submit" name="' + confirmName + '" value="' + confirmValue + '" class="button-icon-medium icon-accept submit-button margin-sides-5"></button>');
-        scarecrow.get.ranks(rank);
-        $('.submit-button').click(function() {
+        + '</div></form>');
+
+        if (admin) {
+          $('.popupContainer-body').append('<div class="popupContainer-row"><div class="popupContainer-rowPrompt">Rank</div><div class="popupContainer-rowValue"><select id="frmRank" name="rank" class="input-full"></select></div></div><div class="popupContainer-row"><div class="popupContainer-rowPrompt">Role</div><div class="popupContainer-rowValue"><input id="frmRole" type="text" name="role" class="input-full" value="' + role + '" autocomplete="off" /></div></div>');
+          scarecrow.get.ranks(initRanks);
+          function initRanks(ranks) {
+              for (var i in ranks) {
+                if (ranks[i].name === rank) {
+                  $('#frmRank').append('<option value="' + ranks[i].id + '" selected>' + ranks[i].name + '</option>');
+                } else {
+                  $('#frmRank').append('<option value="' + ranks[i].id + '">' + ranks[i].name + '</option>');
+                }
+              }
+          }
+        } else {
+          $('.popupContainer-body').append('<div class="popupContainer-row"><div class="popupContainer-rowPrompt">Theme</div><div class="popupContainer-rowValue"><select id="frmTheme" name="theme" class="input-full"></select></div></div>');
+          scarecrow.get.themes(initThemes);
+          function initThemes(themes) {
+            for (var i in themes) {
+              if (themes[i].name.toLowerCase() === theme.toLowerCase()) {
+                $('#frmTheme').append('<option value="' + themes[i].name.toLowerCase() + '" selected>' + themes[i].name + '</option>')
+              } else {
+                $('#frmTheme').append('<option value="' + themes[i].name.toLowerCase() + '">' + themes[i].name + '</option>')
+              }
+            }
+          }
+        }
+
+        $('.popupContainer-button').click(function() {
           clicked = $(this).attr('id').split('btn')[1];
         });
       }

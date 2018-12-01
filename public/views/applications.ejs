@@ -15,6 +15,10 @@
       <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
     <%} else if (conf.theme === 'toxic') {%>
       <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%>
+      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%>
+      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
     <%}%>
     <% if (conf.device === 'phone') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
@@ -42,28 +46,25 @@
   <body>
     <section>
       <div class="container-page align-center is-scrollable">
-        <% for (var status in applications) {
-          var apps = 0;
-          for (var application in applications[status]) {
-            apps++;
-          }
-          %>
-          <div class="container-big align-center frame-themed background-themed">
-            <div class="col-90 is-inline align-left align-middle">
-              <div class="title is-inline col-100"><%=status%> applications (<%=apps%>)</div>
+        <% for (var status in applications) {%>
+          <div class="rolloutContainer">
+            <div class="rolloutContainerHead">
+              <div class="rolloutContainerHead-title"><%=status%> applications (<%=applications[status].length%>)</div>
+              <div class="rolloutContainerHead-buttonRow">
+                <button id="btnShow<%=status%>" type="button" name="expand" value="apps" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
+              </div>
             </div>
-            <div class="is-inline-flex align-middle">
-              <button type="button" name="expand" value="users" class="button-icon-medium icon-arrow-down submit-button is-clickable"></button>
+            <div id="rollout<%=status%>" class="rolloutContainerBody">
+              <div class="rolloutContainerBody-body">
+                <% for (var application in applications[status]) {%>
+                  <a href="/application/<%=applications[status][application].id%>">
+                    <div class="appContainer">
+                      <%=applications[status][application].name%> - Level <%=applications[status][application].level%> <%=applications[status][application].class%> (<%=applications[status][application].role%>)
+                    </div>
+                  </a>
+                <%}%>
+              </div>
             </div>
-          </div>
-          <div class="is-expandable">
-            <% for (var application in applications[status]) {%>
-              <a href="/application/<%=applications[status][application].id%>">
-                <div class="container-medium align-left frame-themed background-themed hover-highlighted">
-                  <%=applications[status][application].name%> - Level <%=applications[status][application].level%> <%=applications[status][application].class%> (<%=applications[status][application].role%>)
-                </div>
-              </a>
-            <%}%>
           </div>
         <%}%>
       </div>
@@ -74,6 +75,6 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/applications.js"></script>
   </foot>
 </html>

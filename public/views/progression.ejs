@@ -15,6 +15,10 @@
       <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
     <%} else if (conf.theme === 'toxic') {%>
       <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%>
+      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%>
+      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
     <%}%>
     <% if (conf.device === 'phone') {%>
       <link rel="stylesheet" href="/css/boti-mobile.css" />
@@ -52,27 +56,23 @@
             }
           }
           var instanceCompletion = defeatedBosses + '/' + totalBosses;%>
-          <div id="btnInstance<%=i.replace(/[\' ]/g, '')%>" class="container-big align-center frame-themed background-themed">
-            <div class="col-80 is-inline align-middle">
-              <% if(defeatedBosses === totalBosses) {%>
-                <div class="container-headline"><i>- Cleared -</i></div>
-              <%}%>
-              <div>
-                <div class="title is-inline col-70"><%=instance%></div>
-                <div class="subtitle is-inline col-30"><%=instanceCompletion%></div>
+          <div class="rolloutContainer">
+            <div class="rolloutContainerHead">
+              <div class="rolloutContainerHead-title"><%=instance%> (<%=instanceCompletion%>)</div>
+              <div class="rolloutContainerHead-buttonRow">
+                <button id="btnShow<%=instance.replace(/[\' ]/g, '')%>" type="button" name="expand" value="apps" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
               </div>
             </div>
-            <div class="is-inline-flex align-middle">
-              <button type="button" name="expand" value="instance" class="button-icon-medium icon-arrow-down submit-button is-clickable"></button>
-            </div>
-          </div>
-          <div class="is-expandable">
-            <% for (var boss in progression[instance]) {%>
-              <div class="container-medium align-left frame-themed background-themed hover-highlighted">
-                <div class="col-70 is-inline"><%=progression[instance][boss].name%></div>
-                <div class="col-30 is-inline"><%=progression[instance][boss].status%></div>
+            <div id="rollout<%=instance.replace(/[\' ]/g, '')%>" class="rolloutContainerBody">
+              <div class="rolloutContainerBody-body">
+                <% for (var boss in progression[instance]) {%>
+                  <div class="instanceContainer">
+                    <div class="col-70 is-inline"><%=progression[instance][boss].name%></div>
+                    <div class="col-30 is-inline"><%=progression[instance][boss].status%></div>
+                  </div>
+                <%}%>
               </div>
-            <%}%>
+            </div>
           </div>
         <%}%>
       </div>
@@ -83,6 +83,6 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/progression.js"></script>
   </foot>
 </html>
