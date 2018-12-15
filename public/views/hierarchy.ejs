@@ -28,16 +28,16 @@
     <link rel="stylesheet" href="/css/boti-extras.css" />
     <nav class="pos-absolute">
       <menu class="menu-themed">
-        <a href="<%=scMenu['Home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
+        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
         <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
         <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
         <div class="menu-button-row show-desktop">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
-              if (i == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=i%></div></div></a>
+              if (scMenu[i].text == conf.page) {%>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=scMenu[i].text%></div></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=i%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
           <%}}}%>
         </div>
       </menu>

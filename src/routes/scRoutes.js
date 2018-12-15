@@ -276,6 +276,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
+          debug(scMenu)
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('signIn', { scMenu, conf });
         }());
@@ -303,6 +304,12 @@ function router() {
         });
       }())});
 
+  pagerouter.route('/signOut')                        // => sign out-function
+    .get((req, res) => {
+      req.logout();
+      res.redirect('/');
+    });
+
   pagerouter.route('/api/get')                        // => API
     .post((req, res) => {
       (async function dbQuery() {
@@ -321,19 +328,20 @@ function router() {
 
 function getPages(rank, success) {
   (async function dbQuery() {
-    const result = await sql.query('SELECT name, path, menu FROM tblPages WHERE rank_id <= ?', [rank]);
+    const result = await sql.query('SELECT id, name, path, menu FROM tblPages WHERE rank_id <= ?', [rank]);
     let scMenu = {};
     for (var i in result) {
       let obj = {};
       obj['path'] = result[i].path;
       obj['menu'] = result[i].menu;
-      scMenu[result[i].name] = obj;
+      obj['text'] = result[i].name;
+      scMenu[result[i].id] = obj;
     }
     if (rank > 0) {
-      scMenu['Sign in'].menu = 0;
+      scMenu['signin'].menu = 0;
     }
     if (rank > 1) {
-      scMenu['Apply'].menu = 0;
+      scMenu['apply'].menu = 0;
     }
     success(scMenu);
   }());
