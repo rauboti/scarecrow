@@ -1,0 +1,89 @@
+/*  ------------------------------------------------------------ { Root variables }
+*/
+:root {
+  /* Colours */
+  --clrPrimaryBackground: 0, 0, 0;
+  --clrPrimaryBorder: 255, 255, 255;
+  --clrPrimaryFont: 255, 255, 255;
+  --clrThemeBackground: 255, 255, 255;
+  --clrThemeBorder: 255, 255, 255;
+  --clrThemeFocus: 81, 203, 238;
+
+  /* Sizes */
+  --radBorder: 5px;
+}
+
+/*  ------------------------------------------------------------ { Elements }
+*/
+button, div, html, input, select, textarea {
+  color: rgba(var(--clrPrimaryFont), 1);
+}
+button, input, select, textarea {
+  border: none;
+  background: none;
+  outline: none;
+}
+button, input, select {
+  -webkit-transition: all .30s ease-in-out;
+  -moz-transition: all .30s ease-in-out;
+  -ms-transition: all .30s ease-in-out;
+  -o-transition: all .30s ease-in-out;
+  transition: all .30s ease-in-out;
+}
+button {
+  background: -moz-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0)  50%, rgba(var(--clrThemeBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrThemeBorder), .15);
+}
+button.iconButton {
+  border: none;
+}
+button:focus, input:focus, select:focus, textarea:focus {
+  box-shadow: 0 0 5px rgba(var(--clrThemeFocus), 1);
+  border: 1px solid rgba(var(--clrThemeFocus), 1);
+}
+input, select, textarea {
+  background: rgba(var(--clrThemeBackground), .05);
+  border: 1px solid rgba(var(--clrThemeBorder), .3);
+  border-radius: var(--radBorder);
+}
+menu {
+  background: rgba(var(--clrPrimaryBackground), .9);
+  border: 1px solid rgba(var(--clrThemeBorder), .3);
+  border-top: none;
+}
+option {
+  background-color: rgba(var(--clrPrimaryBackground),1);
+}
+
+/*  ------------------------------------------------------------ { Menu }
+*/
+.menuButton.selected {
+  border: 1px solid rgba(var(--clrThemeFocus), 1);
+  box-shadow: 0 0 5px rgba(var(--clrThemeFocus), 1);
+  color: rgba(var(--clrThemeFocus), 1);
+}
+
+/*  ------------------------------------------------------------ { Containers }
+*/
+.appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .eventContainer, .formButtonRow, .formContainer, .loginContainer, .officerContainer, .popupContainer {
+  background: rgba(var(--clrPrimaryBackground), .9);
+}
+.appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .eventContainer, .eventContainer-roleContainer, .formButtonRow, .formContainer, .itemContainer, .loginContainer, .officerContainer, .popupContainer {
+  border: 1px solid rgba(var(--clrThemeBorder), .3);
+  border-radius: var(--radBorder);
+}
+.appContainer, .charContainer, .itemContainer, .bossContainer, .userContainer {
+  background: -moz-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0)  50%, rgba(var(--clrThemeBackground), .15)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 1px solid rgba(var(--clrThemeBorder), .15);
+  border-radius: var(--radBorder);
+}
+.eventContainer-comment-text {
+  background: rgba(var(--clrThemeBackground), .05);
+}
+.eventContainer-roleContainer-title, .popupContainer-headline {
+  background: rgba(var(--clrThemeBackground), 0.3);
+}

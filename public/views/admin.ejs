@@ -7,75 +7,51 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-extras.css" />
     <link rel="stylesheet" href="/css/datepicker.min.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <div class="rolloutContainer">
-          <div class="rolloutContainerHead">
-            <div class="rolloutContainerHead-title">Add new Event</div>
-            <div class="rolloutContainerHead-buttonRow">
-              <button id="btnAddEvent" type="button" name="add" value="event" class="rolloutContainerHead-button icon-add"></button>
-            </div>
-          </div>
-        </div>
-
-        <% if (conf.rank > 7) {%>
-        <div class="rolloutContainer">
-          <div class="rolloutContainerHead">
-            <div class="rolloutContainerHead-title">Users</div>
-            <div class="rolloutContainerHead-buttonRow">
-              <button id="btnShowUsers" type="button" name="expand" value="users" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
-            </div>
-          </div>
-          <div id="rolloutUsers" class="rolloutContainerBody">
-            <div class="rolloutContainerBody-body">
-              <div class="rolloutContainerBody-row">
-                <input id="txtUserSearch" type="text" name="user" class="col-80" placeholder="Type to search.." autocomplete="off" />
-              </div>
-              <div id="userList" class="userList">
-              </div>
-            </div>
-          </div>
-        </div>
-        <%}%>
+    <section class="pageContainer">
+      <div class="formContainer">
+        <button id="btnAddEvent" type="button" class="action-button">Add event</button>
+        <% if (conf.rank > 7) {%><button id="btnFindUsers" type="button" class="action-button">Find user</button><%}%>
       </div>
+
+      <% if (conf.rank > 7) {%>
+      <div id="frmFindUsers" class="formContainer">
+        <div class="formContainer-fullColumn">
+          <input id="txtUserSearch" type="text" name="user" class="col-80" placeholder="Type to search.." autocomplete="off" />
+        </div>
+        <div id="userList" class="userList">
+        </div>
+      </div>
+      <%}%>
     </section>
   </body>
   <foot>
@@ -84,7 +60,7 @@
     <script src="/js/datepicker.min.js"></script>
     <script src="/js/datepicker.en.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
     <script src="/js/admin.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

@@ -1,8 +1,7 @@
-deviceAdjustment();
 var clicked;
 $(document).ready(function() {
-  $('.rolloutContainerBody').hide();
-  $('.rolloutController').click(function() {
+  $('.appStatusContainerBody').hide();
+  $('.appStatusContainerHead-button').click(function() {
     clicked = $(this).attr('id').split('Show')[1]
     if ($('#rollout' + clicked).hasClass('expanded')) {
       $('#btnShow' + clicked).addClass('icon-arrow-down').removeClass('icon-arrow-up');
@@ -16,7 +15,7 @@ $(document).ready(function() {
         .addClass('expanded');
     }
   });
-  $('.icon-menu').click(function() {
-    $('.menu-button-row').slideToggle(500);
+  $('.menuButtonRow-icon').click(function() {
+    $('.menuButtonRow').slideToggle(500);
   });
 });

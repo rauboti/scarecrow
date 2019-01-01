@@ -1,0 +1,593 @@
+/*  ------------------------------------------------------------ { Root variables }
+*/
+:root {
+  /* Sizes */
+  --eventContainerPadding: 0.3em;
+}
+
+/*  ------------------------------------------------------------ { Elements }
+*/
+a, body, div, head, html, img, menu, nav, section {
+  margin: 0;
+  padding: 0;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+a:focus {
+  border-color:transparent;
+  box-shadow: none;
+  outline: none;
+}
+body {
+  margin-top: 10vh;
+}
+body, html {
+  overflow-x: hidden!important;
+  width: auto!important;
+}
+button {
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.3em;
+  margin: 5px;
+  padding: 5px;
+}
+html {
+  background: url('/img/sc.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Rajdhani', sans-serif;
+  height: 100vh;
+}
+img {
+  background-size: cover;
+  height: 30vw;
+  width: 30vw;
+}
+input {
+  padding: 10px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  margin: 10px;
+}
+menu {
+  font-size: 2rem;
+}
+nav {
+  margin-top: 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+}
+option, select, textarea {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  margin: 10px;
+}
+select {
+  padding: 10px;
+  font-size: 1.2rem;
+}
+textarea {
+  font-size: 1.2rem;
+  margin: 10px;
+  min-height: 10vh;
+  padding: 10px;
+  resize: none;
+}
+
+/*  ------------------------------------------------------------ { Icons }
+*/
+.icon-add, .icon-arrow-down, .icon-arrow-up, .icon-delete, .icon-edit, .icon-logo, .icon-menu {
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  display: inline-flex;
+}
+.icon-add {
+  background: url('/ico/add.svg')
+}
+.icon-arrow-down {
+  background: url('/ico/arrow-down.svg')
+}
+.icon-arrow-up {
+  background: url('/ico/arrow-up.svg')
+}
+.icon-delete {
+  background: url('/ico/delete.svg');
+}
+.icon-edit {
+  background: url('/ico/edit.svg');
+}
+.icon-logo {
+  background: url('/ico/logo.svg');
+}
+.icon-menu {
+  background: url('/ico/menu.svg');
+}
+
+/*  ------------------------------------------------------------ { Menu }
+*/
+.menuButton {
+  border: 1px solid rgba(0, 0, 0, 0);
+  display: block;
+  padding: 5px;
+  margin: 5px;
+}
+.menuButtonRow {
+  width: 100%;
+}
+.menuButtonRow-currentPage {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  vertical-align: middle;
+  width: 50%;
+}
+.menuButtonRow-icon {
+  height: 1.3em;
+  display: inline-flex;
+  vertical-align: middle;
+  width: 1.3em;
+}
+
+/*  ------------------------------------------------------------ { Forms }
+*/
+.formButtonRow, .formContainer {
+  margin-bottom: 10px;
+  padding: 5px;
+  text-align: center;
+}
+.formContainer-buttonRow  {
+  display: block;
+  margin: 1.25%;
+  text-align: center;
+}
+.formContainer-fullColumn, .formContainer-halfColumn {
+  margin: 1.25%;
+  text-align: left;
+}
+.formContainer-fullColumn input, .formContainer-fullColumn select, .formContainer-fullColumn textarea, .formContainer-halfColumn input, .formContainer-halfColumn select, .formContainer-halfColumn textarea {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-header {
+  font-style: italic;
+  color: grey;
+  margin: 1.5%;
+  font-size: 0.8em;
+  vertical-align: bottom;
+}
+.formContainer-value {
+  margin: 1.5%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  width: 97%;
+  vertical-align: bottom;
+}
+
+/*  ------------------------------------------------------------ { Characters }
+*/
+.charContainer {
+  border-radius: 5px;
+  display: inline-block;
+  margin: 0.1em;
+  padding: 0.2em;
+  text-align: left;
+  width: 70%;
+}
+.charContainer-button {
+  display: inline-block;
+  height: 1.5em;
+  margin: -0.1em;
+  vertical-align: middle;
+  width: 1.5em;
+}
+.charContainer-details {
+  display: inline-block;
+  vertical-align: middle;
+  width: 65%;
+}
+.charContainer-role {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10%;
+}
+.clrDeath-Knight {
+  color: rgba(196, 30, 59, 1);
+}
+.clrDemon-Hunter {
+  color: rgba(163, 48, 201, 1);
+}
+.clrDruid {
+  color: rgba(255, 125, 10, 1);
+}
+.clrHunter {
+  color: rgba(171, 212, 115, 1);
+}
+.clrMage {
+  color: rgba(105, 204, 240, 1);
+}
+.clrMonk {
+  color: rgba(0, 255, 150, 1);
+}
+.clrPaladin {
+  color: rgba(245, 140, 186, 1);
+}
+.clrPriest {
+  color: rgba(255, 255, 255, 1);
+}
+.clrRogue {
+  color: rgba(255, 245, 105, 1);
+}
+.clrShaman {
+  color: rgba(0, 112, 222, 1);
+}
+.clrWarlock {
+  color: rgba(148, 130, 201, 1);
+}
+.clrWarrior {
+  color: rgba(199, 156, 110, 1);
+}
+.roleDamage, .roleSupport, .roleTank {
+  background-repeat: no-repeat;
+  background-position:center;
+  width: 25px;
+  height: 20px;
+}
+.roleDamage {
+  background-image: url('/ico/icoDamage.png');
+}
+.roleTank {
+  background-image: url('/ico/icoTank.png');
+}
+.roleSupport {
+  background-image: url('/ico/icoSupport.png');
+}
+.charLevel, .charClass, .charRole {
+  display: inline-block;
+  vertical-align:middle;
+  font-size: 0.7em;
+}
+
+/*  ------------------------------------------------------------ { Containers }
+*/
+section.pageContainer {
+  font-size: 1rem;
+  height: 80vh;
+  margin: 0;
+  max-height: 80vh;
+  overflow: scroll;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  text-align: center;
+}
+section.pageContainer::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+/*  ------------------------------------------------------------ { Applications }
+*/
+.appBody, .appButtonRow, .appContainer {
+  margin: 5px;
+  padding: 5px;
+}
+.appBody, .appContainer {
+  text-align: left;
+}
+.appHeadline {
+  font-size: 1.2rem;
+  padding: 2px;
+}
+.applyContainer {
+  text-align: left;
+  padding: 2.5%;
+}
+.applyContainer-fullColumn, .applyContainer-halfColumn {
+  margin: 1.25%;
+  text-align: left;
+}
+.applyContainer-fullColumn input, .applyContainer-fullColumn select, .applyContainer-fullColumn textarea, .applyContainer-halfColumn input, .applyContainer-halfColumn select, .applyContainer-halfColumn textarea {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.appStatusContainer {
+  margin: 10px;
+}
+.appStatusContainerBody {
+  margin: 5px;
+  overflow: hidden;
+  padding: 5px;
+  text-align: center;
+}
+.appStatusContainerHead {
+  padding: 2px;
+  text-align: left;
+}
+.appStatusContainerHead-button {
+  height: 2rem;
+  width: 2rem;
+}
+.appStatusContainerHead-buttonRow {
+  display: inline-block;
+  vertical-align: middle;
+}
+.appStatusContainerHead-title {
+  display: inline-block;
+  font-size: 1.4em;
+  text-align: left;
+  vertical-align: middle;
+  width: 70%;
+}
+
+/*  ------------------------------------------------------------ { Bosses }
+*/
+.bossContainer {
+  margin: 5px;
+  padding: 5px;
+  text-align: left;
+}
+.bossContainer-name {
+  display: inline-block;
+  width: 70%;
+}
+.bossContainer-status {
+  display: inline-block;
+  width: 25%;
+}
+
+/*  ------------------------------------------------------------ { Events }
+*/
+.eventContainer {
+  margin: 0.1em;
+  padding: var(--eventContainerPadding);
+}
+.eventContainer-attendant {
+  display: inline-block;
+  width: 45%;
+}
+.eventContainer-comment {
+  margin: 5px;
+  text-align: left;
+}
+.eventContainer-comment-player {
+
+}
+.eventContainer-comment-status {
+  color: grey;
+  font-style: italic;
+}
+.eventContainer-comment-text {
+  padding: 2px;
+}
+.eventContainer-roleContainer {
+  margin: 0.1em;
+  padding: var(--eventContainerPadding);
+  text-align: left;
+}
+.eventContainer-roleContainer-title {
+  border: none;
+  border-bottom-right-radius: calc(0.8 * var(--radBorder));
+  border-top-left-radius: calc(0.8 * var(--radBorder));
+  margin-left: calc(-1 * var(--eventContainerPadding));
+  margin-right: calc(-1 * var(--eventContainerPadding));
+  margin-top: calc(-1 * var(--eventContainerPadding));
+  text-align: center;
+  width: 70%;
+}
+.eventContainer-subtitle {
+  display: inline-block;
+  font-size: 1.2rem;
+  text-align: left;
+}
+.eventContainer-title {
+  display: inline-block;
+  font-size: 1.2rem;
+  text-align: left;
+  width: 65%;
+}
+
+/*  ------------------------------------------------------------ { Items }
+*/
+.clr-artifact {
+  color: rgba(230, 204, 128, 1);
+}
+.clr-legendary {
+  color: rgba(255, 128, 0, 1);
+}
+.clr-epic {
+  color: rgba(163, 53, 238, 1);
+}
+.clr-rare {
+  color: rgba(0, 112, 221, 1);
+}
+.clr-uncommon {
+  color: rgba(30, 255, 0, 1);
+}
+.clr-common {
+  color: rgba(255, 255, 255, 1);
+}
+.clr-poor {
+  color: rgba(157, 157, 157, 1);
+}
+.itemContainer {
+  display: inline-block;
+  margin: 2px;
+  padding: 5px;
+  text-align: left;
+  vertical-align: middle;
+  width: 70%;
+}
+.itemSlotContainer {
+  text-align: center;
+}
+.itemSlotContainer-headline {
+  border-bottom: 1px solid grey;
+  color: grey;
+  font-size: 1.1em;
+  margin: 5px;
+  text-align: left;
+}
+.itemContainer-button {
+  display: inline-block;
+  height: 1.5em;
+  margin: -5px;
+  vertical-align: middle;
+  width: 1.5em;
+}
+.itemList {
+  display: inline-block;
+  max-height: 20vh;
+  overflow-y: scroll;
+  width: 90%;
+}
+.itemList::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+/*  ------------------------------------------------------------ { Containers: Login }
+*/
+.loginContainer {
+  display: inline-block;
+  margin: 0.1em;
+  padding: 0.3em;
+  text-align: center;
+  width: 90vw;
+}
+.loginContainer-image {
+  background: rgba(255, 255, 255, .8);
+  border-radius: 50vh;
+  margin: 20px;
+  opacity: 0.5;
+}
+.loginContainer-input {
+  width: 80%
+}
+
+/*  ------------------------------------------------------------ { Containers: Officers }
+*/
+.officerContainer {
+  font-size: 1.1em;
+  padding: 5px;
+  margin: 5px;
+  text-align: left;
+}
+.officerContainer-player, .officerContainer-rank, .officerContainer-role {
+  display: inline-block;
+}
+.officerContainer-player, .officerContainer-rank {
+  width: 30%;
+}
+.officerList {
+  margin: 10px;
+  text-align: center;
+}
+
+/*  ------------------------------------------------------------ { Containers: Popup }
+*/
+.popupContainer {
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 20vh;
+  width: 90vw;
+}
+.popupContainer {
+  padding: 0;
+}
+.popupContainer-headline {
+  padding: 5px;
+  text-align: middle;
+}
+.popupContainer-fullColumn {
+  display: block;
+  text-align: center;
+}
+.popupContainer-halfColumn {
+  display: block;
+  text-align: center;
+}
+.popupContainer-row input {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.popupContainer-rowPrompt {
+  display: inline-block;
+  margin: 1%;
+  text-align: right;
+  width: 15%;
+}
+.popupContainer-rowValue {
+  display: inline-block;
+  margin: 1%;
+  width: 50%;
+}
+.popupContainer-button {
+  margin: 5px
+}
+
+/*  ------------------------------------------------------------ { Users }
+*/
+.userContainer {
+  text-align: left;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  display: inline-block;
+  width: 80%;
+  vertical-align: middle;
+}
+.userList {
+  text-align: center;
+  max-height: 20vh;
+  overflow-y: scroll;
+}
+.userList::-webkit-scrollbar {
+  width: 0 !important;
+}
+.userContainer-user {
+  vertical-align: middle;
+  display: inline-block;
+  width: 30%;
+}
+.userContainer-guildPosition {
+  vertical-align: middle;
+  display: inline-block;
+  width: 40%;
+}
+.userContainer-rank {
+  display: inline-block;
+  margin: 1%;
+}
+.userContainer-role {
+  display: inline-block;
+  font-style: italic;
+  color: grey;
+  margin: 1%;
+}
+
+/*  ------------------------------------------------------------ { Misc }
+*/
+.errorText {
+  color: red;
+  text-align: left;
+}
+.inactive {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.invalidInput {
+  background-color: rgba(255, 0, 0, 0.05);
+  border: 1px solid rgba(255, 0, 0, 0.7);
+}

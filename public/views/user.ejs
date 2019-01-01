@@ -7,95 +7,71 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-classes.css" />
-    <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <div class="rolloutContainer">
-          <div class="rolloutContainerHead">
-            <div class="rolloutContainerHead-title">General information</div>
-            <div class="rolloutContainerHead-buttonRow">
-              <button id="btnShowGeneral" type="button" name="expand" value="users" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
-              <button id="btnEditGeneral" type="submit" name="edit" value="userInfo" class="rolloutContainerHead-button icon-edit"></button>
-            </div>
-          </div>
-          <div id="rolloutGeneral" class="rolloutContainerBody">
-            <div class="rolloutContainerBody-body">
-              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">User:</div><div id="txtUsername" class="rolloutContainerBody-itemValue"><%=user['details'].name%></div></div>
-              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">E-mail:</div><div id="txtEmail" class="rolloutContainerBody-itemValue"><%=user['details'].email%></div></div>
-              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">Rank:</div><div id="txtRank" class="rolloutContainerBody-itemValue"><%=user['details'].rankName%></div></div>
-              <div class="rolloutContainerBody-halfColumn"><div class="rolloutContainerBody-itemHead">Role:</div><div id="txtRole" class="rolloutContainerBody-itemValue"><%=user['details'].role%></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="rolloutContainer">
-          <div class="rolloutContainerHead">
-            <div class="rolloutContainerHead-title">Characters</div>
-            <div class="rolloutContainerHead-buttonRow">
-              <button id="btnShowCharacters" type="button" name="expand" value="characters" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
-              <% if (user['characters'].length < 3) {%>
-              <button id="btnAddCharacter" type="submit" name="add" value="character" class="rolloutContainerHead-button icon-add"></button>
-              <%}%>
-            </div>
-          </div>
-          <div id="rolloutCharacters" class="rolloutContainerBody">
-            <div class="rolloutContainerBody-body">
-              <%for (var i in user['characters']) {%>
-              <div class="charContainer">
-                <div class="is-inline align-middle col-10 role<%=user['characters'][i].role%>"></div>
-                <div class="charContainer-details">
-                  <div id="txtCName_<%=user['characters'][i].id%>" class="is-inline align-middle clr<%=user['characters'][i].class%>"><%=user['characters'][i].name%></div>
-                  <div class="is-inline align-middle">(<span id="txtCLevel_<%=user['characters'][i].id%>"><%=user['characters'][i].level%></span> <span><%=user['characters'][i].class%></span>)</div>
-                </div>
-                <button id="delete_<%=user['characters'][i].id%>" type="submit" value="<%=user['characters'][i].id%>" class="charContainer-button icon-delete"></button>
-                <button id="edit_<%=user['characters'][i].id%>" main="<%=user['characters'][i].main%>" type="submit" value="<%=user['characters'][i].id%>" class="charContainer-button icon-edit"></button>
-              </div>
-              <%}%>
-            </div>
+    <section class="pageContainer">
+      <div class="formContainer">
+        <div class="formContainer-halfColumn"><div class="formContainer-header">User:</div><div id="txtUsername" class="formContainer-value"><%=user['details'].name%></div></div>
+        <% if (user['details'].email !== null && user['details'].email !== '' && user['details'].email !== undefined) {%>
+        <div class="formContainer-halfColumn"><div class="formContainer-header">E-mail:</div><div id="txtEmail" class="formContainer-value"><%=user['details'].email%></div></div>
+        <%}%>
+        <div class="formContainer-halfColumn"><div class="formContainer-header">Rank:</div><div id="txtRank" class="formContainer-value"><%=user['details'].rankName%></div></div>
+        <% if (user['details'].role !== null && user['details'].role !== '' && user['details'].role !== undefined) {%>
+        <div class="formContainer-halfColumn"><div class="formContainer-header">Role:</div><div id="txtRole" class="formContainer-value"><%=user['details'].role%></div></div>
+        <%}%>
+      </div>
+      <div class="formButtonRow">
+        <form id="frmUserActions" name="frmUserActions" method="post" onsubmit="return validateQuickmenu();">
+          <button id="btnBack" type="submit" name="back" value="back" class="action-button">< Back</button>
+          <button id="btnEditUser" type="submit" name="edit" value="userInfo" class="action-button formController">Edit</button>
+          <button id="btnShowCharacter" type="button" name="expand" value="characters" class="action-button rolloutController">Characters</button>
+          <button id="btnDelUser" type="submit" name="delete" value="user" class="action-button formController"><font color="red">Delete user</font></button>
+        </form>
+      </div>
+      <div id="characterContainer" class="formContainer rolloutContainer">
+        <%for (var i in user['characters']) {%>
+        <div class="charContainer">
+          <div class="charContainer-role role<%=user['characters'][i].role%>"></div>
+          <div class="charContainer-details">
+            <span id="txtCName_<%=user['characters'][i].id%>" class="clr<%=user['characters'][i].class%>"><%=user['characters'][i].name%></span>
+            <span>(<span id="txtCLevel_<%=user['characters'][i].id%>"><%=user['characters'][i].level%></span> <span><%=user['characters'][i].class%></span>)</span>
           </div>
         </div>
-        <div class="quickMenuContainer">
-          <form id="frmUserActions" name="frmUserActions" method="post" onsubmit="return scarecrow.validate.quickmenu();">
-            <button id="btnBack" type="submit" name="back" value="back" class="quickMenu-button icon-back"></button>
-            <button id="btnDelete" type="submit" name="delete" value="user" class="quickMenu-button icon-delete"></button>
-          </form>
-        </div>
+        <button id="edit_<%=user['characters'][i].id%>" main="<%=user['characters'][i].main%>" type="submit" value="<%=user['characters'][i].id%>" class="charContainer-button iconButton icon-edit"></button>
+        <button id="delete_<%=user['characters'][i].id%>" type="submit" value="<%=user['characters'][i].id%>" class="charContainer-button iconButton icon-delete"></button>
+        <%}%>
+        <% if (user['characters'].length < 3 ) {%>
+          <div>
+            <button id="btnAddChar" type="submit" name="add" value="character" class="action-button formController">Add</button>
+          </div>
+        <%}%>
       </div>
     </section>
   </body>
@@ -103,7 +79,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
     <script src="/js/user.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

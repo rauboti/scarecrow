@@ -7,124 +7,105 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <form name="frmSignIn" action="<%=scMenu['Apply'].path%>" method="post" onsubmit="return scarecrow.validate.application();">
-          <div class="container-medium frame-themed background-themed">
-            <div class="col-50 is-inline">
-              <div class="align-left">Character name</div>
-              <div><input id="frmCharName" type="text" name="cName" class="input-themed col-80" /></div>
-              <div id="frmCharNameError" class="text-error align-left"></div>
-            </div>
-            <div class="col-50 is-inline">
-              <div class="align-left">Character level</div>
-              <div><input id="frmLevel" type="text" name="cLevel" class="input-themed col-80" /></div>
-              <div id="frmLevelError" class="text-error align-left"></div>
-            </div>
+    <section class="pageContainer">
+      <form name="frmSignIn" action="<%=scMenu['apply'].path%>" method="post" onsubmit="return formValidation();" autocomplete="off">
+        <div class="applyContainer">
+          <div class="applyContainer-halfColumn">
+            <span>Character name</span>
+            <div><input id="frmCharName" type="text" name="cName" class="apply-input" autocomplete="off"/></div>
+            <div id="frmCharNameError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="col-50 is-inline">
-              <div class="align-left">Class</div>
-              <div><select id="frmCharClass" name="cClass" class="select-themed col-90"></select></div>
-              <div id="frmCharClassError" class="text-error align-left"></div>
-            </div>
-            <div class="col-50 is-inline">
-              <div class="align-left">Role</div>
-              <div><select id="frmCharRole" name="cRole" class="select-themed col-90"></select></div>
-              <div id="frmCharRoleError" class="text-error align-left"></div>
-            </div>
+          <div class="applyContainer-halfColumn">
+            <span>Character level</span>
+            <div><input id="frmLevel" type="text" name="cLevel" class="apply-input" /></div>
+            <div id="frmLevelError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="col-50 is-inline">
-              <div class="align-left">Link to your spec</div>
-              <div><input id="frmSpecLink" type="text" name="specLink" class="input-themed col-80" /></div>
-              <div id="frmSpecLinkError" class="text-error align-left"></div>
-            </div>
-            <div class="col-50 is-inline">
-              <div class="align-left">Armory profile</div>
-              <div><input id="frmArmoryLink" type="text" name="armoryLink" class="input-themed col-80" /></div>
-              <div id="frmArmoryLinkError" class="text-error align-left"></div>
-            </div>
+          <div class="applyContainer-halfColumn">
+            <span>Class</span>
+            <div><select id="frmCharClass" name="cClass" class="apply-input"></select></div>
+            <div id="frmCharClassError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="align-left">How many of our raids will you be able to attend each week?</div>
-            <div><input id="frmNumberOfRaids" type="text" name="numberRaids" class="input-themed col-90" /></div>
-            <div id="frmNumberOfRaidsError" class="text-error align-left"></div>
+          <div class="applyContainer-halfColumn">
+            <span>Role</span>
+            <div><select id="frmCharRole" name="cRole" class="apply-input"></select></div>
+            <div id="frmCharRoleError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="align-left">How do you prepare for each raid (progression and farm)?</div>
-            <div><textarea id="frmPreparation" name="preparation" class="textarea-themed col-90"></textarea></div>
-            <div id="frmPreparationError" class="text-error align-left"></div>
+          <div class="applyContainer-halfColumn">
+            <span>Link to your spec</span>
+            <div><input id="frmSpecLink" type="text" name="specLink" class="apply-input" /></div>
+            <div id="frmSpecLinkError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="align-left">Why are <u>you</u> a vaulable asset to our raiding team?</div>
-            <div><textarea id="frmValuableAsset" name="asset" class="textarea-themed col-90"></textarea></div>
-            <div id="frmValuableAssetError" class="text-error align-left"></div>
+          <div class="applyContainer-halfColumn">
+            <span>Armory profile</span>
+            <div><input id="frmArmoryLink" type="text" name="armoryLink" class="apply-input" /></div>
+            <div id="frmArmoryLinkError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="align-left">Making a mistake, how do you respond to being called out on it?</div>
-            <div><input id="frmMakingMistake" type="text" name="mistake" class="input-themed col-90" /></div>
-            <div id="frmMakingMistakeError" class="text-error align-left"></div>
+          <div class="applyContainer-fullColumn">
+            <span>How many of our raids will you be able to attend each week?</span>
+            <div><input id="frmNumberOfRaids" type="text" name="numberRaids" class="apply-input" /></div>
+            <div id="frmNumberOfRaidsError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <div class="align-left">Finally, is there anything else you'd like to add?</div>
-            <div><textarea id="frmAnythingElse" name="anythingElse" class="textarea-themed col-90"></textarea></div>
-            <div id="frmAnythingElseError" class="text-error align-left"></div>
+          <div class="applyContainer-fullColumn">
+            <span>How do you prepare for each raid (progression and farm)?</span>
+            <div><textarea id="frmPreparation" name="preparation" class="apply-input"></textarea></div>
+            <div id="frmPreparationError" class="errorText"></div>
           </div>
-          <div class="container-medium frame-themed background-themed">
-            <button id="btnSubmitApplication" type="submit" name="submit" value="application" class="button-icon-medium icon-accept submit-button"></button>
+          <div class="applyContainer-fullColumn">
+            <span>Why are <u>you</u> a vaulable asset to our raiding team?</span>
+            <div><textarea id="frmValuableAsset" name="asset" class="apply-input"></textarea></div>
+            <div id="frmValuableAssetError" class="errorText"></div>
           </div>
-        </form>
-      </div>
+          <div class="applyContainer-fullColumn">
+            <span>Making a mistake, how do you respond to being called out on it?</span>
+            <div><input id="frmMakingMistake" type="text" name="mistake" class="apply-input" /></div>
+            <div id="frmMakingMistakeError" class="errorText"></div>
+          </div>
+          <div class="applyContainer-fullColumn">
+            <span>Finally, is there anything else you'd like to add?</span>
+            <div><textarea id="frmAnythingElse" name="anythingElse" class="apply-input"></textarea></div>
+            <div id="frmAnythingElseError" class="errorText"></div>
+          </div>
+        </div>
+        <div class="formButtonRow">
+          <button id="btnSubmitApplication" type="submit" name="submit" value="application" class="action-button">Submit</button>
+        </div>
+      </form>
     </section>
   </body>
   <foot>
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
-    <script>
-      $(document).ready(function() {
-        scarecrow.get.character.classes();
-      });
-    </script>
+    <script src="/js/apply.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

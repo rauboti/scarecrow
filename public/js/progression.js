@@ -1,23 +1,28 @@
-deviceAdjustment();
-var clicked;
 $(document).ready(function() {
-  $('.rolloutContainerBody').hide();
-  $('.rolloutController').click(function() {
-    clicked = $(this).attr('id').split('Show')[1]
-    console.log(clicked)
-    if ($('#rollout' + clicked).hasClass('expanded')) {
-      $('#btnShow' + clicked).addClass('icon-arrow-down').removeClass('icon-arrow-up');
-      $('#rollout' + clicked)
-        .slideToggle(500)
-        .removeClass('expanded');
-    } else {
-      $('#btnShow' + clicked).addClass('icon-arrow-up').removeClass('icon-arrow-down');
-      $('#rollout' + clicked)
-        .slideToggle(500)
-        .addClass('expanded');
-    }
+  $('.menuButtonRow-icon').click(function() {
+    $('.menuButtonRow').slideToggle(500);
   });
-  $('.icon-menu').click(function() {
-    $('.menu-button-row').slideToggle(500);
-  });
+  $('#statusFrame').hide();
+  scarecrow.get.progression(initProgression);
 });
+
+function initProgression(progression) {
+  for (var instance in progression) {
+    var defeated = 0;
+    for (var boss in progression[instance]) {
+      if (progression[instance][boss].status === 'Defeated') { defeated++ }
+    }
+    $('#slctInstance').append('<option value="' + instance + '">' + instance + ' (' + defeated + '/' + progression[instance].length +')</option>')
+  }
+  $('#slctInstance').change(function() {
+    $('#statusFrame').slideUp(500, function() {
+      $('#statusFrame').html('').removeClass('formContainer');
+      for (var boss in progression[$('#slctInstance :selected').val()]) {
+        $('#statusFrame').append('<div class="bossContainer"><div class="bossContainer-name">' + progression[$('#slctInstance :selected').val()][boss].name + '</div><div class="bossContainer-status">' + progression[$('#slctInstance :selected').val()][boss].status + '</div></div>');
+      }
+      if ($('#statusFrame').html() !== '') {
+        $('#statusFrame').addClass('formContainer').slideDown(500);
+      }
+    });
+  });
+}

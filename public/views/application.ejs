@@ -7,73 +7,63 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <div class="container-medium align-center frame-themed background-themed"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
-        <div class="container-medium align-left frame-themed background-themed">
-          <div><b># Spec</b></div>
-          <div><a href="<%=application[0].spec%>" target="_blank"><u><%=application[0].spec%></u></a><br><br></div>
-          <div><b># Armory profile</b></div>
-          <div><a href="<%=application[0].armory%>" target="_blank"><u><%=application[0].armory%></u></a><br><br></div>
-          <div><b># Raids / week</b></div>
-          <div style="white-space: pre-wrap;"><%=application[0].raids%></div><br><br>
-          <div><b># Raid preparations</b></div>
-          <div style="white-space: pre-wrap;"><%=application[0].preparation%></div><br><br>
-          <div><b># Why the applicant is a valuable asset</b></div>
-          <div style="white-space: pre-wrap;"><%=application[0].asset%></div><br><br>
-          <div><b># Being called out when making mistakes</b></div>
-          <div style="white-space: pre-wrap;"><%=application[0].mistakes%></div><br><br>
-          <div><b># Anything else?</b></div>
-          <div style="white-space: pre-wrap;"><%=application[0].anything_else%></div>
-        </div>
-        <div class="container-medium align-center frame-themed background-themed">
-          <form name="frmApplication" method="post">
-            <button type="submit" name="back" value="back" class="button-icon-medium icon-back"></button>
-            <% if (application[0].status === 'New' || application[0].status === 'Declined') {%>
-              <button type="submit" name="accept" value="accept" class="button-icon-medium icon-accept"></button>
-            <%}
-            if (application[0].status === 'New' || application[0].status === 'Accepted') {%>
-              <button type="submit" name="decline" value="decline" class="button-icon-medium icon-decline"></button>
-            <%}%>
-          </form>
-        </div>
+    <section class="pageContainer">
+      <div class="appHeadline"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
+      <div class="appBody">
+        <div><b># Spec</b></div>
+        <div><a href="<%=application[0].spec%>" target="_blank"><u><%=application[0].spec%></u></a><br><br></div>
+        <div><b># Armory profile</b></div>
+        <div><a href="<%=application[0].armory%>" target="_blank"><u><%=application[0].armory%></u></a><br><br></div>
+        <div><b># Raids / week</b></div>
+        <div style="white-space: pre-wrap;"><%=application[0].raids%></div><br><br>
+        <div><b># Raid preparations</b></div>
+        <div style="white-space: pre-wrap;"><%=application[0].preparation%></div><br><br>
+        <div><b># Why the applicant is a valuable asset</b></div>
+        <div style="white-space: pre-wrap;"><%=application[0].asset%></div><br><br>
+        <div><b># Being called out when making mistakes</b></div>
+        <div style="white-space: pre-wrap;"><%=application[0].mistakes%></div><br><br>
+        <div><b># Anything else?</b></div>
+        <div style="white-space: pre-wrap;"><%=application[0].anything_else%></div>
+      </div>
+      <div class="appButtonRow">
+        <form name="frmApplication" method="post">
+          <button type="submit" name="back" value="back" class="action-button">< Back</button>
+          <% if (application[0].status === 'New' || application[0].status === 'Declined') {%>
+            <button type="submit" name="accept" value="accept" class="action-button">Accept</button>
+          <%}
+          if (application[0].status === 'New' || application[0].status === 'Accepted') {%>
+            <button type="submit" name="decline" value="decline" class="action-button">Decline</button>
+          <%}%>
+        </form>
       </div>
     </section>
   </body>
@@ -81,7 +71,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/application.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

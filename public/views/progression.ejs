@@ -7,74 +7,42 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <% for (var instance in progression) {
-          var totalBosses = 0;
-          var defeatedBosses = 0;
-          for (var boss in progression[instance]) {
-            totalBosses++;
-            if (progression[instance][boss].status !== 'Undefeated') {
-              defeatedBosses++;
-            }
-          }
-          var instanceCompletion = defeatedBosses + '/' + totalBosses;%>
-          <div class="rolloutContainer">
-            <div class="rolloutContainerHead">
-              <div class="rolloutContainerHead-title"><%=instance%> (<%=instanceCompletion%>)</div>
-              <div class="rolloutContainerHead-buttonRow">
-                <button id="btnShow<%=instance.replace(/[\' ]/g, '')%>" type="button" name="expand" value="apps" class="rolloutContainerHead-button rolloutController icon-arrow-down"></button>
-              </div>
-            </div>
-            <div id="rollout<%=instance.replace(/[\' ]/g, '')%>" class="rolloutContainerBody">
-              <div class="rolloutContainerBody-body">
-                <% for (var boss in progression[instance]) {%>
-                  <div class="instanceContainer">
-                    <div class="col-70 is-inline"><%=progression[instance][boss].name%></div>
-                    <div class="col-30 is-inline"><%=progression[instance][boss].status%></div>
-                  </div>
-                <%}%>
-              </div>
-            </div>
-          </div>
-        <%}%>
+    <section class="pageContainer">
+      <div class="formContainer">
+        <div class="formContainer-fullColumn">
+          <select id="slctInstance"><option value=""></option></select>
+        </div>
+      </div>
+      <div id="statusFrame">
       </div>
     </section>
   </body>
@@ -82,7 +50,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
     <script src="/js/progression.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

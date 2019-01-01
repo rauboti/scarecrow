@@ -7,67 +7,57 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <div class="container-big align-center">
-          <% for (var i in officers) {
-            if (officers[i].rank === 'Guild Master') {%>
-              <div class="container-medium align-left frame-themed background-themed">
-                <div class="col-30 is-inline">Guild Master</div>
-                <div class="col-30 is-inline"><%=officers[i].char%></div>
-                <div class="col-40 is-inline"></div>
-              </div>
-            <%}
-          }%>
-        </div>
-        <div class="container-big align-center">
-          <% for (var i in officers) {
-            if (officers[i].rank === 'Officer' || officers[i].rank === 'Admin') {%>
-              <div class="container-medium align-left frame-themed background-themed">
-                <div class="col-30 is-inline">Officer</div>
-                <div class="col-40 is-inline"><%=officers[i].char%></div>
-                <div class="is-inline"><%=officers[i].role%></div>
-              </div>
-            <%}
-          }%>
-        </div>
+    <section class="pageContainer">
+      <div class="officerList">
+        <% for (var i in officers) {
+          if (officers[i].rank === 'Guild Master') {%>
+            <div class="officerContainer">
+              <div class="officerContainer-rank">Guild Master</div>
+              <div class="officerContainer-player"><%=officers[i].char%></div>
+              <div class="officerContainer-role"></div>
+            </div>
+          <%}
+        }%>
+      </div>
+      <div class="officerList">
+        <% for (var i in officers) {
+          if (officers[i].rank === 'Officer' || officers[i].rank === 'Admin') {%>
+            <div class="officerContainer">
+              <div class="officerContainer-rank">Officer</div>
+              <div class="officerContainer-player"><%=officers[i].char%></div>
+              <div class="officerContainer-role"><%=officers[i].role%></div>
+            </div>
+          <%}
+        }%>
       </div>
     </section>
   </body>
@@ -75,7 +65,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/hierarchy.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

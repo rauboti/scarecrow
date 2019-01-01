@@ -7,62 +7,52 @@
     <!-- Cleaner font -->
     <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
     <!-- CSS source files -->
-    <link rel="stylesheet" href="/css/boti-main.css" />
-    <link rel="stylesheet" href="/css/boti-icons.css" />
-    <% if (conf.theme === 'ghostly') {%>
-      <link rel="stylesheet" href="/css/boti-theme-ghostly.css" />
-    <%} else if (conf.theme === 'crimson') {%>
-      <link rel="stylesheet" href="/css/boti-theme-crimson.css" />
-    <%} else if (conf.theme === 'toxic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-toxic.css" />
-    <%} else if (conf.theme === 'angelic') {%>
-      <link rel="stylesheet" href="/css/boti-theme-angelic.css" />
-    <%} else if (conf.theme === 'obsidian') {%>
-      <link rel="stylesheet" href="/css/boti-theme-obsidian.css" />
+    <% if (conf.theme === 'ghostly') {%> <link rel="stylesheet" href="/css/sc-theme-ghostly.css" />
+    <%} else if (conf.theme === 'crimson') {%> <link rel="stylesheet" href="/css/sc-theme-crimson.css" />
+    <%} else if (conf.theme === 'toxic') {%> <link rel="stylesheet" href="/css/sc-theme-toxic.css" />
+    <%} else if (conf.theme === 'angelic') {%> <link rel="stylesheet" href="/css/sc-theme-angelic.css" />
+    <%} else if (conf.theme === 'obsidian') {%> <link rel="stylesheet" href="/css/sc-theme-obsidian.css" />
     <%}%>
-    <% if (conf.device === 'phone') {%>
-      <link rel="stylesheet" href="/css/boti-mobile.css" />
-    <%} else if (conf.device === 'desktop') {%>
-      <link rel="stylesheet" href="/css/boti-desktop.css" />
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
-    <link rel="stylesheet" href="/css/boti-extras.css" />
-    <nav class="pos-absolute">
-      <menu class="menu-themed">
-        <a href="<%=scMenu['home'].path%>"><div class="menu-button is-inline"><div class="menu-button-icon icon-logo"></div></div></a>
-        <div class="show-mobile col-50 is-inline selected-page"><%=conf.page%></div>
-        <div class="menu-button is-inline show-mobile"><div class="menu-button-icon icon-menu"></div></div>
-        <div class="menu-button-row show-desktop">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow">
           <% for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
               if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button button-selected-themed"><div class="menu-button-text text-selected"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
             <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menu-button"><div class="menu-button-text"><%=scMenu[i].text%></div></div></a>
+              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
           <%}}}%>
         </div>
       </menu>
     </nav>
   </head>
   <body>
-    <section>
-      <div class="container-page align-center is-scrollable">
-        <div class="container-small align-center background-themed frame-themed">
-          <form name="frmSignIn" action="<%=scMenu['signin'].path%>" method="post" onsubmit="return scarecrow.validate.access.signIn();">
-            <img class="round background-white faded margin-big" src="/img/crow.png"></img>
-            <div class="is-inline col-90">
-              <input id="username" type="text" name="username" class="input-themed col-90" placeholder="Username" tabindex="1"/>
-              <div id="usernameError" class="text-error col-90 align-left"></div>
-            </div>
-            <div class="is-inline col-90">
-              <input id="password" type="password" name="password" class="input-themed col-90" placeholder="Password" tabindex="2"/>
-              <div id="passwordError" class="text-error col-90 align-left"></div>
-            </div>
-            <div class="full-row">
-              <button id="btnLogin" type="submit" name="login" value="user" class="button-icon-medium icon-accept submit-button" tabindex="3"></button>
-            </div>
-            <div>Don't have an account? <a href="<%=scMenu['signup'].path%>"><u>Sign up here!</u></a></div>
-          </form>
-        </div>
+    <section class="pageContainer">
+      <div class="loginContainer">
+        <form name="frmSignIn" action="<%=scMenu['signin'].path%>" method="post" onsubmit="return formValidation();" autocomplete="off">
+          <img class="loginContainer-image" src="/img/crow.png"></img>
+          <div>
+            <input id="username" type="text" name="username" class="loginContainer-input" placeholder="Username" autocomplete="off" tabindex="1"/>
+            <div id="usernameError" class="errorText"></div>
+          </div>
+          <div>
+            <input id="password" type="password" name="password" class="loginContainer-input" placeholder="Password" autocomplete="off" tabindex="2"/>
+            <div id="passwordError" class="errorText"></div>
+          </div>
+          <div>
+            <button id="btnLogin" type="submit" name="login" value="user" class="action-button" tabindex="3">Sign in</button>
+          </div>
+          <div>Don't have an account? <a href="<%=scMenu['signup'].path%>"><u>Sign up here!</u></a></div>
+        </form>
       </div>
     </section>
   </body>
@@ -70,7 +60,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/mobile.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/signin.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

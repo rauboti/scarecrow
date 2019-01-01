@@ -66,8 +66,8 @@ function router() {
           res.redirect(req.get('referer'));
         } else if (req.body.back) {
           res.redirect('/admin');
-        } else if (req.body.delete && req.body.delete === 'character') {
-          const Del = await DB.character.delete(req.body, req.user.id)
+        } else if (req.body.delChar) {
+          const Del = await DB.character.delete(req.body, req.params.id)
           res.redirect(req.get('referer'));
         } else if (req.body.delete && req.body.delete === 'user') {
           const Del = await DB.user.delete(req.params.id);
@@ -76,7 +76,7 @@ function router() {
           const Update = await DB.user.set.details(req.body, req.params.id, true)
           res.redirect(req.get('referer'));
         } else if (req.body.editChar) {
-          const Edit = await DB.character.set.details(req.body, req.user.id, true)
+          const Edit = await DB.character.set.details(req.body, req.params.id, true)
           res.redirect(req.get('referer'));
         }
       }())});
@@ -124,9 +124,8 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const classes = await DB.classes.getAll();
           const conf = { device: req.device.type.toLowerCase(), page: 'Apply', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('apply', { scMenu, conf, classes });
+          res.render('apply', { scMenu, conf });
         }());
       })})
     .post((req, res) => {
@@ -165,8 +164,8 @@ function router() {
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
-        if (req.body.accept) {
-          const Sign = await DB.event.attend(req.params.id, req.user.main);
+        if (req.body.sign) {
+          const Sign = await DB.event.response(req.params.id, req.user.main, req.body);
           res.redirect(req.get('referer'));
         }
         if (req.body.back) {
@@ -243,7 +242,7 @@ function router() {
         debug(req.body);
         if (req.body.add && req.body.add === 'character') {
           const Add = await DB.character.add(req.body, req.user.id, 0)
-        } else if (req.body.delete) {
+        } else if (req.body.delChar) {
           const Delete = await DB.character.delete(req.body, req.user.id)
         } else if (req.body.editChar) {
           const Edit = await DB.character.set.details(req.body, req.user.id, false)
@@ -264,9 +263,8 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          const progression = await DB.progression.get();
           const conf = { device: req.device.type.toLowerCase(), page: 'Progression', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('progression', { scMenu, conf, progression });
+          res.render('progression', { scMenu, conf });
         }());
       })});
 
@@ -317,6 +315,7 @@ function router() {
         req.body.request === 'classes' && (result = await DB.classes.getAll())
         req.body.request === 'instances' && (result = await DB.instances.getAll())
         req.body.request === 'items' && (result = await DB.query.items(req.body.query))
+        req.body.request === 'progression' && (result = await DB.get.progression())
         req.body.request === 'ranks' && (result = await DB.ranks.getAll())
         req.body.request === 'themes' && (result = await DB.themes.getAll())
         req.body.request === 'users' && (result = await DB.query.users(req.body.query))

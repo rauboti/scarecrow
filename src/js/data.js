@@ -9,6 +9,20 @@ const sql = require('../js/db');
 const SC = require('../js/functions');
 
 const local = module.exports = {
+  get: {
+    progression: async function() {
+      var progression = {}
+      const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
+      for (var i in result) {
+        var x = {};
+        !(result[i].instance in progression) && (progression[result[i].instance] = []);
+        x['name'] = result[i].boss;
+        x['status'] = result[i].status;
+        progression[result[i].instance].push(x);
+      }
+      return progression;
+    }
+  },
   app: {
     add: async function(app, user) {
       const id = await local.getUniqueID('tblApplications');
@@ -49,7 +63,7 @@ const local = module.exports = {
       return;
     },
     delete: async function(character, user) {
-      const result = await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user_id = ?', [character.delete, user]);
+      const result = await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user_id = ?', [character.delChar, user]);
       return;
     },
     set: {
@@ -81,10 +95,15 @@ const local = module.exports = {
       const result = await sql.query('INSERT INTO tblEvent (id, instance, time) VALUES (?, ?, ?)', [id, instance, date]);
       return;
     },
-    attend: async function(event, main) {
+    response: async function(event, main, response) {
+      response.comment ? comment = response.comment : comment = '';
       const id = await local.getUniqueID('tblEventSignup');
-      const signups = await sql.query('SELECT count(*) as "total" FROM tblEventSignup WHERE event_id = ?', [event])
-      const result = await sql.query('INSERT INTO tblEventSignup VALUES (?, ?, ?, ?)', [id, event, (signups[0].total+1), main])
+      const excists = await sql.query('SELECT * FROM tblEventSignup WHERE event_id = ? AND char_ID = ?', [event, main]);
+      if (excists[0]) {
+        const result = await sql.query('UPDATE tblEventSignup SET event_status = ?, comment = ?, timestamp = now() WHERE event_id = ? AND char_id = ?', [response.sign, comment, event, main])
+      } else {
+        const result = await sql.query('INSERT INTO tblEventSignup (id, event_id, char_id, event_status, comment) VALUES (?, ?, ?, ?, ?)', [id, event, main, response.sign, comment])
+      }
       return;
     },
     get: async function(id, user) {
@@ -100,19 +119,28 @@ const local = module.exports = {
       event['tank'] = [];
       event['support'] = [];
       event['damage'] = [];
+      event['uninvolved'] = [];
       event['max'] = {};
       event['max']['tanks'] = result[0].tanks
       event['max']['support'] = result[0].support
       event['max']['damage'] = result[0].damage
       var signed = false;
-      result = await sql.query('SELECT c.id, es.event_index, c.name, c.class, c.role FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ?', [id]);
+      result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
+      var idx = 1;
       for (var i in result) {
-        (result[i].id === user.main) && (signed = true)
+        (result[i].id === user.main) && (signed = result[i].event_status)
         var attendee = {}
         attendee['class'] = result[i].class
-        attendee['idx'] = result[i].event_index
         attendee['name'] = result[i].name
-        event[result[i].role.toLowerCase()].push(attendee);
+        attendee['status'] = result[i].event_status
+        if (result[i].event_status === 'accept') {
+          attendee['idx'] = idx;
+          event[result[i].role.toLowerCase()].push(attendee);
+          idx++;
+        } else {
+          attendee['comment'] = result[i].comment
+          event['uninvolved'].push(attendee)
+        }
       }
       event['signed'] = signed;
       return event;
@@ -158,20 +186,6 @@ const local = module.exports = {
     users: async function(query) {
       const result = await sql.query('SELECT u.id, u.user as "name", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank WHERE u.user LIKE ? ORDER BY u.rank DESC, u.user ASC', ['%'+query+'%']);
       return result;
-    }
-  },
-  progression: {
-    get: async function() {
-      var progression = {}
-      const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
-      for (var i in result) {
-        var x = {};
-        !(result[i].instance in progression) && (progression[result[i].instance] = []);
-        x['name'] = result[i].boss;
-        x['status'] = result[i].status;
-        progression[result[i].instance].push(x);
-      }
-      return progression;
     }
   },
   ranks: {
