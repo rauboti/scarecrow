@@ -48,6 +48,7 @@
             <input id="password" type="password" name="password" class="loginContainer-input" placeholder="Password" autocomplete="off" tabindex="2"/>
             <div id="passwordError" class="errorText"></div>
           </div>
+          <% if (error) {%><span class="errorText">Wrong username and/or password!</span><%}%>
           <div>
             <button id="btnLogin" type="submit" name="login" value="user" class="action-button" tabindex="3">Sign in</button>
           </div>

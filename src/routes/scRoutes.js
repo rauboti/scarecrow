@@ -274,14 +274,15 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          debug(scMenu)
+          var error = (req.param('errorCredentials') === 'true');
+          debug(error)
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('signIn', { scMenu, conf });
+          res.render('signIn', { scMenu, conf, error });
         }());
       })})
     .post(passport.authenticate('local', {
       successRedirect: '/',
-      failureRedirect: '/signIn'
+      failureRedirect: '/signIn?errorCredentials=true'
     }));
 
   pagerouter.route('/signUp')                         // => sign up page
