@@ -89,6 +89,27 @@ const local = module.exports = {
       return result;
     }
   },
+  consumables: {
+    edit: async function(obj) {
+      debug(obj);
+      debug(obj.list);
+      debug(parseInt(obj.instance));
+      debug(obj.instance);
+      const result = await sql.query('UPDATE tblConsumables SET list = ? WHERE id = ?', [obj.list, parseInt(obj.instance)]);
+      return;
+    },
+    get: async function() {
+      const list = {}
+      const result = await sql.query('SELECT i.id, i.name, c.list FROM tblConsumables c JOIN tblInstance i ON i.id = c.id');
+      for (var i in result) {
+        var obj = {};
+        obj['instance'] = result[i].name;
+        result[i].list !== null ? obj['list'] = result[i].list : obj['list'] = '';
+        list[result[i].id] = obj;
+      }
+      return list;
+    }
+  },
   event: {
     add: async function(instance, date) {
       const id = await local.getUniqueID('tblEvent');
@@ -110,7 +131,7 @@ const local = module.exports = {
       var event = {}
       var result = await sql.query('SELECT id FROM tblCharacter WHERE user_id = ? AND main = 1', [user.id])
       result[0] && (user.main = result[0].id)
-      result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage FROM tblEvent e JOIN tblInstance i on i.id = e.instance WHERE e.id = ?', [id]);
+      result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
       var d = new Date(result[0].time);
       event['day'] = SC.getWeekday(d.getDay());
       event['date'] = d.getDate();
@@ -124,6 +145,7 @@ const local = module.exports = {
       event['max']['tanks'] = result[0].tanks
       event['max']['support'] = result[0].support
       event['max']['damage'] = result[0].damage
+      event['consumables'] = result[0].list
       var signed = false;
       result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
       var idx = 1;

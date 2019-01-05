@@ -38,9 +38,17 @@ function router() {
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
-        if (req.body.add && req.body.add === 'event') {
-          const Add = await DB.event.add(parseInt(req.body.instance), new Date(req.body.date));
-          res.redirect(req.get('referer'));
+        if (req.body.add) {
+          if (req.body.add === 'event') {
+            const Add = await DB.event.add(parseInt(req.body.instance), new Date(req.body.date));
+            res.redirect(req.get('referer'));
+          }
+        }
+        else if (req.body.edit) {
+          if (req.body.edit === 'consumables') {
+            const Edit = await DB.consumables.edit(req.body);
+            res.redirect(req.get('referer'));
+          }
         }
       }())})
 
@@ -274,8 +282,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'ghostly';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          var error = (req.param('errorCredentials') === 'true');
-          debug(error)
+          var error = (req.query.errorCredentials === 'true');
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('signIn', { scMenu, conf, error });
         }());
@@ -314,6 +321,7 @@ function router() {
       (async function dbQuery() {
         debug(req.body);
         req.body.request === 'classes' && (result = await DB.classes.getAll())
+        req.body.request === 'consumables' && (result = await DB.consumables.get())
         req.body.request === 'instances' && (result = await DB.instances.getAll())
         req.body.request === 'items' && (result = await DB.query.items(req.body.query))
         req.body.request === 'progression' && (result = await DB.get.progression())

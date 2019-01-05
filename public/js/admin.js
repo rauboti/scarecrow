@@ -1,9 +1,11 @@
 var clicked;
+var popupClicked;
 var searchTimer;
 $(document).ready(function() {
   $('.action-button').click(function() {
     $(this).is('[id]') && (clicked = $(this).attr('id').split('btn')[1]);
     $(this).attr('id').split('btn')[1] === 'AddEvent' && formAddEvent();
+    $(this).attr('id').split('btn')[1] === 'EditConsumes' && formEditConsumables();
     $(this).attr('id').split('btn')[1] === 'FindUsers' && $('#frmFindUsers').slideToggle(500);
   });
   $('.menuButtonRow-icon').click(function() {
@@ -49,6 +51,32 @@ function formAddEvent() {
     formAddEventValidateMarkup();
   });
 }
+function formEditConsumables() {
+  scarecrow.window.toggle.background();
+  $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return formValidateEditConsumables();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+  + '<div class="popupContainer-headline">Edit required consumables</div>'
+  + '<div class="formContainer-fullColumn"><select id="slctInstance" name="instance"><option value=""></option></select></div>'
+  + '<div class="formContainer-fullColumn"><textarea id="txtList" name="list"></textarea></div>'
+  + '<div class="formContainer-buttonRow">'
+  + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button">Cancel</button>'
+  + '<button id="btnConfirm" type="submit" name="edit" value="consumables" class="popupContainer-button">Save</button>'
+  + '</div>'
+  + '</div></form>');
+  scarecrow.get.consumables(initConsumables);
+  function initConsumables(consumables) {
+    console.log(consumables)
+    for (var i in consumables) {
+      $('#slctInstance').append('<option value="' + i + '">' + consumables[i].instance + '</option>');
+    }
+    $('#slctInstance').change(function() {
+      console.log($('#slctInstance :selected').val());
+      $('#txtList').text(consumables[$('#slctInstance :selected').val()].list);
+    });
+  }
+  $('.popupContainer-button').click(function() {
+    popupClicked = $(this).attr('id').split('btn')[1];
+  });
+}
 
 function formAddEventValidate() {
   if (clicked === 'Confirm') {
@@ -61,6 +89,13 @@ function formAddEventValidate() {
   } else if (clicked === 'Decline') {
     scarecrow.window.toggle.background();
     scarecrow.window.close.popup();
+    return false;
+  }
+}
+function formValidateEditConsumables() {
+  if (popupClicked === 'Confirm') {
+    return true;
+  } else if (popupClicked === 'Decline') {
     return false;
   }
 }

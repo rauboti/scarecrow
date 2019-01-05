@@ -171,6 +171,9 @@ textarea {
   width: 97%;
   vertical-align: bottom;
 }
+.hidden {
+  display: none;
+}
 
 /*  ------------------------------------------------------------ { Characters }
 */

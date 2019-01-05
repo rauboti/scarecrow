@@ -7,6 +7,10 @@ var scarecrow = {
         $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: classes });
       }
     },
+    consumables: function(consumables) {
+      var data = { request: 'consumables' };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: consumables })
+    },
     instances: function(instances) { // --|--@ Complete
       //=<>= Getting instances from the database
       var data = { request: 'instances' };

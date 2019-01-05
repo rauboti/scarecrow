@@ -6,6 +6,15 @@ $(document).ready(function() {
   $('.menuButtonRow-icon').click(function() {
     $('.menuButtonRow').slideToggle(500);
   });
+  $('#lnkConsumables').click(function(e) {
+    e.preventDefault();
+    scarecrow.window.toggle.background();
+    $('#popupContainer').removeClass('hidden').addClass('popupContainer');
+  });
+  $('#btnCloseConsumables').click(function() {
+    scarecrow.window.toggle.background();
+    $('#popupContainer').removeClass('popupContainer').addClass('hidden');
+  });
 });
 
 function formValidation() {
