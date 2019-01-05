@@ -64,12 +64,10 @@ function formEditConsumables() {
   + '</div></form>');
   scarecrow.get.consumables(initConsumables);
   function initConsumables(consumables) {
-    console.log(consumables)
     for (var i in consumables) {
       $('#slctInstance').append('<option value="' + i + '">' + consumables[i].instance + '</option>');
     }
     $('#slctInstance').change(function() {
-      console.log($('#slctInstance :selected').val());
       $('#txtList').text(consumables[$('#slctInstance :selected').val()].list);
     });
   }
@@ -96,6 +94,8 @@ function formValidateEditConsumables() {
   if (popupClicked === 'Confirm') {
     return true;
   } else if (popupClicked === 'Decline') {
+    scarecrow.window.toggle.background();
+    scarecrow.window.close.popup();
     return false;
   }
 }
