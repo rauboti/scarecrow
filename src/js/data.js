@@ -111,9 +111,9 @@ const local = module.exports = {
     }
   },
   event: {
-    add: async function(instance, date) {
+    add: async function(instance, date, info) {
       const id = await local.getUniqueID('tblEvent');
-      const result = await sql.query('INSERT INTO tblEvent (id, instance, time) VALUES (?, ?, ?)', [id, instance, date]);
+      const result = await sql.query('INSERT INTO tblEvent (id, instance, time, info) VALUES (?, ?, ?, ?)', [id, instance, date, info]);
       return;
     },
     response: async function(event, main, response) {
@@ -131,12 +131,14 @@ const local = module.exports = {
       var event = {}
       var result = await sql.query('SELECT id FROM tblCharacter WHERE user_id = ? AND main = 1', [user.id])
       result[0] && (user.main = result[0].id)
-      result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
+      result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list, e.info FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
       var d = new Date(result[0].time);
       event['day'] = SC.getWeekday(d.getDay());
       event['date'] = d.getDate();
       event['month'] = d.getMonth()+1;
       event['instance'] = result[0].name;
+      event['consumables'] = result[0].list;
+      (result[0].info !== null) && (event['info'] = result[0].info);
       event['tank'] = [];
       event['support'] = [];
       event['damage'] = [];
@@ -145,7 +147,6 @@ const local = module.exports = {
       event['max']['tanks'] = result[0].tanks
       event['max']['support'] = result[0].support
       event['max']['damage'] = result[0].damage
-      event['consumables'] = result[0].list
       var signed = false;
       result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
       var idx = 1;

@@ -195,6 +195,10 @@ textarea {
 .hidden {
   display: none;
 }
+.infoField {
+  text-align: left;
+  white-space: pre-wrap;
+}
 
 /*  ------------------------------------------------------------ { Characters }
 */

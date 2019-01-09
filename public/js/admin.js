@@ -31,6 +31,8 @@ function formAddEvent() {
   + '<input id="frmDate" type="text" name="date" class="formInput" autocomplete="off" /><div id="frmDateError" class="errorText"></div></div>'
   + '<div class="formContainer-halfColumn"><span>Instance</span>'
   + '<select id="frmInstance" name="instance"></select></div>'
+  + '<div class="formContainer-fullColumn"><span>Raid information</span>'
+  + '<textarea id="frmInfo" name="info" class="formInput" autocomplete="off" /></textarea></div>'
   + '<div class="formContainer-buttonRow">'
   + '<button id="btnDecline" type="submit" name="back" value="back" class="popupContainer-button">Cancel</button>'
   + '<button id="btnConfirm" type="submit" name="add" value="event" class="popupContainer-button">Submit</button>'

@@ -41,6 +41,7 @@
         <div class="eventContainer-subtitle"><%=event.day%> <%=event.date%>/<%=event.month%></div>
         <br><a id="lnkConsumables" style="cursor: pointer;"><u>Required consumables</u></a>
       </div>
+      <% if (event.info) {%><div class="eventContainer infoField"><%=event.info%></div><%}%>
       <div class="eventContainer">
         <div class="eventContainer-roleContainer">
           <div class="eventContainer-roleContainer-title container-small-title-corner">Tanks (<%=event.tank.length%>/<%=event.max.tanks%>)</div>
@@ -84,7 +85,7 @@
       <%}%>
     </section>
     <div id="popupContainer" class="hidden">
-      <div class="formContainer-fullColumn" style="white-space: pre-wrap;"><%=event.consumables%></div>
+      <div class="formContainer-fullColumn infoField"><%=event.consumables%></div>
       <div class="formContainer-buttonRow">
         <button id="btnCloseConsumables" type="button" name="back" value="back" class="action-button">Close</button>
       </div>

@@ -40,7 +40,7 @@ function router() {
         debug(req.body);
         if (req.body.add) {
           if (req.body.add === 'event') {
-            const Add = await DB.event.add(parseInt(req.body.instance), new Date(req.body.date));
+            const Add = await DB.event.add(parseInt(req.body.instance), new Date(req.body.date), req.body.info);
             res.redirect(req.get('referer'));
           }
         }
