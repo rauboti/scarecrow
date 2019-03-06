@@ -157,11 +157,36 @@ textarea {
   margin: 1.25%;
   text-align: left;
 }
-.formContainer-fullColumn input, .formContainer-fullColumn select, .formContainer-fullColumn textarea {
+.formContainer-fullColumn input[type="text"], .formContainer-fullColumn input[type="number"], .formContainer-fullColumn input[type="password"], .formContainer-halfColumn input[type="text"], .formContainer-halfColumn input[type="number"], .formContainer-halfColumn input[type="password"] {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   margin: 0;
   width: 100%
+}
+.formContainer-triColumn input[type="text"], .formContainer-triColumn input[type="number"], .formContainer-triColumn input[type="password"] {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-quarterColumn input[type="text"], .formContainer-quarterColumn input[type="number"], .formContainer-quarterColumn input[type="password"], .formContainer-pentaColumn input[type="text"], .formContainer-pentaColumn input[type="number"], .formContainer-pentaColumn input[type="password"] {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-fullColumn select, .formContainer-fullColumn textarea, .formContainer-halfColumn select, .formContainer-halfColumn textarea, .formContainer-quarterColumn select, .formContainer-quarterColumn textarea, .formContainer-pentaColumn select, .formContainer-pentaColumn textarea {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-triColumn {
+  display: inline-block;
+  margin: 1.25%;
+  text-align: left;
+  vertical-align: top;
+  width: 30%;
 }
 .formContainer-halfColumn {
   display: inline-block;
@@ -170,11 +195,19 @@ textarea {
   vertical-align: top;
   width: 47%;
 }
-.formContainer-halfColumn input, .formContainer-halfColumn select, .formContainer-halfColumn textarea {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  margin: 0;
-  width: 100%
+.formContainer-quarterColumn {
+  display: inline-block;
+  margin: 1.25%;
+  text-align: left;
+  vertical-align: top;
+  width: 22.5%;
+}
+.formContainer-pentaColumn {
+  display: inline-block;
+  margin: 1.25%;
+  text-align: left;
+  vertical-align: top;
+  width: 17.5%;
 }
 .formContainer-header {
   display: inline-block;
@@ -191,6 +224,22 @@ textarea {
   width: 63%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   vertical-align: bottom;
+}
+.formScrollfield {
+  overflow: scroll;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  max-height: 40vh;
+}
+.formScrollfield::-webkit-scrollbar {
+  width: 0 !important;
+}
+.formHeadline {
+  border-bottom: 1px solid grey;
+  color: grey;
+  font-size: 1.1em;
+  margin: 5px;
+  text-align: left;
 }
 .hidden {
   display: none;
@@ -555,6 +604,7 @@ section.pageContainer::-webkit-scrollbar {
   left: 0;
   margin: auto;
   min-width: 500px;
+  max-height: 70vh;
   padding: 0;
   position: absolute;
   right: 0;
@@ -637,6 +687,29 @@ section.pageContainer::-webkit-scrollbar {
   font-style: italic;
   color: grey;
   margin: 1%;
+}
+
+/*  ------------------------------------------------------------ { LootValue }
+*/
+.lvBar-outter {
+  /*border: 1px solid rgba(84, 112, 125, 1);*/
+  border: 1px solid rgba(50, 66, 74, 0.75);
+  border-radius: 5px;
+  display: inline-block;
+  height: 1rem;
+  padding: 0;
+  margin: 5px;
+  text-align: left;
+  vertical-align: middle;
+  width: 65%;
+}
+.lvBar-inner {
+  background-color: rgba(50, 66, 74, 0.75);
+  height: 1rem;
+}
+.lvBar-text {
+  color: rgba(84, 112, 125, 1);
+  vertical-align: middle;
 }
 
 /*  ------------------------------------------------------------ { Misc }

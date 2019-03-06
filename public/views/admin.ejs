@@ -39,14 +39,32 @@
   <body>
     <section class="pageContainer">
       <div class="formContainer">
-        <button id="btnAddEvent" type="button" class="action-button">Add event</button>
-        <button id="btnEditConsumes" type="button" class="action-button">Edit required consumables</button>
-        <% if (conf.rank > 7) {%><button id="btnFindUsers" type="button" class="action-button">Find user</button><%}%>
+        <div>
+          <div class="formHeadline">Events</div>
+          <button id="btnAddEvent" type="button" class="action-button">Add event</button>
+          <button id="btnEditConsumes" type="button" class="action-button">Edit req. consumables</button>
+        </div>
+        <% if (conf.rank > 7) {%>
+        <div>
+          <div class="formHeadline">Items</div>
+          <button id="btnItemValues" type="button" class="action-button">Item values</button>
+          <button id="btnAwardItem" type="button" class="action-button">Award item</button>
+        </div>
+        <%}%>
+        <div>
+          <div class="formHeadline">Users</div>
+          <button id="btnLootValue" type="button" onclick="location.href=location.origin + '/admin/lootvalue';">LootValue</button>
+          <button id="btnWishlists" type="button" onclick="location.href=location.origin + '/admin/wishlists';">Wishlists</button>
+          <% if (conf.rank > 7) {%>
+          <button id="btnFindUsers" type="button" class="action-button">Find user</button>
+          <button id="btnAddAttendance" type="button" class="action-button">Add attendance</button>
+          <%}%>
+        </div>
       </div>
       <% if (conf.rank > 7) {%>
       <div id="frmFindUsers" class="formContainer">
         <div class="formContainer-fullColumn">
-          <input id="txtUserSearch" type="text" name="user" class="col-80" placeholder="Type to search.." autocomplete="off" />
+          <input id="txtUserSearch" type="text" name="user" placeholder="Type to search.." autocomplete="off" />
         </div>
         <div id="userList" class="userList">
         </div>
@@ -59,6 +77,8 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/datepicker.min.js"></script>
     <script src="/js/datepicker.en.js"></script>
+    <script>var whTooltips = {colorLinks: false, iconizeLinks: false, renameLinks: false};</script>
+    <script src="/js/wowhead.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/admin.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>

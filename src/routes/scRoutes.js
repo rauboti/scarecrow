@@ -50,6 +50,31 @@ function router() {
             res.redirect(req.get('referer'));
           }
         }
+        else if (req.body.request) {
+          req.body.request === 'attendance' && (result = await DB.set.attendance(req.body.set))
+          req.body.request === 'itemRecipient' && (result = await DB.set.itemRecipient(req.body))
+        }
+      }())})
+
+  pagerouter.route('/admin/lootvalue')
+    .all((req, res, next) => {
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+    .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
+      getPages(req.user.rank, function(scMenu){
+        (async function showPage() {
+          const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+          res.render('lootvalue', {scMenu, conf});
+        }())
+      })})
+    .post((req, res) => {
+      (async function dbQuery() {
+        debug(req.body);
+        if (req.body.request) {
+          req.body.request === 'lootvalue' && (result = await DB.get.lv())
+        }
+        res.json(result);
       }())})
 
   pagerouter.route('/admin/user/:id')                 // => User administration pages
@@ -88,6 +113,28 @@ function router() {
           res.redirect(req.get('referer'));
         }
       }())});
+
+  pagerouter.route('/admin/wishlists')
+    .all((req, res, next) => {
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+    .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'ghostly';
+      getPages(req.user.rank, function(scMenu){
+        (async function showPage() {
+          const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+          res.send('This is the wishlists page')
+          //res.render('lootvalue', {scMenu, conf});
+        }())
+      })})
+    .post((req, res) => {
+      (async function dbQuery() {
+        debug(req.body);
+        //if (req.body.request) {
+        //  req.body.request === 'lootvalue' && (result = await DB.get.lv())
+        //}
+        res.json(result);
+      }())})
 
   pagerouter.route('/applications')                   // => applications page
     .all((req, res, next) => {
@@ -320,16 +367,31 @@ function router() {
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
+        req.body.request === 'boss' && (result = await DB.get.boss(req.body.id))
         req.body.request === 'classes' && (result = await DB.classes.getAll())
+        req.body.request === 'coefficients' && (result = await DB.get.coefficients())
         req.body.request === 'consumables' && (result = await DB.consumables.get())
+        req.body.request === 'event' && (result = await DB.get.event(req.body.id))
         req.body.request === 'instances' && (result = await DB.instances.getAll())
+        req.body.request === 'item' && (result = await DB.query.item(req.body.query))
         req.body.request === 'items' && (result = await DB.query.items(req.body.query))
+        req.body.request === 'players' && (result = await DB.get.players())
         req.body.request === 'progression' && (result = await DB.get.progression())
         req.body.request === 'ranks' && (result = await DB.ranks.getAll())
         req.body.request === 'themes' && (result = await DB.themes.getAll())
         req.body.request === 'users' && (result = await DB.query.users(req.body.query))
+        req.body.request === 'wishlist' && (result = await DB.get.wishlist(req.body.char))
         res.json(result);
       }())});
+
+  pagerouter.route('/api/set')                        // => API
+    .post((req, res) => {
+      (async function dbQuery() {
+        debug(req.body);
+        req.body.request === 'item' && (result = await DB.set.item(req.body.item))
+        res.json(result);
+      }())});
+
 
   return pagerouter;
 }

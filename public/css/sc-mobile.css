@@ -148,15 +148,46 @@ textarea {
   margin: 1.25%;
   text-align: center;
 }
-.formContainer-fullColumn, .formContainer-halfColumn {
+.formContainer-fullColumn, .formContainer-halfColumn, .formContainer-triColumn {
   margin: 1.25%;
   text-align: left;
 }
-.formContainer-fullColumn input, .formContainer-fullColumn select, .formContainer-fullColumn textarea, .formContainer-halfColumn input, .formContainer-halfColumn select, .formContainer-halfColumn textarea {
+.formContainer-fullColumn input[type="text"], .formContainer-fullColumn input[type="number"], .formContainer-fullColumn input[type="password"], .formContainer-halfColumn input[type="text"], .formContainer-halfColumn input[type="number"], .formContainer-halfColumn input[type="password"] {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   margin: 0;
   width: 100%
+}
+.formContainer-triColumn input[type="text"], .formContainer-triColumn input[type="number"], .formContainer-triColumn input[type="password"] {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-quarterColumn input[type="text"], .formContainer-quarterColumn input[type="number"], .formContainer-quarterColumn input[type="password"], .formContainer-pentaColumn input[type="text"], .formContainer-pentaColumn input[type="number"], .formContainer-pentaColumn input[type="password"] {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-fullColumn select, .formContainer-fullColumn textarea, .formContainer-halfColumn select, .formContainer-halfColumn textarea, .formContainer-quarterColumn select, .formContainer-quarterColumn textarea, .formContainer-pentaColumn select, .formContainer-pentaColumn textarea {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin: 0;
+  width: 100%
+}
+.formContainer-quarterColumn, .formContainer-pentaColumn {
+  display: inline-block;
+  text-align: left;
+  vertical-align: top;
+}
+.formContainer-quarterColumn {
+  margin: 1.25%;
+  width: 47.5%;
+}
+.formContainer-pentaColumn {
+  margin: 1.25%;
+  width: 30.75%;
 }
 .formContainer-header {
   font-style: italic;
@@ -170,6 +201,13 @@ textarea {
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   width: 97%;
   vertical-align: bottom;
+}
+.formHeadline {
+  border-bottom: 1px solid grey;
+  color: grey;
+  font-size: 1.1em;
+  margin: 5px;
+  text-align: left;
 }
 .hidden {
   display: none;
@@ -503,13 +541,18 @@ section.pageContainer::-webkit-scrollbar {
 .popupContainer {
   left: 0;
   margin: auto;
+  max-height: 70vh;
+  overflow: scroll;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  padding: 0;
   position: absolute;
   right: 0;
   top: 20vh;
   width: 90vw;
 }
-.popupContainer {
-  padding: 0;
+.popupContainer::-webkit-scrollbar {
+  width: 0 !important;
 }
 .popupContainer-headline {
   padding: 5px;

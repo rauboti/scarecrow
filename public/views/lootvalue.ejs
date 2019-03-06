@@ -36,13 +36,18 @@
     </nav>
   <body>
     <section class="pageContainer">
+      <div class="formContainer">
+        <div id="classFilters"></div>
+        <div class="formContainer-fullColumn"><select id="frmItems"><option value=""></option></select></div>
+      </div>
+      <div id="formLootValue" class="formContainer"></div>
     </section>
   </body>
   <foot>
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/lootvalue.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

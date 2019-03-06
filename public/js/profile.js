@@ -81,6 +81,7 @@ function formAddChar() {
   });
 }
 function formAddItem() {
+  scarecrow.window.toggle.background();
   $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return formValidateAddItem();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
   + '<div class="popupContainer-headline">Add to wishlist</div>'
   + '<div class="formContainer-fullColumn"><input id="txtItemSearch" type="text" name="item" placeholder="Type to search.." autocomplete="off" /></div>'

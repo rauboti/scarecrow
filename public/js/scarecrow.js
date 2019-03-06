@@ -1,5 +1,9 @@
 var scarecrow = {
   get: {
+    boss: function(id, boss) {
+      var data = { request: 'boss', id: id };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: boss })
+    },
     character: {
       classes: function(classes) { // --|--@ Complete
         //=<>= Getting available character classes, and their available roles, from the database to populate dropdownmenus
@@ -7,19 +11,42 @@ var scarecrow = {
         $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: classes });
       }
     },
+    coefficients: function(coefficients) {
+      var data = { request: 'coefficients' };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: coefficients })
+    },
     consumables: function(consumables) {
       var data = { request: 'consumables' };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: consumables })
+    },
+    event: function(id, events) {
+      var data = { request: 'event', id: id };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: events })
     },
     instances: function(instances) { // --|--@ Complete
       //=<>= Getting instances from the database
       var data = { request: 'instances' };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: instances });
     },
+    item: function(query, item) {
+      // Getting items from the database
+      var data = { request: 'item', query: query}
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: item });
+    },
     items: function(query, items) { // --|--@ Complete
       // Getting items from the database
       var data = { request: 'items', query: query}
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: items });
+    },
+    lootValue: function(lootvalue) { // --|--@ Complete
+      // Getting items from the database
+      var data = { request: 'lootvalue' }
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin/lootvalue', success: lootvalue });
+    },
+    players: function(players) {
+      // Getting progression status from the database
+      var data = { request: 'players' }
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: players });
     },
     progression: function(progression) {
       // Getting progression status from the database
@@ -40,6 +67,28 @@ var scarecrow = {
       //Getting users from the database
       var data = { request : 'users', query: query };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: users})
+    },
+    wishlist: function(char, wishlist) {
+      //Getting users from the database
+      var data = { request : 'wishlist', char: char };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: wishlist})
+    }
+  },
+  set: {
+    attendance: function(set) {
+      // Adding attendance to selected players
+      var data = { request: 'attendance', set: set}
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin'});
+    },
+    item: function(item) {
+      // Setting item information
+      var data = { request: 'item', item: item}
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/set'});
+    },
+    itemRecipient: function(raid, item, player, role) {
+      // Adding an item to a player
+      var data = { request: 'itemRecipient', raid: raid, item: item, player: player, role: role}
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin'});
     }
   },
   validate: {

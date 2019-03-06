@@ -10,6 +10,92 @@ const SC = require('../js/functions');
 
 const local = module.exports = {
   get: {
+    boss: async function(id) {
+      if (id === 'all') {
+        const result = await sql.query('SELECT id, boss FROM tblProgression ORDER BY boss ASC');
+        return result;
+      } else {
+        // only 1 selected
+      }
+    },
+    coefficients: async function() {
+      var coefficients = {}
+      const result = await sql.query('SELECT * FROM tblCoefficient');
+      for (var i in result) {
+        coefficients[result[i].stat] = result[i].coefficient
+      }
+      return coefficients;
+    },
+    event: async function(id) {
+      if (id === 'all') {
+        const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i ON e.instance = i.id');
+        return result;
+      } else {
+        // only 1 selected
+      }
+    },
+    lv: async function() {
+      var lv = [];
+      var attendance = {};
+      var received = {};
+      var items = {};
+
+      var result = await sql.query('SELECT id, tankvalue, healvalue, physvalue, magvalue FROM tblItem ORDER BY id')
+      for (var i in result) {
+        var set = {}
+        set['tank'] = result[i].tankvalue;
+        set['heal'] = result[i].healvalue;
+        set['phys'] = result[i].physvalue;
+        set['mag'] = result[i].magvalue;
+        items[result[i].id] = set
+      }
+
+      result = await sql.query('SELECT c.id, a.char, a.raid, a.boss, c.name, c.class FROM tblAttendance a JOIN tblCharacter c ON a.char = c.id ORDER BY a.char, a.raid')
+      for (var i in result) {
+        if (!(result[i].char in attendance)) {
+          var set = {}
+          set['id'] = result[i].id
+          set['player'] = result[i].name;
+          set['class'] = result[i].class;
+          set['attendance'] = 0;
+          attendance[result[i].char] = set;
+        }
+        attendance[result[i].char]['attendance']++;
+      }
+
+      result = await sql.query('SELECT `raid`, `char`, `role`, `item` FROM tblItemReceived ORDER BY `char`, `raid`')
+      for (var i in result) {
+        !(result[i].char in received) && (received[result[i].char] = 0);
+        received[result[i].char] += parseInt(items[result[i].item][result[i].role])
+      }
+
+      for (var i in attendance) {
+        var set = {}
+        set['id'] = attendance[i].id
+        set['player'] = attendance[i].player
+        set['class'] = attendance[i].class
+        received[i] && received[i] !== 0 ? set['value'] = (received[i] / attendance[i].attendance).toFixed(2) : set['value'] = (1 / attendance[i].attendance).toFixed(2)
+        lv.push(set)
+      }
+
+      lv.sort(function(a, b){
+          return a.value-b.value
+      })
+
+      return lv;
+    },
+    players: async function() {
+      var players = [];
+      const result = await sql.query('SELECT id, name, class FROM tblCharacter WHERE main = 1')
+      for (var i in result) {
+        set = {};
+        set['id'] = result[i].id
+        set['name'] = result[i].name
+        set['class'] = result[i].class
+        players.push(set)
+      }
+      return players;
+    },
     progression: async function() {
       var progression = {}
       const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
@@ -21,6 +107,41 @@ const local = module.exports = {
         progression[result[i].instance].push(x);
       }
       return progression;
+    },
+    wishlist: async function(char) {
+      var wl = {}
+      if (char === 'all') {
+        var result = await sql.query('SELECT char_id, item FROM tblWishlist')
+      } else {
+        var result = await sql.query('SELECT char_id, item FROM tblWishlist WHERE char_id = ?', [char])
+      }
+      for (var i in result) {
+        !(result[i].char_id in wl) && (wl[result[i].char_id] = []);
+        wl[result[i].char_id].push(result[i].item)
+      }
+      return wl;
+    }
+  },
+  set: {
+    attendance: async function(set) {
+      for (var player in set['selected']) {
+        var id = await local.getUniqueID('tblAttendance');
+        var result = sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set['selected'][player], set.raid, set.boss, 10])
+      }
+      return;
+    },
+    item: async function(item) {
+      var result = await sql.query('SELECT * from tblItem WHERE id = ?', [item.id])
+      if (result.length < 1) {
+        result = await sql.query('INSERT INTO tblItem (`id`, `instance`, `name`, `slot`, `quality`, `agi`, `int`, `spi`, `sta`, `str`, `ap`, `rap`, `defense`, `parry`, `dodge`, `block`, `mp5`, `splpwr`, `hlrpwr`, `dps`, `melcrit`, `melhit`, `splcrit`, `splhit`, `misc`, `tankvalue`, `healvalue`, `physvalue`, `magvalue`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [item.id, item.instance, item.name, item.slot, item.quality, item.agi, item.int, item.spi, item.sta, item.str, item.ap, item.rap, item.defense, item.parry, item.dodge, item.block, item.mp5, item.splpwr, item.hlrpwr, item.dps, item.melcrit, item.melhit, item.splcrit, item.splcrit, item.misc, item.valuetank, item.valueheal, item.valuephysical, item.valuemagical])
+      } else {
+        result = await sql.query('UPDATE tblItem SET `instance` = ?, `name` = ?, `slot` = ?, `quality` = ?, `agi` = ?, `int` = ?, `spi` = ?, `sta` = ?, `str` = ?, `ap` = ?, `rap` = ?, `defense` = ?, `parry` = ?, `dodge` = ?, `block` = ?, `mp5` = ?, `splpwr` = ?, `hlrpwr` = ?, `dps` = ?, `melcrit` = ?, `melhit` = ?, `splcrit` = ?, `splhit` = ?, `misc` = ?, `tankvalue` = ?, `healvalue` = ?, `physvalue` = ?, `magvalue` = ? WHERE `id` = ?', [item.instance, item.name, item.slot, item.quality, item.agi, item.int, item.spi, item.sta, item.str, item.ap, item.rap, item.defense, item.parry, item.dodge, item.block, item.mp5, item.splpwr, item.hlrpwr, item.dps, item.melcrit, item.melhit, item.splcrit, item.splcrit, item.misc, item.valuetank, item.valueheal, item.valuephysical, item.valuemagical, item.id])
+      }
+      return;
+    },
+    itemRecipient: async function(set) {
+      var id = await local.getUniqueID('tblItemReceived');
+      var result = await sql.query('INSERT INTO tblItemReceived (`id`, `raid`, `char`, `item`, `role`) VALUES (?, ?, ?, ?, ?)', [id, set.raid, set.player, set.item, set.role])
     }
   },
   app: {
@@ -193,18 +314,39 @@ const local = module.exports = {
     }
   },
   query: {
-    items: async function(query) {
-      const result = await sql.query('SELECT id, name, slot, quality, instance FROM tblItem WHERE name LIKE ?', ['%'+query+'%']);
-      const itemlist = {}
-      for (var item in result) {
-        if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
-        var x = {}
-        x['id'] = result[item].id;
-        x['name'] = result[item].name;
-        x['quality'] = result[item].quality;
-        itemlist[result[item].slot].push(x)
+    item: async function(query) {
+      var item = await sql.query('SELECT * FROM tblItem where id = ?', [query]);
+      if (item.length > 0) {
+        return item[0];
+      } else {
+        item = {};
+        var result = await sql.query('SHOW COLUMNS FROM tblItem');
+        for (var i in result) {
+          var type = result[i].Type.split('(')[0];
+          type === 'int' && (item[result[i].Field] = 0);
+          type === 'decimal' && (item[result[i].Field] = 0.0);
+          type === 'char' && (item[result[i].Field] = '');
+        }
+        return item;
       }
-      return itemlist;
+    },
+    items: async function(query) {
+      if (query === 'all') {
+        const result = await sql.query('SELECT id, name, slot, quality, instance FROM tblItem ORDER BY name ASC');
+        return result;
+      } else {
+        const result = await sql.query('SELECT id, name, slot, quality, instance FROM tblItem WHERE name LIKE ?', ['%'+query+'%']);
+        const itemlist = {}
+        for (var item in result) {
+          if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
+          var x = {}
+          x['id'] = result[item].id;
+          x['name'] = result[item].name;
+          x['quality'] = result[item].quality;
+          itemlist[result[item].slot].push(x)
+        }
+        return itemlist;
+      }
     },
     users: async function(query) {
       const result = await sql.query('SELECT u.id, u.user as "name", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank WHERE u.user LIKE ? ORDER BY u.rank DESC, u.user ASC', ['%'+query+'%']);
