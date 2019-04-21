@@ -56,7 +56,7 @@ function router() {
         }
       }())})
 
-  pagerouter.route('/admin/lootvalue')
+  pagerouter.route('/admin/lootvalue')                // => The loot value page
     .all((req, res, next) => {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
@@ -114,7 +114,7 @@ function router() {
         }
       }())});
 
-  pagerouter.route('/admin/wishlists')
+  pagerouter.route('/admin/wishlists')                // => The wishlists page
     .all((req, res, next) => {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
@@ -123,16 +123,15 @@ function router() {
       getPages(req.user.rank, function(scMenu){
         (async function showPage() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.send('This is the wishlists page')
-          //res.render('lootvalue', {scMenu, conf});
+          res.render('wishlists', { scMenu, conf })
         }())
       })})
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
-        //if (req.body.request) {
-        //  req.body.request === 'lootvalue' && (result = await DB.get.lv())
-        //}
+        if (req.body.request) {
+          req.body.request === 'wishlist' && (result = await DB.get.wishlist('all'))
+        }
         res.json(result);
       }())})
 
