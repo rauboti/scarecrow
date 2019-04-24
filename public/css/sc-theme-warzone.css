@@ -2,12 +2,13 @@
 */
 :root {
   /* Colours */
-  --clrPrimaryBackground: 0, 0, 0;
+  --clrPrimaryBackground: 0, 0, 25;
   --clrPrimaryBorder: 255, 255, 255;
   --clrPrimaryFont: 255, 255, 255;
-  --clrThemeBackground: 200, 255, 40;
-  --clrThemeBorder: 200, 255, 40;
-  --clrThemeFocus: 200, 255, 40;
+  --clrSecondaryFont: grey;
+  --clrThemeBackground: 255, 255, 255;
+  --clrThemeBorder: 255, 255, 255;
+  --clrThemeFocus: 255, 255, 255;
 
   /* Sizes */
   --radBorder: 5px;
@@ -31,9 +32,9 @@ button, input, select {
   transition: all .30s ease-in-out;
 }
 button {
-  background: -moz-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0)  50%, rgba(var(--clrThemeBackground), .15)  100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(top, rgba(var(--clrThemeBackground), .45) 0%, rgba(var(--clrThemeBackground), 0)  50%, rgba(var(--clrThemeBackground), .45)  100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(var(--clrThemeBackground), .45) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .45)  100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(var(--clrThemeBackground), .45) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .45)  100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   border: 1px solid rgba(var(--clrThemeBorder), .15);
 }
 button.iconButton {
@@ -42,6 +43,12 @@ button.iconButton {
 button:focus, input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 5px rgba(var(--clrThemeFocus), 1);
   border: 1px solid rgba(var(--clrThemeFocus), 1);
+}
+html {
+  background: url('/img/battlefield.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 input, select, textarea {
   background: rgba(var(--clrThemeBackground), .05);
@@ -86,4 +93,10 @@ option {
 }
 .eventContainer-roleContainer-title, .popupContainer-headline {
   background: rgba(var(--clrThemeBackground), 0.3);
+}
+.formContainer-header, .formHeadline, .eventContainer-comment-status, .itemSlotContainer-headline, .userContainer-role {
+  color: var(--clrSecondaryFont);
+}
+.formHeadline, .formContainer-value, .itemSlotContainer-headline {
+  border-bottom: 1px solid var(--clrSecondaryFont);
 }

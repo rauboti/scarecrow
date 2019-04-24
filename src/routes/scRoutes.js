@@ -15,7 +15,7 @@ function router() {
   pagerouter.route('/')                               // => The root page
     .get((req, res) => {
       req.user ? (rank = req.user.rank) : rank = 0;
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Home', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -28,7 +28,7 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function showPage() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -61,7 +61,7 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function showPage() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -82,7 +82,7 @@ function router() {
       req.user && req.user.rank === 8 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const user = await DB.user.get.details(req.params.id);
@@ -119,7 +119,7 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function showPage() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -140,7 +140,7 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const applications = await DB.apps.getAll();
@@ -154,7 +154,7 @@ function router() {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const application = await DB.app.get(req.params.id);
@@ -175,7 +175,7 @@ function router() {
       req.user && req.user.rank >= 1 ? next() : res.redirect('/signUp') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Apply', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -193,7 +193,7 @@ function router() {
       req.user && req.user.rank >= 2 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const events = await DB.events.getAll();
@@ -207,7 +207,7 @@ function router() {
       req.user && req.user.rank >= 2 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const event = await DB.event.get(req.params.id, req.user)
@@ -230,7 +230,7 @@ function router() {
   pagerouter.route('/hierarchy')                      // => hierarchy page
     .get((req, res) => {
       req.user ? rank = req.user.rank : rank = 0;
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
           const officers = await DB.users.getOfficers();
@@ -244,7 +244,7 @@ function router() {
       req.user ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Loot', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -257,7 +257,7 @@ function router() {
       req.user ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const user = await DB.user.get.details(req.user.id);
@@ -314,7 +314,7 @@ function router() {
   pagerouter.route('/progression')                    // => progression page
     .get((req, res) => {
       req.user ? rank = req.user.rank : rank = 0;
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Progression', rank: rank, theme: theme, title: '<Scarecrow>' }
@@ -325,7 +325,7 @@ function router() {
   pagerouter.route('/signIn')                         // => sign in page
     .get((req, res) => {
       req.user ? rank = req.user.rank : rank = 0;
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
           var error = (req.query.errorCredentials === 'true');
@@ -341,7 +341,7 @@ function router() {
   pagerouter.route('/signUp')                         // => sign up page
     .get((req, res) => {
       req.user ? rank = req.user.rank : rank = 0;
-      req.user ? theme = req.user.theme : theme = 'ghostly';
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }

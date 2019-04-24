@@ -36,10 +36,6 @@ button {
   padding: 5px;
 }
 html {
-  background: url('/img/sc.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   font-family: 'Rajdhani', sans-serif;
   height: 100vh;
 }
@@ -191,20 +187,16 @@ textarea {
 }
 .formContainer-header {
   font-style: italic;
-  color: grey;
   margin: 1.5%;
   font-size: 0.8em;
   vertical-align: bottom;
 }
 .formContainer-value {
   margin: 1.5%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   width: 97%;
   vertical-align: bottom;
 }
 .formHeadline {
-  border-bottom: 1px solid grey;
-  color: grey;
   font-size: 1.1em;
   margin: 5px;
   text-align: left;
@@ -407,7 +399,6 @@ section.pageContainer::-webkit-scrollbar {
 
 }
 .eventContainer-comment-status {
-  color: grey;
   font-style: italic;
 }
 .eventContainer-comment-text {
@@ -475,8 +466,6 @@ section.pageContainer::-webkit-scrollbar {
   text-align: center;
 }
 .itemSlotContainer-headline {
-  border-bottom: 1px solid grey;
-  color: grey;
   font-size: 1.1em;
   margin: 5px;
   text-align: left;
@@ -623,7 +612,6 @@ section.pageContainer::-webkit-scrollbar {
 .userContainer-role {
   display: inline-block;
   font-style: italic;
-  color: grey;
   margin: 1%;
 }
 
