@@ -379,7 +379,7 @@ const local = module.exports = {
   user: {
     add: async function(user) {
       const id = await local.getUniqueID('tblUser');
-      var result = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank, theme) VALUES (?, ?, ?, ?, 1, "ghostly")', [id, user.username, user.password, user.email]);
+      var result = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank, theme) VALUES (?, ?, ?, ?, 1, "scarecrow")', [id, user.username, user.password, user.email]);
       result = await sql.query('SELECT id, user, rank, theme FROM tblUser WHERE user = ? AND pw = ?', [user.username, user.password]);
       return result[0];
     },
