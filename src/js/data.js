@@ -424,9 +424,9 @@ const local = module.exports = {
     set: {
       details: async function(user, id, admin) {
         if (admin) {
-          const result = await sql.query('UPDATE tblUser SET user = ?, rank = ?, role = ?, email = ? WHERE id = ?', [user.username, parseInt(user.rank), user.role, user.email, id]);
+          const result = await sql.query('UPDATE tblUser SET rank = ?, role = ?, email = ? WHERE id = ?', [parseInt(user.rank), user.role, user.email, id]);
         } else {
-          const result = await sql.query('UPDATE tblUser SET user = ?, email = ?, theme = ? WHERE id = ?', [user.username, user.email, user.theme, id]);
+          const result = await sql.query('UPDATE tblUser SET email = ?, theme = ? WHERE id = ?', [user.email, user.theme, id]);
         }
         return;
       }
