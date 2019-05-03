@@ -51,6 +51,9 @@ input {
   margin: 10px;
   padding: 10px;
 }
+input:disabled {
+  opacity: 0.4;
+}
 menu {
   display: inline-block;
   font-size: 1.7em;
@@ -141,8 +144,9 @@ textarea {
 /*  ------------------------------------------------------------ { Forms }
 */
 .formButtonRow, .formContainer {
+  box-sizing: border-box;
   margin-bottom: 10px;
-  padding: 5px;
+  padding: 1%;
   text-align: center;
 }
 .formContainer-buttonRow  {
@@ -245,11 +249,27 @@ textarea {
 */
 .charContainer {
   border-radius: 5px;
-  display: inline-block;
-  margin: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+  /*display: inline-block;*/
+  margin: 1%;
   padding: 10px;
   text-align: left;
-  width: 80%;
+  /*width: 48%;*/
+}
+.charContainer-nickname {
+  font-size: 1.5rem;
+}
+.charContainer-spec, .charContainer-class {
+  display: inline-block;
+}
+.charContainer-details {
+  display: inline-block;
+}
+.charContainer-graph {
+  float: right;
+  height: 50px;
+  width: 50px;
 }
 .charContainer-button {
   display: inline-block;
@@ -258,15 +278,17 @@ textarea {
   vertical-align: middle;
   width: 1.75em;
 }
-.charContainer-details {
-  display: inline-block;
-  vertical-align: middle;
-  width: 70%;
-}
 .charContainer-role {
   display: inline-block;
   vertical-align: middle;
   width: 10%;
+}
+.charList {
+  max-height: 40vh;
+  overflow-y: scroll;
+}
+.charList::-webkit-scrollbar {
+  width: 0 !important;
 }
 .clrDeath-Knight {
   color: rgba(196, 30, 59, 1);
@@ -713,4 +735,32 @@ section.pageContainer::-webkit-scrollbar {
 .invalidInput {
   background-color: rgba(255, 0, 0, 0.05);
   border: 1px solid rgba(255, 0, 0, 0.7);
+}
+
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, .1);
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, .75);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+
+.graphCircle-text {
+  fill: #FFF;
+  font-size: 0.75em;
+  text-anchor: middle;
 }

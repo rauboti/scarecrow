@@ -4,12 +4,14 @@ var scarecrow = {
       var data = { request: 'boss', id: id };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: boss })
     },
-    character: {
-      classes: function(classes) { // --|--@ Complete
-        //=<>= Getting available character classes, and their available roles, from the database to populate dropdownmenus
-        var data = { request: 'classes' };
-        $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: classes });
-      }
+    classes: function(classes) { // --|--@ Complete
+      //=<>= Getting available character classes, and their available roles, from the database to populate dropdownmenus
+      var data = { request: 'classes' };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: classes });
+    },
+    characters: function(characters){
+      var data = { request: 'characters' };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: characters })
     },
     coefficients: function(coefficients) {
       var data = { request: 'coefficients' };
@@ -158,6 +160,9 @@ var scarecrow = {
     close: {
       popup: function() {
         $('#frmPopup').remove();
+      },
+      other: function(item) {
+        $(item).remove();
       }
     },
     item: {
@@ -210,6 +215,9 @@ var scarecrow = {
       background: function() {
         $('menu').toggleClass('inactive');
         $('.pageContainer').toggleClass('inactive');
+      },
+      other: function(item) {
+        $(item).toggleClass('inactive')
       }
     },
   }

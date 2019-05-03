@@ -10,6 +10,7 @@ const pagerouter = express.Router();                  // => Defining a route
 const sql = require('../js/db');                      // => Getting database connection info
 const DB = require('../js/data');                     // => interactions with the database
 const SC = require('../js/functions');                // => general functions / toolbox
+const api = require('../api/requests');              // => api calls to battle.net
 
 function router() {
   pagerouter.route('/')                               // => The root page
@@ -172,7 +173,7 @@ function router() {
 
   pagerouter.route('/apply')                          // => apply page
     .all((req, res, next) => {
-      req.user && req.user.rank >= 1 ? next() : res.redirect('/signUp') })
+      req.user && req.user.rank >= 1 ? next() : res.redirect('/signIn') })
     .get((req, res) => {
       req.user && (rank = req.user.rank);
       req.user ? theme = req.user.theme : theme = 'scarecrow';
@@ -233,7 +234,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          const officers = await DB.users.getOfficers();
+          const officers = await DB.user.get.officers();
           const conf = { device: req.device.type.toLowerCase(), page: 'Hierarchy', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('hierarchy', { scMenu, conf, officers });
         }());
@@ -294,10 +295,16 @@ function router() {
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
-        if (req.body.add && req.body.add === 'character') {
-          const Add = await DB.character.add(req.body, req.user.id, 0)
-        } else if (req.body.delChar) {
-          const Delete = await DB.character.delete(req.body, req.user.id)
+        if (req.body.add) {
+          if (req.body.add === 'character') { const Add = await DB.character.add(req.body, req.user.id); }          
+        } else if (req.body.delete) {
+          if (req.body.delete === 'character') {
+            const Delete = await DB.character.delete(req.body.character, req.user.id);
+          }
+        } else if (req.body.update) {
+          if (req.body.update === 'character') {
+            await api.bnet.character.update(req.user.id, req.user.token, req.body.name, req.body.server);
+          }
         } else if (req.body.editChar) {
           const Edit = await DB.character.set.details(req.body, req.user.id, false)
         } else if (req.body.editUser) {
@@ -332,29 +339,7 @@ function router() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('signIn', { scMenu, conf, error });
         }());
-      })})
-    .post(passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: '/signIn?errorCredentials=true'
-    }));
-
-  pagerouter.route('/signUp')                         // => sign up page
-    .get((req, res) => {
-      req.user ? rank = req.user.rank : rank = 0;
-      req.user ? theme = req.user.theme : theme = 'scarecrow';
-      getPages(rank, function(scMenu){
-        (async function dbQuery() {
-          const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('signUp', { scMenu, conf });
-        }());
-      })})
-    .post((req, res) => {
-      (async function addUser() {
-        const user = await DB.user.add(req.body);
-        req.login(user, () => {
-          res.redirect('/apply');
-        });
-      }())});
+      })});
 
   pagerouter.route('/signOut')                        // => sign out-function
     .get((req, res) => {
@@ -367,7 +352,8 @@ function router() {
       (async function dbQuery() {
         debug(req.body);
         req.body.request === 'boss' && (result = await DB.get.boss(req.body.id))
-        req.body.request === 'classes' && (result = await DB.classes.getAll())
+        req.body.request === 'characters' && (result = await api.bnet.character.getAll(req.user.token))
+        req.body.request === 'classes' && (result = await DB.get.classes())
         req.body.request === 'coefficients' && (result = await DB.get.coefficients())
         req.body.request === 'consumables' && (result = await DB.consumables.get())
         req.body.request === 'event' && (result = await DB.get.event(req.body.id))

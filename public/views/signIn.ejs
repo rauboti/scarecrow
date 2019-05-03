@@ -37,22 +37,10 @@
   <body>
     <section class="pageContainer">
       <div class="loginContainer">
-        <form name="frmSignIn" action="<%=scMenu['signin'].path%>" method="post" onsubmit="return formValidation();" autocomplete="off">
-          <img class="loginContainer-image" src="/img/crow.png"></img>
-          <div>
-            <input id="username" type="text" name="username" class="loginContainer-input" placeholder="Username" autocomplete="off" tabindex="1"/>
-            <div id="usernameError" class="errorText"></div>
-          </div>
-          <div>
-            <input id="password" type="password" name="password" class="loginContainer-input" placeholder="Password" autocomplete="off" tabindex="2"/>
-            <div id="passwordError" class="errorText"></div>
-          </div>
-          <% if (error) {%><span class="errorText">Wrong username and/or password!</span><%}%>
-          <div>
-            <button id="btnLogin" type="submit" name="login" value="user" class="action-button" tabindex="3">Sign in</button>
-          </div>
-          <div>Don't have an account? <a href="<%=scMenu['signup'].path%>"><u>Sign up here!</u></a></div>
-        </form>
+        <img class="loginContainer-image" src="/img/crow.png"></img>
+        <div>
+          <button type="submit" onclick="location.href='/auth/bnet';" tabindex="1">Sign in with Battle.net</button>
+        </div>
       </div>
     </section>
   </body>

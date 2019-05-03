@@ -1,5 +1,6 @@
 const passport = require('passport');
-require('./strategies/local.strategy')();
+//require('./strategies/local.strategy')();
+require('./strategies/bnet.strategy')();
 
 function passportConfig(app) {
   app.use(passport.initialize());

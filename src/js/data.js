@@ -18,6 +18,14 @@ const local = module.exports = {
         // only 1 selected
       }
     },
+    classes: async function() {
+      var classes = {}
+      const result = await sql.query('SELECT id, name FROM tblClass WHERE available = 1 ORDER BY id ASC')
+      for (var i in result) {
+        classes[result[i].id] = result[i].name
+      }
+      return classes;
+    },
     coefficients: async function() {
       var coefficients = {}
       const result = await sql.query('SELECT * FROM tblCoefficient');
@@ -189,13 +197,20 @@ const local = module.exports = {
     }
   },
   character: {
-    add: async function(char, user, main) {
-      const id = await local.getUniqueID('tblCharacter');
-      const result = await sql.query('INSERT INTO tblCharacter (id, name, level, class, role, user_id, main) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, char.cName, char.cLevel, char.cClass, char.cRole, user, main]);
+    add: async function(char, user) {
+      var charExcists = await sql.query('SELECT * from tblCharacter WHERE name = ? and server = ?', [char.name, char.server]);
+      if (charExcists.length < 1) {
+        const id = await local.getUniqueID('tblCharacter');
+        const result = await sql.query('INSERT INTO tblCharacter (id, name, server, class, spec, role, user, main, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, char.name, char.server, char.class, char.spec, char.role, user, 0, parseInt(char.level)]);
+      }
       return;
     },
     delete: async function(character, user) {
-      const result = await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user_id = ?', [character.delChar, user]);
+      const result = await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user = ?', [character, user]);
+      return;
+    },
+    update: async function(user, server, name, level) {
+      await sql.query('UPDATE tblCharacter SET level = ? WHERE user = ? AND server = ? AND name = ?', [level, user, server, name])
       return;
     },
     set: {
@@ -213,12 +228,6 @@ const local = module.exports = {
         }
         return;
       }
-    }
-  },
-  classes: {
-    getAll: async function() {
-      const result = await sql.query('SELECT name, isDamage, isSupport, isTank FROM tblClass WHERE available = 1')
-      return result;
     }
   },
   consumables: {
@@ -377,12 +386,6 @@ const local = module.exports = {
     }
   },
   user: {
-    add: async function(user) {
-      const id = await local.getUniqueID('tblUser');
-      var result = await sql.query('INSERT INTO tblUser (id, user, pw, email, rank, theme) VALUES (?, ?, ?, ?, 1, "scarecrow")', [id, user.username, user.password, user.email]);
-      result = await sql.query('SELECT id, user, rank, theme FROM tblUser WHERE user = ? AND pw = ?', [user.username, user.password]);
-      return result[0];
-    },
     delete: async function(user) {
       const deleteCharacters = await sql.query('DELETE FROM tblCharacter WHERE user_id = ?', [user]);
       const deleteUser = await sql.query('DELETE FROM tblUser WHERE id = ?', [user]);
@@ -393,7 +396,7 @@ const local = module.exports = {
         var obj = {}
         var result = await sql.query('SELECT u.user as "name", u.rank, r.name as "rankName", u.email, u.role, u.theme FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [user]);
         obj['details'] = result[0]
-        result = await sql.query('SELECT id, name, level, class, role, main FROM tblCharacter WHERE user_id = ? ORDER BY main DESC', [user]);
+        result = await sql.query('SELECT id, name, server, class, spec, role, level, main FROM tblCharacter WHERE user = ? ORDER BY main DESC', [user]);
         obj['characters'] = result
         for (var char in obj['characters']) {
           if (obj['characters'][char].main === 1) {
@@ -412,6 +415,10 @@ const local = module.exports = {
           }
         }
         return obj;
+      },
+      officers: async function() {
+        const result = await sql.query('SELECT u.user, r.name as "rank", u.role, c.name as "char" FROM tblUser u JOIN tblRank r ON u.rank = r.id JOIN tblCharacter c ON u.id = c.user WHERE u.rank > 5 AND c.main = 1 ORDER BY r.name, u.user');
+        return result;
       }
     },
     set: {
@@ -423,13 +430,6 @@ const local = module.exports = {
         }
         return;
       }
-    }
-  },
-  users: {
-    getOfficers: async function() {
-      const result = await sql.query('SELECT u.user, r.name as "rank", u.role, c.name as "char" FROM tblUser u JOIN tblRank r ON u.rank = r.id JOIN tblCharacter c ON u.id = c.user_id WHERE u.rank > 5 AND c.main = 1 ORDER BY r.name, u.user');
-      debug(result)
-      return result;
     }
   },
   wishlist: {

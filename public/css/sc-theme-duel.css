@@ -24,7 +24,7 @@ button, input, select, textarea {
   background: none;
   outline: none;
 }
-button, input, select {
+button, input, select, .selected {
   -webkit-transition: all .30s ease-in-out;
   -moz-transition: all .30s ease-in-out;
   -ms-transition: all .30s ease-in-out;
@@ -99,4 +99,9 @@ option {
 }
 .formHeadline, .formContainer-value, .itemSlotContainer-headline {
   border-bottom: 1px solid rgba(var(--clrSecondaryFont), 1);
+}
+.charContainer.selected {
+  border: 1px solid rgba(var(--clrThemeFocus), 1);
+  box-shadow: 0 0 5px rgba(var(--clrThemeFocus), 1);
+  color: rgba(var(--clrThemeFocus), 1);
 }

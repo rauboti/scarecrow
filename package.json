@@ -11,6 +11,7 @@
   "author": "Gaute Rauboti",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "cookie-parser": "^1.4.3",
@@ -24,6 +25,7 @@
     "mysql": "^2.16.0",
     "nodemon": "^1.17.5",
     "passport": "^0.4.0",
+    "passport-bnet": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-strategy": "^1.0.0",
     "serve-favicon": "^2.5.0",

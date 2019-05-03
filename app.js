@@ -18,6 +18,7 @@ const port = process.env.PORT || 4000;
 
 // => defining routes
 const router = require('./src/routes/scRoutes')();
+const auth = require('./src/routes/auth')();
 
 // => extra logging (morgan), parsing av POST requests (body-parser) & favicon
 app.use(morgan('tiny'))
@@ -42,6 +43,7 @@ app.set('views', './public/views')
 
 //binding the router to the root
 app.use('/', router);
+app.use('/auth', auth);
 
 // => listening to port
 app.listen(port, () => {
