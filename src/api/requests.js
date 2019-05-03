@@ -12,11 +12,9 @@ const local = module.exports = {
         character: {
             getAll: async function(token) {
                 var characters = {}
-                console.log(token)
                 url = 'https://eu.api.blizzard.com/wow/user/characters?access_token=' + token;
 
                 var response = await getData(url);
-                console.log(response)
                 data = response['characters'] // Blizzard returns the json named characters; this makes the code easier to read below
                 for (var char in data) {
                     !(characters[data[char].realm]) && (characters[data[char].realm] = {});
