@@ -336,7 +336,7 @@ function router() {
       getPages(rank, function(scMenu){
         (async function dbQuery() {
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('signIn', { scMenu, conf, error });
+          res.render('signIn', { scMenu, conf });
         }());
       })});
 
