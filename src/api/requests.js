@@ -12,6 +12,7 @@ const local = module.exports = {
         character: {
             getAll: async function(token) {
                 var characters = {}
+                debug(token)
                 url = 'https://eu.api.blizzard.com/wow/user/characters?access_token=' + token;
 
                 var response = await getData(url);
