@@ -17,8 +17,7 @@ function bnetStrategy() {
       callbackURL: "https://scarecrow.rauboti.net/auth/bnet/callback/",
       region: 'eu'
     }, (accessToken, refreshToken, profile, done) => {
-      (async function dbQuery() {
-        
+      (async function dbQuery() {       
         const userExcists = await sql.query('SELECT id, user, rank, theme FROM tblUser WHERE id = ?', [profile.id]);
         if (userExcists === undefined || userExcists.length === 0) {
           const addUser = await sql.query('INSERT INTO tblUser (id, user, rank, theme) VALUES (?, ?, 1, "scarecrow")', [profile.id, profile.battletag])
