@@ -335,7 +335,6 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
-          var error = (req.query.errorCredentials === 'true');
           const conf = { device: req.device.type.toLowerCase(), page: 'Sign in', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('signIn', { scMenu, conf, error });
         }());

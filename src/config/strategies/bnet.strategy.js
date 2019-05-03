@@ -12,10 +12,9 @@ function bnetStrategy() {
   passport.use(new Strategy(
     {
       clientID: BNET_ID,
-      //clientID: 'bf56290b9c05469db6424bb9b294177b',
       clientSecret: BNET_SECRET,
-      //clientSecret: 'yYGgbjSb2fM1CPLtHBwr001RXU75MiZ2',
-      callbackURL: "http://localhost:4000/auth/bnet/callback/",
+      //callbackURL: "http://localhost:4000/auth/bnet/callback/",
+      callbackURL: "https://scarecrow.rauboti.net/auth/bnet/callback/",
       region: 'eu'
     }, (accessToken, refreshToken, profile, done) => {
       (async function dbQuery() {
