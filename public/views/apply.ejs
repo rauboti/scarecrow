@@ -38,63 +38,24 @@
     <section class="pageContainer">
       <form name="frmSignIn" action="<%=scMenu['apply'].path%>" method="post" onsubmit="return formValidation();" autocomplete="off">
         <div class="applyContainer">
-          <div class="applyContainer-halfColumn">
-            <span>Character name</span>
-            <div><input id="frmCharName" type="text" name="cName" class="apply-input" autocomplete="off"/></div>
-            <div id="frmCharNameError" class="errorText"></div>
-          </div>
-          <div class="applyContainer-halfColumn">
-            <span>Character level</span>
-            <div><input id="frmLevel" type="text" name="cLevel" class="apply-input" /></div>
-            <div id="frmLevelError" class="errorText"></div>
-          </div>
-          <div class="applyContainer-halfColumn">
-            <span>Class</span>
-            <div><select id="frmCharClass" name="cClass" class="apply-input"></select></div>
-            <div id="frmCharClassError" class="errorText"></div>
-          </div>
-          <div class="applyContainer-halfColumn">
-            <span>Role</span>
-            <div><select id="frmCharRole" name="cRole" class="apply-input"></select></div>
-            <div id="frmCharRoleError" class="errorText"></div>
-          </div>
-          <div class="applyContainer-halfColumn">
-            <span>Link to your spec</span>
-            <div><input id="frmSpecLink" type="text" name="specLink" class="apply-input" /></div>
-            <div id="frmSpecLinkError" class="errorText"></div>
-          </div>
-          <div class="applyContainer-halfColumn">
-            <span>Armory profile</span>
-            <div><input id="frmArmoryLink" type="text" name="armoryLink" class="apply-input" /></div>
-            <div id="frmArmoryLinkError" class="errorText"></div>
-          </div>
+          <button id="btnSelectChar" type="button">Select character</button>
+          <div id="frmCharacter"></div>
+          <div id="frmCharacterError" class="errorText"></div>
           <div class="applyContainer-fullColumn">
             <span>How many of our raids will you be able to attend each week?</span>
-            <div><input id="frmNumberOfRaids" type="text" name="numberRaids" class="apply-input" /></div>
+            <div><input id="frmNumberOfRaids" type="text" name="raids" class="apply-input" /></div>
             <div id="frmNumberOfRaidsError" class="errorText"></div>
           </div>
           <div class="applyContainer-fullColumn">
             <span>How do you prepare for each raid (progression and farm)?</span>
-            <div><textarea id="frmPreparation" name="preparation" class="apply-input"></textarea></div>
+            <div><textarea id="frmPreparation" name="prep" class="apply-input"></textarea></div>
             <div id="frmPreparationError" class="errorText"></div>
           </div>
           <div class="applyContainer-fullColumn">
-            <span>Why are <u>you</u> a vaulable asset to our raiding team?</span>
-            <div><textarea id="frmValuableAsset" name="asset" class="apply-input"></textarea></div>
-            <div id="frmValuableAssetError" class="errorText"></div>
+            <span>Who are you and why are you applying to Scarecrow?</span>
+            <div><textarea id="frmWhy" name="why" class="apply-input"></textarea></div>
+            <div id="frmWhyError" class="errorText"></div>
           </div>
-          <div class="applyContainer-fullColumn">
-            <span>Making a mistake, how do you respond to being called out on it?</span>
-            <div><input id="frmMakingMistake" type="text" name="mistake" class="apply-input" /></div>
-            <div id="frmMakingMistakeError" class="errorText"></div>
-          </div>
-          <div class="applyContainer-fullColumn">
-            <span>Finally, is there anything else you'd like to add?</span>
-            <div><textarea id="frmAnythingElse" name="anythingElse" class="apply-input"></textarea></div>
-            <div id="frmAnythingElseError" class="errorText"></div>
-          </div>
-        </div>
-        <div class="formButtonRow">
           <button id="btnSubmitApplication" type="submit" name="submit" value="application" class="action-button">Submit</button>
         </div>
       </form>

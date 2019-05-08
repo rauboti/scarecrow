@@ -1,7 +1,5 @@
 var clicked;
 $(document).ready(function() {
-  scarecrow.get.character.classes(initClasses);
-
   $('.action-button').click(function() {
     $(this).is('[id]') && (clicked = $(this).attr('id').split('btn')[1]);
   });
@@ -11,33 +9,120 @@ $(document).ready(function() {
   $('.apply-input').blur(function() {
     formValidationMarkup($(this).attr('id'));
   });
+  $('#btnSelectChar').click(function() {
+    formSelectChar();
+  });
 });
 
-//  ------------------------------------------------------------ { Classes & roles }
-function initClasses(classes) {
-  for (var i in classes) {
-    $('#frmCharClass').append('<option>' + classes[i].name + '</option>')
-  }
-  initRoles();
-  //Change role dropdown if the Class-dropdown changes
-  $('#frmCharClass').change(function() {
-    initRoles();
-  });
-  function initRoles() {
-    $('#frmCharRole').html('');
-    for (var i in classes) {
-      if (classes[i].name === $('#frmCharClass :selected').text()) {
-        classes[i].isDamage !== 0 ? $('#frmCharRole').append('<option>Damage</option>') : '';
-        classes[i].isSupport !== 0 ? $('#frmCharRole').append('<option>Support</option>') : '';
-        classes[i].isTank !== 0 ? $('#frmCharRole').append('<option>Tank</option>') : '';
+//  ------------------------------------------------------------ { Character selection }
+function formSelectChar() {
+  scarecrow.window.toggle.background();
+  // Displaying an empty popupform with a message
+  $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return formValidateGetChar();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+  + '<div class="popupContainer-headline">Select character</div>'
+  + '<div id="loadingMsg"><br><br><i>Fetching character data from Battle.net...</i><br><br><br></div>'
+  + '</div></form>');
+  
+  // Pulling character data
+  scarecrow.get.characters(initCharacters);
+
+  function initCharacters(characters) {
+    // Removing the loading-message and instead adding elements to the form
+    $('#loadingMsg').remove();
+    $('#popupContainer').append('<div class="formContainer-fullColumn">'
+    + '<select id="frmServer" name="server"><option value=""></option></select></div>'
+    + '<div id="frmCharacters" class="formContainer-fullColumn charList"></div>'
+    + '<input type="hidden" id="frmName" name="name" value=""/>'
+    + '<input type="hidden" id="frmLevel" name="level" value=""/>'
+    + '<input type="hidden" id="frmClass" name="class" value=""/>'
+    + '<input type="hidden" id="frmSpec" name="spec" value=""/>'
+    + '<input type="hidden" id="frmRole" name="role" value=""/>'
+    + '<span id="frmError" class="errorText"></span>'
+    + '<div class="formContainer-buttonRow">'
+    + '<button id="btnCancel" type="button">Cancel</button>'
+    + '<button id="btnSelect" type="button">Select</button>'
+    + '</div>')
+
+    $('#btnCancel').click(function() {
+      scarecrow.window.close.popup();
+      scarecrow.window.toggle.background();
+    });
+
+    $('#btnSelect').click(function() {
+      if ($('#frmName').val() !== '') {
+        if (parseInt($('#frmLevel').val()) <= 60) {
+          $('#frmCharacter').html('<div class="charContainer"><div class="charContainer-details">'
+          + '<input type="hidden" class="charContainer-role" name="role" value="' + $('#frmRole').val() + '"/>'
+          + '<input type="hidden" class="charContainer-class" name="class" value="' + $('#frmClass').val() + '"/>'
+          + '<input type="hidden" class="charContainer-name" name="name" value="' + $('#frmName').val() + '"/>'
+          + '<input type="hidden" class="charContainer-spec" name="spec" value="' + $('#frmSpec').val() + '"/>'
+          + '<input type="hidden" class="charContainer-level" name="level" value="' + $('#frmLevel').val() + '"/>'
+          + '<input type="hidden" class="charContainer-server" name="server" value="' + $('#frmServer option:selected').text() + '"/>'
+          + '<div class="charContainer-nickname clr' + $('#frmClass').val() + '">' + $('#frmName').val() + '</div><div class="charContainer-spec">' + $('#frmSpec').val() + '</div> <div class="charContainer-class">' + $('#frmClass').val() + '</div></div>'
+          + '<div class="charContainer-graph"><svg viewBox="0 0 36 36" class="graphCircle">'
+          + '<path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>'
+          + '<path class="circle" stroke-dasharray="' + (parseInt($('#frmLevel').val())/60*100).toString() + ', 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />'
+          + '<text x="18" y="20.35" class="graphCircle-text charContainer-level">' + $('#frmLevel').val() + '</text></svg></div>'
+          + '</div>');
+          scarecrow.window.close.popup();
+          scarecrow.window.toggle.background();
+          $('#btnSelectChar').hide();
+          $('.charContainer').click(function() {
+            formSelectChar();
+          });
+        } else {
+          $('#frmError').html('Character too high level, please select a character level 60 or lower.')
+        }
+      } else {
+        $('#frmError').html('No character selected, please select a character to import.')
       }
+    });
+
+    scarecrow.get.classes(initClasses);
+
+    function initClasses(classes) {
+      for (var server in characters) {
+        $('#frmServer').append('<option value="' + server.toLowerCase() + '">' + server + '</option>')
+      }
+
+      $('#frmServer').change(function() {
+        $('#frmName').val('');
+        $('#frmLevel').val('');
+        $('#frmClass').val('');
+        $('#frmSpec').val('');
+        $('#frmRole').val('');
+        $('#frmError').html('');
+        $('#frmCharacters').html('');
+        for (var char in characters[$('#frmServer option:selected').text()]) {
+          if (classes[characters[$('#frmServer option:selected').text()][char].class]) {
+            characters[$('#frmServer option:selected').text()][char].spec ? spec = characters[$('#frmServer option:selected').text()][char].spec.name : spec = '';
+            characters[$('#frmServer option:selected').text()][char].spec ? role = characters[$('#frmServer option:selected').text()][char].spec.role : role = '';
+            var percentage = (characters[$('#frmServer option:selected').text()][char].level/60*100)
+            $('#frmCharacters').append('<div class="charContainer"><div class="charContainer-details"><input type="hidden" class="charContainer-role" value="' + role + '"/><div class="charContainer-nickname clr' + classes[characters[$('#frmServer option:selected').text()][char].class] + '">' + char + '</div><div class="charContainer-spec">' + spec + '</div> <div class="charContainer-class">' + classes[characters[$('#frmServer option:selected').text()][char].class] + '</div></div>'
+            + '<div class="charContainer-graph"><svg viewBox="0 0 36 36" class="graphCircle">'
+            + '<path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>'
+            + '<path class="circle" stroke-dasharray="' + percentage + ', 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />'
+            + '<text x="18" y="20.35" class="graphCircle-text charContainer-level">' + characters[$('#frmServer option:selected').text()][char].level + '</text></svg></div>'
+            + '</div>')
+          }
+        }
+        $('.charContainer').click(function() {
+          $('.charContainer').removeClass('selected');
+          $(this).addClass('selected');
+          $('#frmName').val($(this).children('.charContainer-details').children('.charContainer-nickname').text());
+          $('#frmLevel').val(parseInt($(this).children('.charContainer-graph').children('.graphCircle').children('.charContainer-level').text()));
+          $('#frmClass').val($(this).children('.charContainer-details').children('.charContainer-class').text());
+          $('#frmSpec').val($(this).children('.charContainer-details').children('.charContainer-spec').text());
+          $('#frmRole').val($(this).children('.charContainer-details').children('.charContainer-role').val());
+        })
+      });
     }
   }
 }
 
 //  ------------------------------------------------------------ { Validation }
 function formValidation() {
-    if ($('#frmCharName').val() !== '' && $('#frmLevel').val() !== '' && $('#frmSpecLink').val() !== '' && $('#frmArmoryLink').val() !== '' && $('#frmNumberOfRaids').val() !== '' && $('#frmPreparation').val() !== '' && $('#frmValuableAsset').val() !== '' && $('#frmMakingMistake').val() !== '' && $('#frmAnythingElse').val() !== '') {
+    if ($('#frmCharacter').html() !== '' && $('#frmNumberOfRaids').val() !== '' && $('#frmPreparation').val() !== '' && $('#frmWhy').val() !== '') {
       return true;
     } else {
       formValidationMarkup('all')
@@ -47,44 +132,11 @@ function formValidation() {
 
 //  ------------------------------------------------------------ { Visuals }
 function formValidationMarkup(field) {
-
-  if (field === 'frmCharName' || field === 'all') {
-    if ($('#frmCharName').val() === '') {
-      $('#frmCharName').addClass('invalidInput');
-      $('#frmCharNameError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
+  if (field == 'frmCharacter' || field === 'all') {
+    if ($('#frmCharacter').html() === '') {
+      $('#frmCharacterError').css({'width': '85%', 'display': 'inline-block'}).html('Please select the character you want to apply with');
     } else {
-      $('#frmCharName').removeClass('invalidInput');
-      $('#frmCharNameError').css({'width': 'auto', 'display': 'block'}).html('');
-    }
-  }
-
-  if (field === 'frmLevel' || field === 'all') {
-    if ($('#frmLevel').val() === '') {
-      $('#frmLevel').addClass('invalidInput');
-      $('#frmLevelError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
-    } else {
-      $('#frmLevel').removeClass('invalidInput');
-      $('#frmLevelError').css({'width': 'auto', 'display': 'block'}).html('');
-    }
-  }
-
-  if (field === 'frmSpecLink' || field === 'all') {
-    if ($('#frmSpecLink').val() === '') {
-      $('#frmSpecLink').addClass('invalidInput');
-      $('#frmSpecLinkError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
-    } else {
-      $('#frmSpecLink').removeClass('invalidInput');
-      $('#frmSpecLinkError').css({'width': 'auto', 'display': 'block'}).html('');
-    }
-  }
-
-  if (field === 'frmArmoryLink' || field === 'all') {
-    if ($('#frmArmoryLink').val() === '') {
-      $('#frmArmoryLink').addClass('invalidInput');
-      $('#frmArmoryLinkError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
-    } else {
-      $('#frmArmoryLink').removeClass('invalidInput');
-      $('#frmArmoryLinkError').css({'width': 'auto', 'display': 'block'}).html('');
+      $('#frmCharacterError').css({'width': 'auto', 'display': 'block'}).html('');
     }
   }
 
@@ -108,33 +160,13 @@ function formValidationMarkup(field) {
     }
   }
 
-  if (field === 'frmValuableAsset' || field === 'all') {
-    if ($('#frmValuableAsset').val() === '') {
-      $('#frmValuableAsset').addClass('invalidInput');
-      $('#frmValuableAssetError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
+  if (field === 'frmWhy' || field === 'all') {
+    if ($('#frmWhy').val() === '') {
+      $('#frmWhy').addClass('invalidInput');
+      $('#frmWhyError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
     } else {
-      $('#frmValuableAsset').removeClass('invalidInput');
-      $('#frmValuableAssetError').css({'width': 'auto', 'display': 'block'}).html('');
-    }
-  }
-
-  if (field === 'frmMakingMistake' || field === 'all') {
-    if ($('#frmMakingMistake').val() === '') {
-      $('#frmMakingMistake').addClass('invalidInput');
-      $('#frmMakingMistakeError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
-    } else {
-      $('#frmMakingMistake').removeClass('invalidInput');
-      $('#frmMakingMistakeError').css({'width': 'auto', 'display': 'block'}).html('');
-    }
-  }
-
-  if (field === 'frmAnythingElse' || field === 'all') {
-    if ($('#frmAnythingElse').val() === '') {
-      $('#frmAnythingElse').addClass('invalidInput');
-      $('#frmAnythingElseError').css({'width': '85%', 'display': 'inline-block'}).html('Field required');
-    } else {
-      $('#frmAnythingElse').removeClass('invalidInput');
-      $('#frmAnythingElseError').css({'width': 'auto', 'display': 'block'}).html('');
+      $('#frmWhy').removeClass('invalidInput');
+      $('#frmWhyError').css({'width': 'auto', 'display': 'block'}).html('');
     }
   }
 }

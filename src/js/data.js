@@ -9,6 +9,16 @@ const sql = require('../js/db');
 const SC = require('../js/functions');
 
 const local = module.exports = {
+  classes: {
+    get: async function() {
+      var classes = {}
+      const result = await sql.query('SELECT id, name FROM tblClass WHERE available = 1 ORDER BY id ASC')
+      for (var i in result) {
+        classes[result[i].id] = result[i].name
+      }
+      return classes;
+    }
+  },
   get: {
     boss: async function(id) {
       if (id === 'all') {
@@ -17,14 +27,6 @@ const local = module.exports = {
       } else {
         // only 1 selected
       }
-    },
-    classes: async function() {
-      var classes = {}
-      const result = await sql.query('SELECT id, name FROM tblClass WHERE available = 1 ORDER BY id ASC')
-      for (var i in result) {
-        classes[result[i].id] = result[i].name
-      }
-      return classes;
     },
     coefficients: async function() {
       var coefficients = {}
@@ -165,9 +167,9 @@ const local = module.exports = {
   },
   app: {
     add: async function(app, user) {
+      const char = await local.character.add(app, user)
       const id = await local.getUniqueID('tblApplications');
-      const result = await sql.query('INSERT INTO tblApplications (id, user, status, character_name, character_class, character_role, character_level, spec, armory, raids, preparation, asset, mistakes, anything_else) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, user, 'New', app.cName, app.cClass, app.cRole, app.cLevel, app.specLink, app.armoryLink, app.numberRaids, app.preparation, app.asset, app.mistake, app.anythingElse]);
-      const character = await local.character.add(app, user, 1)
+      await sql.query('INSERT INTO tblApplications (`id`, `user`, `status`, `character`, `raids`, `prep`, `why`) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, parseInt(user), 'New', char, app.raids, app.prep, app.why]);
       return;
     },
     get: async function(id) {
@@ -201,12 +203,14 @@ const local = module.exports = {
       var charExcists = await sql.query('SELECT * from tblCharacter WHERE name = ? and server = ?', [char.name, char.server]);
       if (charExcists.length < 1) {
         const id = await local.getUniqueID('tblCharacter');
-        const result = await sql.query('INSERT INTO tblCharacter (id, name, server, class, spec, role, user, main, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, char.name, char.server, char.class, char.spec, char.role, user, 0, parseInt(char.level)]);
+        await sql.query('INSERT INTO tblCharacter (id, name, server, class, spec, role, user, main, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, char.name, char.server, char.class, char.spec, char.role, user, 0, parseInt(char.level)]);
+        return id;
+      } else {
+        return charExcists[0].id;
       }
-      return;
     },
     delete: async function(character, user) {
-      const result = await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user = ?', [character, user]);
+      await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user = ?', [character, user]);
       return;
     },
     update: async function(user, server, name, level) {
@@ -214,18 +218,9 @@ const local = module.exports = {
       return;
     },
     set: {
-      main: async function(character, user) {
-        const reset = await sql.query('UPDATE tblCharacter SET main = ? WHERE user_id = ?', [0, user]);
-        const setNew = await sql.query('UPDATE tblCharacter SET main = ? WHERE user_id = ? AND id = ?', [1, user, character])
-        return;
-      },
-      details: async function(character, user, admin) {
-        if (admin) {
-          const resetMain = await sql.query('UPDATE tblCharacter SET main = ? WHERE user_id = ?', [0, user]);
-          const result = await sql.query('UPDATE tblCharacter SET name = ?, level = ?, main = ? WHERE user_id = ? and id = ?', [character.cName, character.cLevel, parseInt(character.cMain), user, character.editChar])
-        } else {
-          const result = await sql.query('UPDATE tblCharacter SET name = ?, level = ? WHERE user_id = ? and id = ?', [character.cName, character.cLevel, user, character.editChar])
-        }
+      main: async function(user, character) {
+        await sql.query('UPDATE tblCharacter SET main = ? WHERE user = ?', [0, user]);
+        await sql.query('UPDATE tblCharacter SET main = ? WHERE user = ? AND id = ?', [1, user, character])
         return;
       }
     }

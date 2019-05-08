@@ -198,13 +198,13 @@ function formGetCharacters() {
 function formEditChar(id, name, server) {
   scarecrow.window.toggle.background();
   // Displaying an empty popupform with a message
-  $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return formValidateEditChar();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+  $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" autocomplete="off"><div id="popupContainer" class="popupContainer">'
   + '<div class="popupContainer-headline">' + name + ' options</div>'
   + '<input type="hidden" name="character" value="' + id + '"/>'
   + '<input type="hidden" name="name" value="' + name + '"/>'
   + '<input type="hidden" name="server" value="' + server + '"/>'
   + '<div class="formContainer-buttonRow">'
-  + '<button id="btnEdit" type="submit" name="update" value="character">Update character</button>'
+  + '<button id="btnUpdate" type="submit" name="update" value="character">Update character</button>'
   + '<button id="btnDelete" type="button">Delete character</button>'
   + '<button id="btnClose" type="button">Close</button>'
   + '</div>'
@@ -241,9 +241,6 @@ function formValidateGetChar() {
     scarecrow.window.close.popup();
     return false;
   }
-}
-function formValidateEditChar() {
-  //
 }
 
 function formValidateAddItem() {

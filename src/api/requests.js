@@ -30,7 +30,6 @@ const local = module.exports = {
                 return characters;
             },
             update: async function(user, token, name, server) {
-                // https://us.api.blizzard.com/wow/character/blackrock/Thrall?fields=stats&locale=en_US&access_token=USknziBOv5MOp6H1D9ymmi2ErZ8vP3LRVs
                 url = 'https://eu.api.blizzard.com/wow/character/' + server + '/' + name + '?fields=stats&locale=en_EU&access_token=' + token;
 
                 var response = await getData(url);

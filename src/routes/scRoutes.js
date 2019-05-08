@@ -95,23 +95,29 @@ function router() {
       (async function dbQuery() {
         debug(req.body);
 
-        if (req.body.add && req.body.add === 'character') {
-          const Add = await DB.character.add(req.body, req.params.id, 0);
-          res.redirect(req.get('referer'));
-        } else if (req.body.back) {
+        if (req.body.back) {
           res.redirect('/admin');
-        } else if (req.body.delChar) {
-          const Del = await DB.character.delete(req.body, req.params.id)
-          res.redirect(req.get('referer'));
-        } else if (req.body.delete && req.body.delete === 'user') {
-          const Del = await DB.user.delete(req.params.id);
-          res.redirect('/admin');
+        } else if (req.body.delete) {
+          if (req.body.delete === 'user') {
+            const Del = await DB.user.delete(req.params.id);
+            res.redirect('/admin');
+          }
         } else if (req.body.editUser) {
           const Update = await DB.user.set.details(req.body, req.params.id, true)
           res.redirect(req.get('referer'));
         } else if (req.body.editChar) {
           const Edit = await DB.character.set.details(req.body, req.params.id, true)
           res.redirect(req.get('referer'));
+        } else if (req.body.set) {
+          if (req.body.set === 'maincharacter') {
+            await DB.character.set.main(req.params.id, req.body.character);
+            res.redirect(req.get('referer'));
+          }
+        } else if (req.body.update) {
+          if (req.body.update === 'character') {
+            await api.bnet.character.update(req.params.id, req.user.token, req.body.name, req.body.server);
+            res.redirect(req.get('referer'));
+          }
         }
       }())});
 
@@ -185,7 +191,7 @@ function router() {
       })})
     .post((req, res) => {
       (async function submitApplication() {
-        const Add = await DB.app.add(req.body, req.user.id);
+        await DB.app.add(req.body, req.user.id);
         res.redirect('/');
       }())});
 
@@ -262,32 +268,6 @@ function router() {
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
           const user = await DB.user.get.details(req.user.id);
-          /*
-          const itemid = 16802;
-          var url = 'https://classic.wowhead.com/item=' + itemid + '&xml';
-          SC.xmlToJson(url, function(err, data) {
-            if (err) { return console.err(err); }
-            //const t = JSON.stringify(data, null, 2);
-            (async function parseData(){
-              const name = data['wowhead']['item'][0]['name'][0]
-              const quality = data['wowhead']['item'][0]['quality'][0]['_']
-              const link = data['wowhead']['item'][0]['link'][0]
-              const json = JSON.parse('{' + data['wowhead']['item'][0]['jsonEquip'][0] + '}')
-              debug(json)
-              var item = {}
-              json.armor && (item['armor']=json.armor)
-              json.int && (item['int']=json.int)
-              json.spi && (item['spi']=json.spi)
-              json.sta && (item['sta']=json.sta)
-              json.splpwr && (item['spellpower']=json.splpwr)
-              json.splhitpct && (item['spellhit']=json.splhitpct)
-              json.manargn && (item['mp5']=json.manargn)
-              json.firres && (item['fireres']=json.firres)
-              debug(item)
-              const updateDB = await sql.query('UPDATE tblItem set stats = ? WHERE id = ?', [JSON.stringify(item), itemid])
-            }());
-          });
-          */
           const conf = { device: req.device.type.toLowerCase(), page: 'Profile', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('profile', { scMenu, conf, user });
         }());
@@ -299,14 +279,12 @@ function router() {
           if (req.body.add === 'character') { const Add = await DB.character.add(req.body, req.user.id); }          
         } else if (req.body.delete) {
           if (req.body.delete === 'character') {
-            const Delete = await DB.character.delete(req.body.character, req.user.id);
+            await DB.character.delete(req.body.character, req.user.id);
           }
         } else if (req.body.update) {
           if (req.body.update === 'character') {
             await api.bnet.character.update(req.user.id, req.user.token, req.body.name, req.body.server);
           }
-        } else if (req.body.editChar) {
-          const Edit = await DB.character.set.details(req.body, req.user.id, false)
         } else if (req.body.editUser) {
           const Edit = await DB.user.set.details(req.body, req.user.id, false)
           req.user.theme = req.body.theme;
@@ -352,7 +330,7 @@ function router() {
         debug(req.body);
         req.body.request === 'boss' && (result = await DB.get.boss(req.body.id))
         req.body.request === 'characters' && (result = await api.bnet.character.getAll(req.user.token))
-        req.body.request === 'classes' && (result = await DB.get.classes())
+        req.body.request === 'classes' && (result = await DB.classes.get())
         req.body.request === 'coefficients' && (result = await DB.get.coefficients())
         req.body.request === 'consumables' && (result = await DB.consumables.get())
         req.body.request === 'event' && (result = await DB.get.event(req.body.id))

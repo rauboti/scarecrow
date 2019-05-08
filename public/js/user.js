@@ -1,10 +1,6 @@
 var frmClicked;
-var qmClicked;
 $(document).ready(function() {
   $('.rolloutContainer').hide();
-  $('.action-button').click(function() {
-    $(this).is('[id]') && (qmClicked = $(this).attr('id').split('btn')[1]);
-  });
   $('.menuButtonRow-icon').click(function() {
     $('.menuButtonRow').slideToggle(500);
   });
@@ -19,6 +15,9 @@ $(document).ready(function() {
   $('.formController').click(function() {
     $(this).attr('id').split('btn')[1] === 'EditUser' && formEditUser($('#txtUsername').text(), $('#txtEmail').text(), $('#txtRank').text(), $('#txtRole').text());
     $(this).attr('id').split('btn')[1] === 'DelUser' && formDelUser();
+  });
+  $('.charContainer').click(function() {
+    formEditChar($(this).children('.charContainer-details').children('.charContainer-id').val(), $(this).children('.charContainer-details').children('.charContainer-nickname').text(), $(this).children('.charContainer-details').children('.charContainer-server').val());
   });
 });
 
@@ -36,6 +35,24 @@ function formDelUser() {
   $('.formPopup-button').click(function() {
     frmClicked = $(this).attr('id').split('btn')[1];
   });
+}
+
+function formEditChar(id, name, server) {
+  scarecrow.window.toggle.background();
+  // Displaying an empty popupform with a message
+  $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" autocomplete="off"><div id="popupContainer" class="popupContainer">'
+  + '<div class="popupContainer-headline">' + name + ' options</div>'
+  + '<input type="hidden" name="character" value="' + id + '"/>'
+  + '<input type="hidden" name="name" value="' + name + '"/>'
+  + '<input type="hidden" name="server" value="' + server + '"/>'
+  + '<div class="formContainer-buttonRow">'
+  + '<button id="btnUpdate" type="submit" name="update" value="character">Update character</button>'
+  + '<button id="btnMain" type="submit" name="set" value="maincharacter">Set as main</button>'
+  + '<button id="btnClose" type="button">Close</button>'
+  + '</div>'
+  + '</div></form>');
+
+  $('#btnClose').click(function() { scarecrow.window.toggle.background(); scarecrow.window.close.popup(); });
 }
 
 function formEditUser(username, email, rank, role) {
@@ -104,11 +121,4 @@ function formValidateUserMarkup() {
     $('#frmUsername').removeClass('invalidInput');
     $('#frmUsernameError').css({'width': 'auto', 'display': 'block'}).html('');
   }
-}
-
-function validateQuickmenu() {
-  if (qmClicked === 'Back') {
-    return true;
-  }
-  return false;
 }
