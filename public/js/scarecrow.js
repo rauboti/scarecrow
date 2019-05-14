@@ -1,5 +1,9 @@
 var scarecrow = {
   get: {
+    application: function(app) {
+      var data = { request: 'application' };
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: window.location.href, success: app })
+    },
     boss: function(id, boss) {
       var data = { request: 'boss', id: id };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: boss })

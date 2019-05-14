@@ -134,7 +134,14 @@ textarea {
   vertical-align: middle;
   width: 1.3em;
 }
-
+.subMenuButton {
+  background: none;
+  font-size: 1.10rem;
+  opacity: 0.5;
+}
+.subMenuButton.selected {
+  opacity: 1;
+}
 /*  ------------------------------------------------------------ { Forms }
 */
 .formButtonRow, .formContainer {
@@ -632,6 +639,20 @@ section.pageContainer::-webkit-scrollbar {
   font-style: italic;
   margin: 1%;
 }
+/*  ------------------------------------------------------------ { Timer }
+*/
+.timerContainer {
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 1%;
+  padding: 1%;
+  width: 21%;
+}
+
+.timerContainer .timerValue {
+  font-size: 2rem;
+}
 
 /*  ------------------------------------------------------------ { Misc }
 */
@@ -669,7 +690,6 @@ section.pageContainer::-webkit-scrollbar {
     stroke-dasharray: 0 100;
   }
 }
-
 
 .graphCircle-text {
   fill: #FFF;

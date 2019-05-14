@@ -150,7 +150,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const applications = await DB.apps.getAll();
+          const applications = await DB.app.get.all();
           const conf = { device: req.device.type.toLowerCase(), page: 'Applications', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('applications', { scMenu, conf, applications });
         }());
@@ -164,17 +164,29 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const application = await DB.app.get(req.params.id);
+          debug(req.params.id)
           const conf = { device: req.device.type.toLowerCase(), page: 'Application', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('application', { scMenu, conf, application });
+          res.render('application', { scMenu, conf });
         }());
       })})
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
-        req.body.accept && (result = await DB.app.set(req.params.id, 'Accepted'))
-        req.body.decline && (result = await DB.app.set(req.params.id, 'Declined'))
-        res.redirect('/applications')
+        if (req.body.request) {
+          if (req.body.request === 'application') {
+            data = await DB.app.get.single(req.params.id, req.user.token);
+            res.json(data);
+          }
+        } else if (req.body.accept) {
+          await DB.app.set(req.params.id, 'Accepted')
+          res.redirect('/applications')
+        } else if (req.body.decline) {
+          await DB.app.set(req.params.id, 'Declined')
+          res.redirect('/applications')
+        } else if (req.body.back) {
+          res.redirect('/applications')
+        }
+        
       }())});
 
   pagerouter.route('/apply')                          // => apply page
@@ -329,7 +341,7 @@ function router() {
       (async function dbQuery() {
         debug(req.body);
         req.body.request === 'boss' && (result = await DB.get.boss(req.body.id))
-        req.body.request === 'characters' && (result = await api.bnet.character.getAll(req.user.token))
+        req.body.request === 'characters' && (result = await api.bnet.character.get.all(req.user.token))
         req.body.request === 'classes' && (result = await DB.classes.get())
         req.body.request === 'coefficients' && (result = await DB.get.coefficients())
         req.body.request === 'consumables' && (result = await DB.consumables.get())

@@ -48,7 +48,7 @@
             <% for (var application in applications[status]) {%>
               <a href="/application/<%=applications[status][application].id%>">
                 <div class="appContainer">
-                  <%=applications[status][application].name%> - Level <%=applications[status][application].level%> <%=applications[status][application].class%> (<%=applications[status][application].role%>)
+                  <%=applications[status][application].name%> - Level <%=applications[status][application].level%> <%=applications[status][application].spec%> <%=applications[status][application].class%> (<%=applications[status][application].role%>)
                 </div>
               </a>
             <%}%>

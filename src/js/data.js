@@ -8,6 +8,9 @@ const sql = require('../js/db');
 // => functions
 const SC = require('../js/functions');
 
+// => APIs
+const api = require('../api/requests');
+
 const local = module.exports = {
   classes: {
     get: async function() {
@@ -147,7 +150,7 @@ const local = module.exports = {
     attendance: async function(set) {
       for (var player in set['selected']) {
         var id = await local.getUniqueID('tblAttendance');
-        var result = sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set['selected'][player], set.raid, set.boss, 10])
+        var result = await sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set['selected'][player], set.raid, set.boss, 10])
       }
       return;
     },
@@ -172,30 +175,50 @@ const local = module.exports = {
       await sql.query('INSERT INTO tblApplications (`id`, `user`, `status`, `character`, `raids`, `prep`, `why`) VALUES (?, ?, ?, ?, ?, ?, ?)', [id, parseInt(user), 'New', char, app.raids, app.prep, app.why]);
       return;
     },
-    get: async function(id) {
-      const result = await sql.query('SELECT user, status, character_name, character_class, character_role, character_level, spec, armory, raids, preparation, asset, mistakes, anything_else FROM tblApplications WHERE id = ?', [id]);
-      return result;
+    get: {
+      all: async function() {
+        const result = await sql.query('SELECT `a`.`id`, `a`.`status`, `c`.`name`, `c`.`class`, `c`.`role`, `c`.`level`, `c`.`spec` FROM tblApplications a JOIN tblCharacter c ON `a`.`character` = `c`.`id` ORDER BY `a`.`status` DESC');
+        var applications = {}
+        for (var i in result) {
+          if (!applications[result[i].status]) {applications[result[i].status] = []; }
+          var x = {};
+          x['id'] = result[i].id;
+          x['name'] = result[i].name;
+          x['class'] = result[i].class;
+          x['role'] = result[i].role;
+          x['level'] = result[i].level;
+          x['spec'] = result[i].spec;
+          applications[result[i].status].push(x);
+        }
+        return applications;
+      },
+      single: async function(id, token) {
+        var app = {}
+        app['items'] = {}
+        var result = await sql.query('SELECT `a`.`user`, `a`.`status`, `c`.`name`, `c`.`server`, `c`.`class`, `c`.`role`, `c`.`level`, `c`.`spec`, `a`.`raids`, `a`.`prep`, `a`.`why` FROM tblApplications a JOIN tblCharacter c ON `a`.`character` = `c`.`id` WHERE `a`.`id` = ?', [id]);
+        app['general'] = result[0]
+
+        result = await api.bnet.character.get.gear(token, app.general.name, app.general.server);
+        
+        for (var i in result['items']) {
+          if (typeof result['items'][i] === 'object' && result['items'][i] !== null) {
+            set = {}
+            set['name'] = result['items'][i].name;
+            set['id'] = result['items'][i].id;
+            app['items'][i] = set;
+          } else {
+            debug(i)
+          }
+        }
+
+        debug(app['items'])
+
+        return app;
+      }
     },
     set: async function(id, status) {
       const result = await sql.query('UPDATE tblApplications SET status = ? WHERE id = ?', [status, id])
       return;
-    }
-  },
-  apps: {
-    getAll: async function() {
-      const result = await sql.query('SELECT id, status, character_name, character_class, character_role, character_level FROM tblApplications ORDER BY status DESC');
-      var applications = {}
-      for (var i in result) {
-        if (!applications[result[i].status]) {applications[result[i].status] = []; }
-        var x = {};
-        x['id'] = result[i].id;
-        x['name'] = result[i].character_name;
-        x['class'] = result[i].character_class;
-        x['role'] = result[i].character_role;
-        x['level'] = result[i].character_level;
-        applications[result[i].status].push(x);
-      }
-      return applications;
     }
   },
   character: {

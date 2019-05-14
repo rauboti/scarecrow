@@ -35,36 +35,7 @@
     </nav>
   </head>
   <body>
-    <section class="pageContainer">
-      <div class="appHeadline"><%=application[0].character_name%> - Level <%=application[0].character_level%> <%=application[0].character_class%> (<%=application[0].character_role%>)</div>
-      <div class="appBody">
-        <div><b># Spec</b></div>
-        <div><a href="<%=application[0].spec%>" target="_blank"><u><%=application[0].spec%></u></a><br><br></div>
-        <div><b># Armory profile</b></div>
-        <div><a href="<%=application[0].armory%>" target="_blank"><u><%=application[0].armory%></u></a><br><br></div>
-        <div><b># Raids / week</b></div>
-        <div style="white-space: pre-wrap;"><%=application[0].raids%></div><br><br>
-        <div><b># Raid preparations</b></div>
-        <div style="white-space: pre-wrap;"><%=application[0].preparation%></div><br><br>
-        <div><b># Why the applicant is a valuable asset</b></div>
-        <div style="white-space: pre-wrap;"><%=application[0].asset%></div><br><br>
-        <div><b># Being called out when making mistakes</b></div>
-        <div style="white-space: pre-wrap;"><%=application[0].mistakes%></div><br><br>
-        <div><b># Anything else?</b></div>
-        <div style="white-space: pre-wrap;"><%=application[0].anything_else%></div>
-      </div>
-      <div class="appButtonRow">
-        <form name="frmApplication" method="post">
-          <button type="submit" name="back" value="back" class="action-button">< Back</button>
-          <% if (application[0].status === 'New' || application[0].status === 'Declined') {%>
-            <button type="submit" name="accept" value="accept" class="action-button">Accept</button>
-          <%}
-          if (application[0].status === 'New' || application[0].status === 'Accepted') {%>
-            <button type="submit" name="decline" value="decline" class="action-button">Decline</button>
-          <%}%>
-        </form>
-      </div>
-    </section>
+    <section id="appDataContainer" class="pageContainer"></section>
   </body>
   <foot>
     <!-- JS source files -->

@@ -140,7 +140,14 @@ textarea {
   width: 1.3em;
   margin: 5px;
 }
-
+.subMenuButton {
+  background: none;
+  font-size: 1.10rem;
+  opacity: 0.5;
+}
+.subMenuButton.selected {
+  opacity: 1;
+}
 /*  ------------------------------------------------------------ { Forms }
 */
 .formButtonRow, .formContainer {
@@ -720,6 +727,21 @@ section.pageContainer::-webkit-scrollbar {
 .lvBar-text {
   color: rgba(84, 112, 125, 1);
   vertical-align: middle;
+}
+
+/*  ------------------------------------------------------------ { Timer }
+*/
+.timerContainer {
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 2.5%;
+  padding: 2.5%;
+  width: 15%;
+}
+
+.timerContainer .timerValue {
+  font-size: 2rem;
 }
 
 /*  ------------------------------------------------------------ { Misc }
