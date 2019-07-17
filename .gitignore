@@ -1,5 +1,5 @@
 # db files
-db.js
+db/config.js
 
 #node_modules
 node_modules/
