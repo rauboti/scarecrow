@@ -3,7 +3,8 @@ const express = require('express');
 const debug = require('debug')('app:data');
 
 // => db connection
-const sql = require('../js/db');
+const sql = require('../db/config');
+const db = require('../db/queries');
 
 // => functions
 const SC = require('../js/functions');
@@ -12,16 +13,117 @@ const SC = require('../js/functions');
 const api = require('../api/requests');
 
 const local = module.exports = {
+  character: {
+    add: async function(userId, char) {
+      const id = await db.character.add(userId, char)
+      return id;
+    },
+    delete: async function(userId, charId) {
+      await db.character.delete.single(userId, charId);
+      return;
+    },
+    update: {
+      level: async function(userId, token, charName, server) {
+        level = await api.bnet.character.get.level(token, charName, server);
+        await db.character.update.level(userId, server, charName, level)
+        return;
+      },
+      main: async function(userId, charId) {
+        await db.character.update.main(userId, charId)
+      }
+    }
+  },
   classes: {
     get: async function() {
       var classes = {}
-      const result = await sql.query('SELECT id, name FROM tblClass WHERE available = 1 ORDER BY id ASC')
+      const result = await db.classes.get();
       for (var i in result) {
         classes[result[i].id] = result[i].name
       }
       return classes;
     }
   },
+  instances: {
+    get: async function() {
+      const result = db.instances.get();
+      return result;
+    }
+  },
+  item: {
+    get: async function(req) {
+      req.source === 'wowhead' ? item = await api.wh.item(req.id) : item = await db.item.get(req.id);
+      item['coefficients'] = await db.coefficients.get();
+      return item;
+    }
+  },
+  user: {
+    delete: async function(userId) {
+      await db.character.delete.all(userId);
+      await db.user.delete(userId);
+      return;
+    },
+    get: {
+      name: async function(query, set) {
+        if (set === 'battletag') {
+          const result = await db.user.get.multiple.byBattletag(query);
+          return result;
+        } else if (set === 'character') {
+          const result = await db.user.get.multiple.byCharacter(query);
+          return result;
+        }
+      },
+      details: async function(userId) {
+        var obj = {}
+        obj['details'] = await db.user.get.single.details(userId)
+        obj['characters'] = await db.character.get.all(userId);
+        for (var char in obj['characters']) {
+          if (obj['characters'][char].main === 1) {
+            result = await db.wishlist.get(obj['characters'][char].id);
+            var itemlist = {}
+            for (var item in result) {
+              if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
+              var x = {}
+              x['id'] = result[item].id;
+              x['item'] = result[item].item;
+              x['name'] = result[item].name;
+              x['quality'] = result[item].quality;
+              itemlist[result[item].slot].push(x)
+            }
+            obj['wishlist'] = itemlist
+          }
+        }
+        return obj;
+      },
+      officers: async function() {
+        const result = await db.user.get.officers();
+        return result;
+      }
+    },
+    set: {
+      details: async function(user, id, admin) {
+        if (admin) {
+          const result = await sql.query('UPDATE tblUser SET rank = ?, role = ?, email = ? WHERE id = ?', [parseInt(user.rank), user.role, user.email, id]);
+        } else {
+          const result = await sql.query('UPDATE tblUser SET email = ?, theme = ? WHERE id = ?', [user.email, user.theme, id]);
+        }
+        return;
+      }
+    }
+  },
+  lootValue: {
+    update: async function(lv) {
+      if (lv.id !== '') {
+        const item = await db.item.get(lv.id)
+        item.length < 1 ? await db.lv.add(lv) : await db.lv.update(lv)
+      }
+      return;
+    }
+  },
+
+
+
+
+  // => Still require cleanup
   get: {
     boss: async function(id) {
       if (id === 'all') {
@@ -30,14 +132,6 @@ const local = module.exports = {
       } else {
         // only 1 selected
       }
-    },
-    coefficients: async function() {
-      var coefficients = {}
-      const result = await sql.query('SELECT * FROM tblCoefficient');
-      for (var i in result) {
-        coefficients[result[i].stat] = result[i].coefficient
-      }
-      return coefficients;
     },
     event: async function(id) {
       if (id === 'all') {
@@ -194,12 +288,14 @@ const local = module.exports = {
       },
       single: async function(id, token) {
         var app = {}
-        app['items'] = {}
+        
+        //Getting application data from database
         var result = await sql.query('SELECT `a`.`user`, `a`.`status`, `c`.`name`, `c`.`server`, `c`.`class`, `c`.`role`, `c`.`level`, `c`.`spec`, `a`.`raids`, `a`.`prep`, `a`.`why` FROM tblApplications a JOIN tblCharacter c ON `a`.`character` = `c`.`id` WHERE `a`.`id` = ?', [id]);
         app['general'] = result[0]
 
+        // Adding current gear
+        app['items'] = {}
         result = await api.bnet.character.get.gear(token, app.general.name, app.general.server);
-        
         for (var i in result['items']) {
           if (typeof result['items'][i] === 'object' && result['items'][i] !== null) {
             set = {}
@@ -211,7 +307,23 @@ const local = module.exports = {
           }
         }
 
-        debug(app['items'])
+        // Adding current progression
+        app['progress'] = {}
+        result = await api.bnet.character.get.progress(token, app.general.name, app.general.server);
+        var included = ['Ahn\'Qiraj Temple', 'Blackwing Lair', 'Naxxramas', 'Onyxia\'s Lair', 'Molten Core', 'Ruins of Ahn\'Qiraj']
+        for (var raid in result['progression']['raids']) {
+          if (included.includes(result['progression']['raids'][raid].name)) {
+            var instance = {}
+            for (var boss in result['progression']['raids'][raid]['bosses']) {
+              var set = {}
+              if ('normalKills' in result['progression']['raids'][raid]['bosses'][boss]) { set['normal'] = result['progression']['raids'][raid]['bosses'][boss].normalKills; }
+              if ('heroicKills' in result['progression']['raids'][raid]['bosses'][boss]) { set['heroic'] = result['progression']['raids'][raid]['bosses'][boss].heroicKills; }
+              if ('mythicKills' in result['progression']['raids'][raid]['bosses'][boss]) { set['mythic'] = result['progression']['raids'][raid]['bosses'][boss].mythicKills; }
+              instance[result['progression']['raids'][raid]['bosses'][boss].name] = set;
+            }
+            app['progress'][result['progression']['raids'][raid].name] = instance;
+          }
+        }
 
         return app;
       }
@@ -219,33 +331,6 @@ const local = module.exports = {
     set: async function(id, status) {
       const result = await sql.query('UPDATE tblApplications SET status = ? WHERE id = ?', [status, id])
       return;
-    }
-  },
-  character: {
-    add: async function(char, user) {
-      var charExcists = await sql.query('SELECT * from tblCharacter WHERE name = ? and server = ?', [char.name, char.server]);
-      if (charExcists.length < 1) {
-        const id = await local.getUniqueID('tblCharacter');
-        await sql.query('INSERT INTO tblCharacter (id, name, server, class, spec, role, user, main, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [id, char.name, char.server, char.class, char.spec, char.role, user, 0, parseInt(char.level)]);
-        return id;
-      } else {
-        return charExcists[0].id;
-      }
-    },
-    delete: async function(character, user) {
-      await sql.query('DELETE FROM tblCharacter WHERE id = ? AND user = ?', [character, user]);
-      return;
-    },
-    update: async function(user, server, name, level) {
-      await sql.query('UPDATE tblCharacter SET level = ? WHERE user = ? AND server = ? AND name = ?', [level, user, server, name])
-      return;
-    },
-    set: {
-      main: async function(user, character) {
-        await sql.query('UPDATE tblCharacter SET main = ? WHERE user = ?', [0, user]);
-        await sql.query('UPDATE tblCharacter SET main = ? WHERE user = ? AND id = ?', [1, user, character])
-        return;
-      }
     }
   },
   consumables: {
@@ -345,52 +430,6 @@ const local = module.exports = {
       return events;
     }
   },
-  instances: {
-    getAll: async function() {
-      const result = await sql.query('SELECT id, name FROM tblInstance')
-      return result;
-    }
-  },
-  query: {
-    item: async function(query) {
-      var item = await sql.query('SELECT * FROM tblItem where id = ?', [query]);
-      if (item.length > 0) {
-        return item[0];
-      } else {
-        item = {};
-        var result = await sql.query('SHOW COLUMNS FROM tblItem');
-        for (var i in result) {
-          var type = result[i].Type.split('(')[0];
-          type === 'int' && (item[result[i].Field] = 0);
-          type === 'decimal' && (item[result[i].Field] = 0.0);
-          type === 'char' && (item[result[i].Field] = '');
-        }
-        return item;
-      }
-    },
-    items: async function(query) {
-      if (query === 'all') {
-        const result = await sql.query('SELECT id, name, slot, quality, instance FROM tblItem ORDER BY name ASC');
-        return result;
-      } else {
-        const result = await sql.query('SELECT id, name, slot, quality, instance FROM tblItem WHERE name LIKE ?', ['%'+query+'%']);
-        const itemlist = {}
-        for (var item in result) {
-          if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
-          var x = {}
-          x['id'] = result[item].id;
-          x['name'] = result[item].name;
-          x['quality'] = result[item].quality;
-          itemlist[result[item].slot].push(x)
-        }
-        return itemlist;
-      }
-    },
-    users: async function(query) {
-      const result = await sql.query('SELECT u.id, u.user as "name", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank WHERE u.user LIKE ? ORDER BY u.rank DESC, u.user ASC', ['%'+query+'%']);
-      return result;
-    }
-  },
   ranks: {
     getAll: async function() {
       const result = await sql.query('SELECT * FROM tblRank')
@@ -401,53 +440,6 @@ const local = module.exports = {
     getAll: async function() {
       const result = await sql.query('SELECT * FROM tblTheme')
       return result;
-    }
-  },
-  user: {
-    delete: async function(user) {
-      const deleteCharacters = await sql.query('DELETE FROM tblCharacter WHERE user_id = ?', [user]);
-      const deleteUser = await sql.query('DELETE FROM tblUser WHERE id = ?', [user]);
-      return;
-    },
-    get: {
-      details: async function(user) {
-        var obj = {}
-        var result = await sql.query('SELECT u.user as "name", u.rank, r.name as "rankName", u.email, u.role, u.theme FROM tblUser u JOIN tblRank r ON u.rank = r.id WHERE u.id = ?', [user]);
-        obj['details'] = result[0]
-        result = await sql.query('SELECT id, name, server, class, spec, role, level, main FROM tblCharacter WHERE user = ? ORDER BY main DESC', [user]);
-        obj['characters'] = result
-        for (var char in obj['characters']) {
-          if (obj['characters'][char].main === 1) {
-            result = await sql.query('SELECT w.id, w.item, i.slot, i.name, i.quality FROM tblWishlist w JOIN tblItem i ON w.item = i.id WHERE char_id = ?', [obj['characters'][char].id])
-            const itemlist = {}
-            for (var item in result) {
-              if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
-              var x = {}
-              x['id'] = result[item].id;
-              x['item'] = result[item].item;
-              x['name'] = result[item].name;
-              x['quality'] = result[item].quality;
-              itemlist[result[item].slot].push(x)
-            }
-            obj['wishlist'] = itemlist
-          }
-        }
-        return obj;
-      },
-      officers: async function() {
-        const result = await sql.query('SELECT u.user, r.name as "rank", u.role, c.name as "char" FROM tblUser u JOIN tblRank r ON u.rank = r.id JOIN tblCharacter c ON u.id = c.user WHERE u.rank > 5 AND c.main = 1 ORDER BY r.name, u.user');
-        return result;
-      }
-    },
-    set: {
-      details: async function(user, id, admin) {
-        if (admin) {
-          const result = await sql.query('UPDATE tblUser SET rank = ?, role = ?, email = ? WHERE id = ?', [parseInt(user.rank), user.role, user.email, id]);
-        } else {
-          const result = await sql.query('UPDATE tblUser SET email = ?, theme = ? WHERE id = ?', [user.email, user.theme, id]);
-        }
-        return;
-      }
     }
   },
   wishlist: {

@@ -23,15 +23,18 @@
         <div class="menuButtonRow-currentPage"><%=conf.page%></div>
         <div class="menuButtonRow-icon icon-menu"></div>
         <%}%>
-        <div class="menuButtonRow">
-          <% for (var i in scMenu) {
+        <div class="menuButtonRow"><%
+          for (var i in scMenu) {
             if (scMenu[i].menu === 1) {
-              if (scMenu[i].text == conf.page) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menuButton selected"><%=scMenu[i].text%></div></a>
-            <%} else {%>
-              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
-          <%}}}%>
-        </div>
+              if (conf.device !== 'phone') {%><hr class="menu"><%}
+              if (scMenu[i].text == conf.page) {
+                %><button class="menu selected" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              } else {
+                %><button class="menu" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              }
+            }
+          }
+        %></div>
       </menu>
     </nav>
   </head>
@@ -45,23 +48,25 @@
         </div>
         <% if (conf.rank > 7) {%>
         <div>
-          <div class="formHeadline">Items</div>
-          <button id="btnItemValues" type="button" class="action-button">Item values</button>
+          <div class="formHeadline">Items & loot</div>
           <button id="btnAwardItem" type="button" class="action-button">Award item</button>
+          <button id="btnWishlists" type="button" onclick="location.href=location.origin + '/admin/wishlists';">Wishlists</button>
         </div>
         <%}%>
         <div>
           <div class="formHeadline">Users</div>
-          <button id="btnLootValue" type="button" onclick="location.href=location.origin + '/admin/lootvalue';">LootValue</button>
-          <button id="btnWishlists" type="button" onclick="location.href=location.origin + '/admin/wishlists';">Wishlists</button>
           <% if (conf.rank > 7) {%>
-          <button id="btnFindUsers" type="button" class="action-button">Find user</button>
+          <button id="btnFindUsers" type="button" class="action-button">Find User</button>
           <button id="btnAddAttendance" type="button" class="action-button">Add attendance</button>
           <%}%>
         </div>
       </div>
       <% if (conf.rank > 7) {%>
       <div id="frmFindUsers" class="formContainer">
+        <div class="formContainer-fullColumn">
+          <input type="radio" class="querySetRadioButton" name="queryset" value="battletag">Battletag
+          <input type="radio" class="querySetRadioButton" name="queryset" value="character">Character
+        </div>
         <div class="formContainer-fullColumn">
           <input id="txtUserSearch" type="text" name="user" placeholder="Type to search.." autocomplete="off" />
         </div>
@@ -76,8 +81,8 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/datepicker.min.js"></script>
     <script src="/js/datepicker.en.js"></script>
-    <script>var whTooltips = {colorLinks: false, iconizeLinks: false, renameLinks: false};</script>
-    <script src="/js/wowhead.js"></script>
+    <script>var whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+    <script src="http://wow.zamimg.com/widgets/power.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script src="/js/admin.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>

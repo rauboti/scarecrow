@@ -31,6 +31,13 @@ button, input, select, .selected {
   -o-transition: all .30s ease-in-out;
   transition: all .30s ease-in-out;
 }
+button.menu {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
 button {
   background: -moz-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0)  50%, rgba(var(--clrThemeBackground), .15)  100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top, rgba(var(--clrThemeBackground), .15) 0%, rgba(var(--clrThemeBackground), 0) 50%, rgba(var(--clrThemeBackground), .15)  100%); /* Chrome10-25,Safari5.1-6 */
@@ -44,6 +51,10 @@ button:focus, input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 5px rgba(var(--clrThemeFocus), 1);
   border: 1px solid rgba(var(--clrThemeFocus), 1);
 }
+button.menu {
+  box-shadow: none;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
 html {
   background: url('/img/sc.jpg');
   background-position: center;
@@ -56,9 +67,14 @@ input, select, textarea {
   border-radius: var(--radBorder);
 }
 menu {
-  background: rgba(var(--clrPrimaryBackground), .9);
+  background: -moz-linear-gradient(top, rgba(255, 255, 225, .175) 0%, rgba(255, 255, 255, .1) 40%, rgba(255, 255, 255, .025) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255, 255, 225, .175) 0%, rgba(255, 255, 255, .1) 40%, rgba(255, 255, 255, .025) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255, 255, 225, .175) 0%, rgba(255, 255, 255, .1) 40%, rgba(255, 255, 255, .025) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   border: 1px solid rgba(var(--clrThemeBorder), .3);
   border-top: none;
+}
+nav {
+  background: rgba(var(--clrPrimaryBackground), 1);
 }
 option {
   background-color: rgba(var(--clrPrimaryBackground),1);
@@ -66,12 +82,19 @@ option {
 
 /*  ------------------------------------------------------------ { Menu }
 */
-.menuButton.selected, .subMenuButton.selected {
+button.menu {
+  background: none;
+  border-radius: 0;
+  color: rgba(var(--clrPrimaryFont), .25);
+}
+button.menu.selected {
+  color: rgba(var(--clrPrimaryFont), 1);
+}
+.subMenuButton.selected {
   border: 1px solid rgba(var(--clrThemeFocus), 1);
   box-shadow: 0 0 5px rgba(var(--clrThemeFocus), 1);
   color: rgba(var(--clrThemeFocus), 1);
 }
-
 /*  ------------------------------------------------------------ { Containers }
 */
 .appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .eventContainer, .formButtonRow, .formContainer, .loginContainer, .officerContainer, .popupContainer, .timerContainer {

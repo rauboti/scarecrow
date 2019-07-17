@@ -192,7 +192,7 @@ function formGetCharacters() {
           $('#frmRole').val($(this).children('.charContainer-details').children('.charContainer-role').val());
         })
       });
-    }
+    }   
   }
 }
 function formEditChar(id, name, server) {

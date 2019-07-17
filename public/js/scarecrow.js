@@ -34,9 +34,9 @@ var scarecrow = {
       var data = { request: 'instances' };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: instances });
     },
-    item: function(query, item) {
+    item: function(id, src, item) {
       // Getting items from the database
-      var data = { request: 'item', query: query}
+      var data = { request: 'item', source: src, id: id}
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: item });
     },
     items: function(query, items) { // --|--@ Complete
@@ -69,9 +69,9 @@ var scarecrow = {
       var data = { request: 'themes' };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: themes });
     },
-    users: function(query, users) {
+    users: function(query, qs, users) {
       //Getting users from the database
-      var data = { request : 'users', query: query };
+      var data = { request : 'user', query: query, set: qs };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: users})
     },
     wishlist: function(char, wishlist) {
@@ -94,6 +94,11 @@ var scarecrow = {
     itemRecipient: function(raid, item, player, role) {
       // Adding an item to a player
       var data = { request: 'itemRecipient', raid: raid, item: item, player: player, role: role}
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin'});
+    },
+    lv: function(lv) {
+      // Adding LootValue score to the database
+      var data = { request: 'lootValue', lv: lv}
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin'});
     }
   },

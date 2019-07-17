@@ -22,12 +22,18 @@
         <div class="menuButtonRow-currentPage"><%=conf.page%></div>
         <div class="menuButtonRow-icon icon-menu"></div>
         <%}%>
-        <div class="menuButtonRow">
-          <% for (var i in scMenu) {
-            if (scMenu[i].menu === 1) {%>
-              <a href="<%=scMenu[i].path%>"><div class="menuButton"><%=scMenu[i].text%></div></a>
-          <%}}%>
-        </div>
+        <div class="menuButtonRow"><%
+          for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (conf.device !== 'phone') {%><hr class="menu"><%}
+              if (scMenu[i].text == conf.page) {
+                %><button class="menu selected" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              } else {
+                %><button class="menu" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              }
+            }
+          }
+        %></div>
       </menu>
     </nav>
   </head>

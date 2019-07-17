@@ -36,30 +36,13 @@
         %></div>
       </menu>
     </nav>
-  </head>
   <body>
     <section class="pageContainer">
-      <div class="officerList">
-        <% for (var i in officers) {
-          if (officers[i].rank === 'Guild Master') {%>
-            <div class="officerContainer">
-              <div class="officerContainer-rank">Guild Master</div>
-              <div class="officerContainer-player"><%=officers[i].char%></div>
-              <div class="officerContainer-role"></div>
-            </div>
-          <%}
-        }%>
-      </div>
-      <div class="officerList">
-        <% for (var i in officers) {
-          if (officers[i].rank === 'Officer' || officers[i].rank === 'Admin') {%>
-            <div class="officerContainer">
-              <div class="officerContainer-rank">Officer</div>
-              <div class="officerContainer-player"><%=officers[i].char%></div>
-              <div class="officerContainer-role"><%=officers[i].role%></div>
-            </div>
-          <%}
-        }%>
+      <div class="formContainer">
+        <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
+        <% if (conf.rank > 7) {%>
+        <button type="button" onclick="location.href=location.origin + '/loot/itemvalues';">Set item values</button>
+        <%}%>
       </div>
     </section>
   </body>
@@ -67,7 +50,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/hierarchy.js"></script>
+    <script src="/js/main.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

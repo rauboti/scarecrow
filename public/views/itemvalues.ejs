@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title><%=conf.title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <% if (conf.theme === 'scarecrow') {%> <link rel="stylesheet" href="/css/sc-theme-scarecrow.css" />
+    <%} else if (conf.theme === 'duel') {%> <link rel="stylesheet" href="/css/sc-theme-duel.css" />
+    <%} else if (conf.theme === 'infernal') {%> <link rel="stylesheet" href="/css/sc-theme-infernal.css" />
+    <%} else if (conf.theme === 'warzone') {%> <link rel="stylesheet" href="/css/sc-theme-warzone.css" />
+    <%}%>
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
+    <%}%>
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow"><%
+          for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (conf.device !== 'phone') {%><hr class="menu"><%}
+              if (scMenu[i].text == conf.page) {
+                %><button class="menu selected" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              } else {
+                %><button class="menu" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              }
+            }
+          }
+        %></div>
+      </menu>
+    </nav>
+  <body>
+    <section class="pageContainer">
+      <div class="formContainer">Add / update item values</div>
+      <div class="formContainer">
+        <form id="frmPopup" name="frmPopupWindow" method="post" autocomplete="off">
+          <div class="formContainer-halfColumn"><input id="txtItemSearch" type="number" name="id" placeholder="Wowhead item ID..." autocomplete="off" /></div>
+          <div class="formContainer-halfColumn"><button id="btnFindItem" type="button" name="query" value="wowhead">Search Wowhead</button></div>
+          <div id="txtLink" class="formContainer-fullColumn"></div>
+          <input id="txtName" name="name" type="hidden" />
+          <input id="txtSlot" name="slot" type="hidden" />
+          <input id="txtQuality" name="quality" type="hidden" />
+          <div id="txtBaseStats" class="formContainer-fullColumn"></div>
+          <div id="txtMagicalStats" class="formContainer-fullColumn"></div>
+          <div id="txtPhysicalStats" class="formContainer-fullColumn"></div>
+          <div id="txtDefensiveStats" class="formContainer-fullColumn"></div>
+          <div class="formContainer-halfColumn"><span>Physical</span><input id="txtLVPhysical" type="number" value="0" name="physical" readonly="readonly" /></div>
+          <div class="formContainer-halfColumn"><span>Physical misc</span><input id="txtLVPhysicalBonus" type="number" value="0" name="physicalMisc" /></div>
+          <div class="formContainer-halfColumn"><span>Magical</span><input id="txtLVMagical" type="number" value="0" name="magical" readonly="readonly" /></div>
+          <div class="formContainer-halfColumn"><span>Magical misc</span><input id="txtLVMagicalBonus" type="number" value="0" name="magicalMisc" /></div> 
+          <div class="formContainer-halfColumn"><span>Healing</span><input id="txtLVHealing" type="number" value="0" name="healing" readonly="readonly" /></div>
+          <div class="formContainer-halfColumn"><span>Healing misc</span><input id="txtLVHealingBonus" type="number" value="0" name="healingMisc" /></div> 
+          <div class="formContainer-halfColumn"><span>Tanking</span><input id="txtLVTanking" type="number" value="0" name="tanking" readonly="readonly" /></div>
+          <div class="formContainer-halfColumn"><span>Tanking misc</span><input id="txtLVTankingBonus" type="number" value="0" name="tankingMisc" /></div> 
+          <div class="formContainer-halfColumn"><span>Select instance</span><select id="slctInstance" name="instance"><% for (var i in instances) {%><option value="<%=instances[i].id%>"><%=instances[i].name%></option><%}%></select></div>
+          <div id="buttonRow" class="formContainer-buttonRow"></div>
+        </form>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script>var whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+    <script src="http://wow.zamimg.com/widgets/power.js"></script>
+    <script src="/js/itemvalues.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
+  </foot>
+</html>

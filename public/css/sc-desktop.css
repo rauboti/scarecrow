@@ -7,7 +7,7 @@
 
 /*  ------------------------------------------------------------ { Elements }
 */
-a, body, div, head, html, img, menu, nav, section {
+a, body, div, head, hr, html, img, menu, nav, section {
   margin: 0;
   padding: 0;
 }
@@ -36,6 +36,20 @@ button {
   margin: 5px;
   padding: 5px;
 }
+button.menu {
+  border: none;
+  font-size: 1em;
+  margin: 0;
+  padding: 5px;
+  outline: none;
+}
+hr.menu {
+  border: none;
+  border-left: 1px solid rgba(100, 100, 100, 1);
+  display: inline-block;
+  height: 1em;
+  vertical-align: middle;
+}
 html {
   font-family: 'Rajdhani', sans-serif;
   height: 100vh;
@@ -55,10 +69,7 @@ input:disabled {
   opacity: 0.4;
 }
 menu {
-  display: inline-block;
   font-size: 1.7em;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 nav {
   left: 0;
@@ -122,23 +133,20 @@ textarea {
 /*  ------------------------------------------------------------ { Menu }
 */
 .menuButton {
-  border: 1px solid rgba(0, 0, 0, 0);
-  border-radius: 5px;
   padding: 5px;
-  margin: 5px;
+  margin: 0;
 }
 .menuButtonRow {
   display: inline-block;
 }
 .menuButtonRow a {
-  display: inline-flex
+  display: inline-block
 }
 .menuButtonRow-icon {
   height: 1.3em;
-  display: inline-flex;
+  display: inline-block;
   vertical-align: middle;
   width: 1.3em;
-  margin: 5px;
 }
 .subMenuButton {
   background: none;
@@ -267,7 +275,7 @@ textarea {
 .charContainer-nickname {
   font-size: 1.5rem;
 }
-.charContainer-spec, .charContainer-class {
+.charContainer-spec, .charContainer-class, .charContainer-server {
   display: inline-block;
 }
 .charContainer-details {

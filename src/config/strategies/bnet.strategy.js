@@ -2,7 +2,7 @@
 const passport = require('passport');
 const { Strategy } = require('passport-bnet');
 const debug = require('debug')('app:bnet.strategy');
-const sql = require('../../js/db'); 
+const sql = require('../../db/config'); 
 
 // => Battle.net
 var BNET_ID = 'bf56290b9c05469db6424bb9b294177b';

@@ -35,6 +35,13 @@ button {
   margin: 5px;
   padding: 5px;
 }
+button.menu {
+  border: 1px solid rgba(0, 0, 0, 0);
+  display: block;
+  font-size: 1em;
+  padding: 5px;
+  outline: none;
+}
 html {
   font-family: 'Rajdhani', sans-serif;
   height: 100vh;
@@ -231,7 +238,7 @@ textarea {
 .charContainer-nickname {
   font-size: 1.5rem;
 }
-.charContainer-spec, .charContainer-class {
+.charContainer-spec, .charContainer-class, .charContainer-server {
   display: inline-block;
 }
 .charContainer-details {
