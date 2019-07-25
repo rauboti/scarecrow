@@ -35,6 +35,16 @@ button {
   margin: 5px;
   padding: 5px;
 }
+button.item {
+  margin: 0;
+  padding: 5px;
+  outline: none;
+  border: none;
+  background: none;
+  width: 90%;
+  font-size: 1rem;
+  text-align: left;
+}
 button.menu {
   border: 1px solid rgba(0, 0, 0, 0);
   display: block;
@@ -78,6 +88,10 @@ option, select, textarea {
 select {
   padding: 10px;
   font-size: 1.2rem;
+}
+tr {
+  background-color: rgba(0, 0, 0, 0) !important;
+  text-align: left;
 }
 textarea {
   font-size: 1.2rem;
@@ -465,25 +479,25 @@ section.pageContainer::-webkit-scrollbar {
 
 /*  ------------------------------------------------------------ { Items }
 */
-.clr-artifact {
+.clr-Artifact {
   color: rgba(230, 204, 128, 1);
 }
-.clr-legendary {
+.clr-Legendary {
   color: rgba(255, 128, 0, 1);
 }
-.clr-epic {
+.clr-Epic {
   color: rgba(163, 53, 238, 1);
 }
-.clr-rare {
+.clr-Rare {
   color: rgba(0, 112, 221, 1);
 }
-.clr-uncommon {
+.clr-Uncommon {
   color: rgba(30, 255, 0, 1);
 }
-.clr-common {
+.clr-Common {
   color: rgba(255, 255, 255, 1);
 }
-.clr-poor {
+.clr-Poor {
   color: rgba(157, 157, 157, 1);
 }
 .itemContainer {
@@ -511,7 +525,7 @@ section.pageContainer::-webkit-scrollbar {
 }
 .itemList {
   display: inline-block;
-  max-height: 20vh;
+  max-height: 35vh;
   overflow-y: scroll;
   width: 90%;
 }

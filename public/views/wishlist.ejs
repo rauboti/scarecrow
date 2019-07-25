@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="google" content="notranslate">
+    <title><%=conf.title%></title>
+    <!-- Cleaner font -->
+    <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+    <!-- CSS source files -->
+    <% if (conf.theme === 'scarecrow') {%> <link rel="stylesheet" href="/css/sc-theme-scarecrow.css" />
+    <%} else if (conf.theme === 'duel') {%> <link rel="stylesheet" href="/css/sc-theme-duel.css" />
+    <%} else if (conf.theme === 'infernal') {%> <link rel="stylesheet" href="/css/sc-theme-infernal.css" />
+    <%} else if (conf.theme === 'warzone') {%> <link rel="stylesheet" href="/css/sc-theme-warzone.css" />
+    <%}%>
+    <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
+    <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
+    <%}%>
+    <!-- DataTables-->
+    <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <nav>
+      <menu>
+        <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
+        <% if (conf.device === 'phone') {%>
+        <div class="menuButtonRow-currentPage"><%=conf.page%></div>
+        <div class="menuButtonRow-icon icon-menu"></div>
+        <%}%>
+        <div class="menuButtonRow"><%
+          for (var i in scMenu) {
+            if (scMenu[i].menu === 1) {
+              if (conf.device !== 'phone') {%><hr class="menu"><%}
+              if (scMenu[i].text == conf.page) {
+                %><button class="menu selected" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              } else {
+                %><button class="menu" onclick="location.href=location.origin + '<%=scMenu[i].path%>';"><%=scMenu[i].text%></button><%
+              }
+            }
+          }
+        %></div>
+      </menu>
+    </nav>
+  <body>
+    <section class="pageContainer">
+      <div class="formContainer">
+        <button id="btnAdd" type="button">Add item</button>
+      </div>
+      <div class="formContainer">
+        <form method="post" autocomplete="off">
+          <table id="tblWishlist" class="stripe hover row-border">
+            <thead>
+              <tr>
+                <th>Slot</th>
+                <th>Zone</th>
+                <th>Item</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (var item in wishlist) {%>
+              <tr>
+                <td><%=wishlist[item].slot%></td>
+                <td><%=wishlist[item].instance%></td>
+                <td><a href="https://classic.wowhead.com/item=<%=wishlist[item].item%>/" target="_blank" class="clr-<%=wishlist[item].quality%>"><%=wishlist[item].name%></a></td>
+                <td><button type="submit" name="delete" value="<%=wishlist[item].id%>" class="itemContainer-button iconButton icon-delete"></button></td>
+              </tr>
+              <%}%>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </section>
+  </body>
+  <foot>
+    <!-- JS source files -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/scarecrow.js"></script>
+    <script>var whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
+    <script src="http://wow.zamimg.com/widgets/power.js"></script>
+    
+    <script src="/js/wishlist.js"></script>
+    <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
+  </foot>
+</html>

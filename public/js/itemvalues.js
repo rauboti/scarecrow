@@ -3,11 +3,11 @@ $(document).ready(function() {
     $('.menuButtonRow').slideToggle(500);
   });
   //Buttons with forms
-  $('#btnFindItem').click(function() { scarecrow.get.item($('#txtItemSearch').val(), 'wowhead', initItem); });
+  $('#btnFindItem').click(function() { scarecrow.get.item.single($('#txtItemSearch').val(), 'wowhead', initItem); });
 });
 
 function initItem(item) {
-  $('#buttonRow').append('<button id="btnSubmit" type="submit" name="update" value="itemvalue" class="popupContainer-button">Submit</button>');
+  $('#buttonRow').html('<button id="btnSubmit" type="submit" name="update" value="itemvalue" class="popupContainer-button">Submit</button>');
   //const qualities = ['Poor', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
   const slots = ['Head', 'Shoulder', 'Chest', 'Back', 'Wrist', 'Hands', 'Waist', 'Legs', 'Feet', 'Finger', 'Trinket', 'Relic', 'One-Hand', 'Two-Hand', 'Off Hand']
 

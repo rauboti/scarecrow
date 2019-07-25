@@ -19,7 +19,6 @@ $(document).ready(function() {
 
   $('.formController').click(function() {
     $(this).attr('id').split('btn')[1] === 'EditUser' && formEditUser($('#txtUsername').text(), $('#txtEmail').text(), $('#txtTheme').text());
-    $(this).attr('id').split('btn')[1] === 'AddItem' && formAddItem();
     $(this).attr('id').split('btn')[1] === 'ImportCharacters' && formGetCharacters();
   });
 
@@ -28,49 +27,6 @@ $(document).ready(function() {
   });
 });
 
-function formAddItem() {
-  scarecrow.window.toggle.background();
-  $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return formValidateAddItem();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
-  + '<div class="popupContainer-headline">Add to wishlist</div>'
-  + '<div class="formContainer-fullColumn"><input id="txtItemSearch" type="text" name="item" placeholder="Type to search.." autocomplete="off" /></div>'
-  + '<div class="formContainer-fullColumn"><div id="itemList" style="text-align: center;" class="itemList"></div></div>'
-  + '<div class="formContainer-buttonRow">'
-  + '<button id="btnDecline" type="submit" name="back" value="back" class="action-button">Cancel</button>'
-  + '</div>'
-  + '</div></form>');
-
-  $('.action-button').click(function() {
-    clicked = $(this).attr('id').split('btn')[1];
-  });
-  //gets available instances and sends the callback to a callback-function
-  scarecrow.get.instances(initInstances)
-  var searchTimer;
-  $('#txtItemSearch').keyup(function() {
-    clearTimeout(searchTimer)
-    var query = this.value;
-    searchTimer = setTimeout(function() {
-      if (query.length > 4) {
-        scarecrow.get.items(query, initItems);
-      }
-    }, 300);
-  });
-  var instances;
-  //Handles the callback from the instances query
-  function initInstances(response) { instances = response; }
-  //Handles the callback from the items query
-  function initItems(response) {
-    console.log(response)
-    $('#itemList').html('');
-    for (var slot in response) {
-      for (var item in response[slot]) {
-        $('#itemList').append('<a href="https://classic.wowhead.com/item=' + response[slot][item].id + '/" target="_blank"><div class="itemContainer clr-'+ response[slot][item].quality +'"><strong>'+response[slot][item].name+'</strong></div></a><button id="btnAdd_' + response[slot][item].id + '" type="submit" name="wlAdd" value="' + response[slot][item].id + '" class="itemContainer-button iconButton icon-add"></button>')
-      }
-    }
-    $('.itemContainer-button').click(function() {
-      clicked = $(this).attr('id').split('btn')[1];
-    });
-  }
-}
 function formDelChar(charID) {
   scarecrow.window.toggle.background();
   $('body').append('<form id="frmPopup" name="frmPopupWindow" method="post" onsubmit="return formValidateDelChar();" autocomplete="off"><div id="popupContainer" class="popupContainer">'
@@ -243,15 +199,6 @@ function formValidateGetChar() {
   }
 }
 
-function formValidateAddItem() {
-  if (clicked.split('_')[0] === 'Add') {
-    return true;
-  } else if (clicked === 'Decline') {
-    scarecrow.window.toggle.background();
-    scarecrow.window.close.popup();
-  }
-  return false;
-}
 function formValidateDelChar() {
   if (clicked === 'Confirm') {
     return true;

@@ -34,15 +34,17 @@ var scarecrow = {
       var data = { request: 'instances' };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: instances });
     },
-    item: function(id, src, item) {
-      // Getting items from the database
-      var data = { request: 'item', source: src, id: id}
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: item });
-    },
-    items: function(query, items) { // --|--@ Complete
-      // Getting items from the database
-      var data = { request: 'items', query: query}
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: items });
+    item: {
+      single: function(id, src, item) {
+        // Getting items from the database
+        var data = { request: 'item', source: src, id: id}
+        $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/item/single', success: item });
+      },
+      matches: function(query, items) { // --|--@ Complete
+        // Getting items from the database
+        var data = { request: 'items', query: query}
+        $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/item/matches', success: items });
+      }
     },
     lootValue: function(lootvalue) { // --|--@ Complete
       // Getting items from the database

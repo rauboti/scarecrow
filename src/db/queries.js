@@ -34,6 +34,10 @@ module.exports = {
             all: async function(userId) {
                 const result = await sql.query('SELECT id, name, server, class, spec, role, level, main FROM tblCharacter WHERE user = ? ORDER BY main DESC', [userId]);
                 return result;
+            },
+            main: async function(userId) {
+                const result = await sql.query('SELECT * FROM tblCharacter WHERE user = ? AND main = 1', [userId])
+                return result[0];
             }
         },
         update: {
@@ -71,10 +75,16 @@ module.exports = {
         }
     },
     item: {
-        get: async function(itemId) {
-            //console.log(itemId)
-            const result = await sql.query('SELECT * FROM tblItem WHERE `id` = ?', [itemId]);
-            return result;
+        get: {
+            single: async function(itemId) {
+                //console.log(itemId)
+                const result = await sql.query('SELECT * FROM tblItem WHERE `id` = ?', [itemId]);
+                return result;
+            },
+            matches: async function(query) {
+                const result = await sql.query('SELECT id, name, quality, slot FROM tblItem WHERE `name` LIKE ?', ['%' + query + '%']);
+                return result;
+            }
         }
     },
     lv: {
@@ -116,9 +126,20 @@ module.exports = {
         },
     },
     wishlist: {
-        get: async function(charId) {
-            const result = await sql.query('SELECT w.id, w.item, i.slot, i.name, i.quality FROM tblWishlist w JOIN tblItem i ON w.item = i.id WHERE char_id = ?', [charId])
-            return result;
+        add: async function(charId, item) {
+            const id = await getUniqueID('tblWishlist');
+            await sql.query('INSERT INTO tblWishlist (`id`, `char`, `item`) VALUES (?, ?, ?)', [id, charId, item]);
+            return;
+        },
+        delete: async function (charId, id) {
+            await sql.query('DELETE FROM tblWishlist WHERE `id` = ? AND `char` = ?', [id, charId]);
+            return;
+        },
+        get: {
+            single: async function(charId) {
+                const result = await sql.query('SELECT wl.id, wl.item, item.slot, item.name, instance.name as "instance", item.quality FROM tblWishlist wl JOIN tblItem item ON wl.item = item.id JOIN tblInstance instance ON item.instance = instance.id WHERE wl.char = ? AND received = 0 ORDER BY item.slot ASC', [charId])
+                return result;
+            }
         }
     }
 }

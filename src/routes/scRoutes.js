@@ -322,12 +322,29 @@ function router() {
         } else if (req.body.editUser) {
           const Edit = await data.user.set.details(req.body, req.user.id, false)
           req.user.theme = req.body.theme;
-        } else if (req.body.wlAdd) {
-          const Wishlist = await data.wishlist.add(req.body.wlAdd, req.user.main);
-        } else if (req.body.wlDelete) {
-          const Wishlist = await data.wishlist.delete(req.body.wlDelete, req.user.main);
         }
         res.redirect(req.get('referer'));
+      }())});
+  
+  pagerouter.route('/profile/wishlist')               // => profile wishlist page
+    .all((req, res, next) => {
+      req.user ? next() : res.redirect('/signIn') })
+    .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
+      getPages(req.user.rank, function(scMenu){
+        (async function dbQuery() {
+          const wishlist = await data.wishlist.get.single(req.user.id);
+          const conf = { device: req.device.type.toLowerCase(), page: 'Profile', rank: rank, theme: theme, title: '<Scarecrow>' }
+          res.render('wishlist', { scMenu, conf, wishlist });
+        }());
+      })})
+    .post((req, res) => {
+      (async function dbQuery() {
+        debug(req.body);
+        req.body.add && await data.wishlist.add(req.user.main, req.body.add)
+        req.body.delete && await data.wishlist.delete(req.user.main, req.body.delete)
+        res.redirect(req.get('referer'));       
       }())});
 
   pagerouter.route('/progression')                    // => progression page
@@ -358,6 +375,16 @@ function router() {
       res.redirect('/');
     });
 
+    pagerouter.route('/api/item/:action')                        // => API
+    .post((req, res) => {
+      (async function endPoints() {
+        debug(req.params.action)
+        debug(req.body);
+        req.params.action === 'single' &&  (result = await data.item.get.single(req.body))
+        req.params.action === 'matches' && (result = await data.item.get.matches(req.body.query))
+        res.json(result);
+      }())});
+
   pagerouter.route('/api/get')                        // => API
     .post((req, res) => {
       (async function dbQuery() {
@@ -369,7 +396,6 @@ function router() {
         req.body.request === 'consumables' && (result = await data.consumables.get())
         req.body.request === 'event' && (result = await data.get.event(req.body.id))
         req.body.request === 'instances' && (result = await data.instances.get())
-        req.body.request === 'items' && (result = await data.query.items(req.body.query))
         req.body.request === 'players' && (result = await data.get.players())
         req.body.request === 'progression' && (result = await data.get.progression())
         req.body.request === 'ranks' && (result = await data.ranks.getAll())
@@ -377,8 +403,7 @@ function router() {
         req.body.request === 'wishlist' && (result = await data.get.wishlist(req.body.char))
 
         // => new ones
-        if (req.body.request === 'item') { result = await data.item.get(req.body); }
-        else if (req.body.request === 'user') { result = await data.user.get.name(req.body.query, req.body.set); }
+        if (req.body.request === 'user') { result = await data.user.get.name(req.body.query, req.body.set); }
         res.json(result);
       }())});
   

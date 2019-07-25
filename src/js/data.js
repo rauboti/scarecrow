@@ -50,10 +50,25 @@ const local = module.exports = {
     }
   },
   item: {
-    get: async function(req) {
-      req.source === 'wowhead' ? item = await api.wh.item(req.id) : item = await db.item.get(req.id);
-      item['coefficients'] = await db.coefficients.get();
-      return item;
+    get: {
+      single: async function(req) {
+        req.source === 'wowhead' ? item = await api.wh.item(req.id) : item = await db.item.get.single(req.id);
+        item['coefficients'] = await db.coefficients.get();
+        return item;
+      },
+      matches: async function(query) {
+        const result = await db.item.get.matches(query)
+        return result;
+      }
+    }
+  },
+  lootValue: {
+    update: async function(lv) {
+      if (lv.id !== '') {
+        const item = await db.item.get.single(lv.id)
+        item.length < 1 ? await db.lv.add(lv) : await db.lv.update(lv)
+      }
+      return;
     }
   },
   user: {
@@ -76,22 +91,6 @@ const local = module.exports = {
         var obj = {}
         obj['details'] = await db.user.get.single.details(userId)
         obj['characters'] = await db.character.get.all(userId);
-        for (var char in obj['characters']) {
-          if (obj['characters'][char].main === 1) {
-            result = await db.wishlist.get(obj['characters'][char].id);
-            var itemlist = {}
-            for (var item in result) {
-              if (!itemlist[result[item].slot]) {itemlist[result[item].slot] = [];}
-              var x = {}
-              x['id'] = result[item].id;
-              x['item'] = result[item].item;
-              x['name'] = result[item].name;
-              x['quality'] = result[item].quality;
-              itemlist[result[item].slot].push(x)
-            }
-            obj['wishlist'] = itemlist
-          }
-        }
         return obj;
       },
       officers: async function() {
@@ -110,13 +109,21 @@ const local = module.exports = {
       }
     }
   },
-  lootValue: {
-    update: async function(lv) {
-      if (lv.id !== '') {
-        const item = await db.item.get(lv.id)
-        item.length < 1 ? await db.lv.add(lv) : await db.lv.update(lv)
-      }
+  wishlist: {
+    add: async function(charId, item) {
+      await db.wishlist.add(charId, parseInt(item))
       return;
+    },
+    delete: async function(charId, id) {
+      await db.wishlist.delete(charId, id);
+      return;
+    },
+    get: {
+      single: async function(user) {
+        const c = await db.character.get.main(user);
+        const result = await db.wishlist.get.single(c.id);
+        return result;
+      }
     }
   },
 
@@ -440,16 +447,6 @@ const local = module.exports = {
     getAll: async function() {
       const result = await sql.query('SELECT * FROM tblTheme')
       return result;
-    }
-  },
-  wishlist: {
-    add: async function(item, char) {
-      const id = await local.getUniqueID('tblWishlist');
-      const result = await sql.query('INSERT INTO tblWishlist (id, char_id, item) VALUES (?, ?, ?)', [id, char, parseInt(item)]);
-      return;
-    },
-    delete: async function(item, char) {
-      const result = await sql.query('DELETE FROM tblWishlist WHERE id = ? AND char_id = ?', [item, char]);
     }
   },
   getUniqueID: async function(table) {
