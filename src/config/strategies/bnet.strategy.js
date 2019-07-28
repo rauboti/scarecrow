@@ -13,8 +13,8 @@ function bnetStrategy() {
     {
       clientID: BNET_ID,
       clientSecret: BNET_SECRET,
-      callbackURL: "http://localhost:4000/auth/bnet/callback/",
-      //callbackURL: "https://scarecrow.rauboti.net/auth/bnet/callback/",
+      //callbackURL: "http://localhost:4000/auth/bnet/callback/",
+      callbackURL: "https://scarecrow.rauboti.net/auth/bnet/callback/",
       region: 'eu'
     }, (accessToken, refreshToken, profile, done) => {
       (async function dbQuery() {       
