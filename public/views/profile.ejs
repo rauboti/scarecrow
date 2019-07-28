@@ -53,8 +53,13 @@
       <div class="formButtonRow">
         <button id="btnEditUser" type="submit" name="edit" value="userInfo" class="action-button formController">Edit</button>
         <% if (user['details'].rank > 1) {%>
-        <button id="btnShowCharacter" type="button" name="expand" value="characters" class="rolloutController">Characters</button>
-        <button type="button" onclick="location.href=location.origin + '/profile/wishlist';">Wishlist</button>
+          <button id="btnShowCharacter" type="button" name="expand" value="characters" class="rolloutController">Characters</button>
+          <% for (var i in user['characters']) {
+            if (user['characters'][i].main === 1) {%>
+              <button type="button" onclick="location.href=location.origin + '/profile/wishlist';">Wishlist</button><%
+              break;
+            }
+          }%>
         <%}%>
       </div>
       <% if (user['details'].rank > 1) {%>

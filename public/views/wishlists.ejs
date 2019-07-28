@@ -15,6 +15,8 @@
     <% if (conf.device === 'phone') {%> <link rel="stylesheet" href="/css/sc-mobile.css" />
     <%} else if (conf.device === 'desktop') {%> <link rel="stylesheet" href="/css/sc-desktop.css" />
     <%}%>
+    <!-- DataTables-->
+    <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
     <nav>
       <menu>
         <a href="<%=scMenu['home'].path%>"><div class="menuButtonRow-icon icon-logo"></div></a>
@@ -40,15 +42,23 @@
     <section class="pageContainer">
       <div class="formContainer">
         <div class="formContainer-fullColumn">
-          <select id="slctWishlist"><option value=""></option></select>
+          <select id="slctWishlist">
+            <option value=""></option>
+            <% for (var i in wishlists) {%>
+              <option value="<%=wishlists[i].id%>"><%=wishlists[i].name%></option>
+            <%}%>
+          </select>
         </div>
       </div>
-      <div id="frmWishlist" class="formContainer"></div>
+      <div id="frmWishlist" class="formContainer">
+        
+      </div>
     </section>
   </body>
   <foot>
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="/js/scarecrow.js"></script>
     <script>var whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true};</script>
     <script src="http://wow.zamimg.com/widgets/power.js"></script>

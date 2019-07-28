@@ -78,8 +78,7 @@ var scarecrow = {
     },
     wishlist: function(char, wishlist) {
       //Getting users from the database
-      var data = { request : 'wishlist', char: char };
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: wishlist})
+      $.ajax({ type: 'POST', contentType: 'application/json', url: location.origin + '/api/wishlist/' + char, success: wishlist})
     }
   },
   set: {

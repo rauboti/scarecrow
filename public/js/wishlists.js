@@ -1,22 +1,21 @@
-var wishlists;
-
 $(document).ready(function() {
   $('.menuButtonRow-icon').click(function() {
     $('.menuButtonRow').slideToggle(500);
   });
-  scarecrow.get.wishlist('allfixed', initWishlists);
+  $('#tblWishlist').DataTable();
+  $('#slctWishlist').change(function() {
+    $('#slctWishlist option:selected').val() !== '' && scarecrow.get.wishlist($('#slctWishlist option:selected').val(), initWishlist)
+  });
 });
 
-function initWishlists(wl) {
-  console.log(wl)
-  for (var char in wl) {
-    $('#slctWishlist').append('<option value="' + char + '">' + char + '</option>');
+function initWishlist(wl) {
+  $('#frmWishlist').html('<table id="tblWishlist" class="stripe hover row-border"><thead><tr><th>Slot</th><th>Zone</th><th>Item</th></tr></thead><tbody></tbody></table>');
+  for (var i in wl ) {
+    $('#tblWishlist > tbody').append('<tr>'
+    + '<td>' + wl[i].slot + '</td>'
+    + '<td>' + wl[i].instance + '</td>'
+    + '<td><a href="https://classic.wowhead.com/item=' + wl[i].item  + '/" target="_blank" class="clr-' + wl[i].quality + '">' + wl[i].name + '</a></td>'
+    + '</tr>');
   }
-
-  $('#slctWishlist').change(function() {
-    $('#frmWishlist').html('')
-    for (var item in wl[$('#slctWishlist option:selected').text()]) {
-      $('#frmWishlist').append('<a href="https://classic.wowhead.com/item=' + wl[$('#slctWishlist option:selected').text()][item]["id"] + '" target="_blank"><div class="itemContainer">' + wl[$('#slctWishlist option:selected').text()][item]["name"] + '</div></a>');
-    }
-  });
+  $('#tblWishlist').DataTable();
 }

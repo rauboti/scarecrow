@@ -100,27 +100,6 @@ function router() {
         }
       }())});
 
-  pagerouter.route('/admin/wishlists')                // => The wishlists page
-    .all((req, res, next) => {
-      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
-    .get((req, res) => {
-      req.user && (rank = req.user.rank);
-      req.user ? theme = req.user.theme : theme = 'scarecrow';
-      getPages(req.user.rank, function(scMenu){
-        (async function showPage() {
-          const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('wishlists', { scMenu, conf })
-        }())
-      })})
-    .post((req, res) => {
-      (async function dbQuery() {
-        debug(req.body);
-        if (req.body.request) {
-          req.body.request === 'wishlist' && (result = await data.get.wishlist('all'))
-        }
-        res.json(result);
-      }())})
-
   pagerouter.route('/applications')                   // => applications page
     .all((req, res, next) => {
       req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
@@ -292,6 +271,26 @@ function router() {
         res.redirect(req.get('referer'));
       }
     }())})
+  
+  pagerouter.route('/loot/wishlists')                // => The wishlists page
+  .all((req, res, next) => {
+    req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+  .get((req, res) => {
+    req.user && (rank = req.user.rank);
+    req.user ? theme = req.user.theme : theme = 'scarecrow';
+    getPages(req.user.rank, function(scMenu){
+      (async function showPage() {
+        const wishlists = await data.wishlist.get.characters();
+        const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+        res.render('wishlists', { scMenu, conf, wishlists})
+      }())
+    })})
+  .post((req, res) => {
+    (async function dbQuery() {
+      debug(req.body);
+      
+      res.json(result);
+    }())})
 
   pagerouter.route('/profile')                        // => profile page
     .all((req, res, next) => {
@@ -334,7 +333,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const wishlist = await data.wishlist.get.single(req.user.id);
+          const wishlist = await data.wishlist.get.single(req.user.main);
           const conf = { device: req.device.type.toLowerCase(), page: 'Profile', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('wishlist', { scMenu, conf, wishlist });
         }());
@@ -375,13 +374,21 @@ function router() {
       res.redirect('/');
     });
 
-    pagerouter.route('/api/item/:action')                        // => API
+    pagerouter.route('/api/item/:action')             // => Item API
     .post((req, res) => {
       (async function endPoints() {
         debug(req.params.action)
         debug(req.body);
         req.params.action === 'single' &&  (result = await data.item.get.single(req.body))
         req.params.action === 'matches' && (result = await data.item.get.matches(req.body.query))
+        res.json(result);
+      }())});
+
+    pagerouter.route('/api/wishlist/:character')      // => Wishlist API
+    .post((req, res) => {
+      (async function endPoints() {
+        debug(req.params.character)
+        const result = await data.wishlist.get.single(req.params.character)
         res.json(result);
       }())});
 
@@ -400,7 +407,6 @@ function router() {
         req.body.request === 'progression' && (result = await data.get.progression())
         req.body.request === 'ranks' && (result = await data.ranks.getAll())
         req.body.request === 'themes' && (result = await data.themes.getAll())
-        req.body.request === 'wishlist' && (result = await data.get.wishlist(req.body.char))
 
         // => new ones
         if (req.body.request === 'user') { result = await data.user.get.name(req.body.query, req.body.set); }

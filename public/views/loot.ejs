@@ -39,9 +39,11 @@
   <body>
     <section class="pageContainer">
       <div class="formContainer">
-        <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
-        <% if (conf.rank > 7) {%>
-        <button type="button" onclick="location.href=location.origin + '/loot/itemvalues';">Set item values</button>
+        <% if (conf.rank >= 6) {%>
+          <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
+          <button type="button" onclick="location.href=location.origin + '/loot/wishlists';">Wishlists</button>
+        <%} if (conf.rank > 7) {%>
+          <button type="button" onclick="location.href=location.origin + '/loot/itemvalues';">Set item values</button>
         <%}%>
       </div>
     </section>

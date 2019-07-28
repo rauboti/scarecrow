@@ -34,10 +34,6 @@ module.exports = {
             all: async function(userId) {
                 const result = await sql.query('SELECT id, name, server, class, spec, role, level, main FROM tblCharacter WHERE user = ? ORDER BY main DESC', [userId]);
                 return result;
-            },
-            main: async function(userId) {
-                const result = await sql.query('SELECT * FROM tblCharacter WHERE user = ? AND main = 1', [userId])
-                return result[0];
             }
         },
         update: {
@@ -138,6 +134,10 @@ module.exports = {
         get: {
             single: async function(charId) {
                 const result = await sql.query('SELECT wl.id, wl.item, item.slot, item.name, instance.name as "instance", item.quality FROM tblWishlist wl JOIN tblItem item ON wl.item = item.id JOIN tblInstance instance ON item.instance = instance.id WHERE wl.char = ? AND received = 0 ORDER BY item.slot ASC', [charId])
+                return result;
+            },
+            characters: async function() {
+                const result = await sql.query('SELECT c.`id`, c.`name` FROM tblWishlist wl JOIN tblCharacter c ON wl.`char` = c.`id` GROUP BY wl.`char`')
                 return result;
             }
         }

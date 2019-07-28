@@ -119,9 +119,12 @@ const local = module.exports = {
       return;
     },
     get: {
-      single: async function(user) {
-        const c = await db.character.get.main(user);
-        const result = await db.wishlist.get.single(c.id);
+      single: async function(charId) {
+        const result = await db.wishlist.get.single(charId);
+        return result;
+      },
+      characters: async function() {
+        const result = await db.wishlist.get.characters();
         return result;
       }
     }
@@ -221,30 +224,6 @@ const local = module.exports = {
         progression[result[i].instance].push(x);
       }
       return progression;
-    },
-    wishlist: async function(char) {
-      var wl = {}
-      if (char === 'allfixed') {
-        var result = await sql.query('SELECT c.name as "char", i.name as "item", i.id FROM tblWishlist wl JOIN tblCharacter c ON c.id = wl.char_id JOIN tblItem i ON wl.item = i.id')
-        //var result = await sql.query('SELECT c.name FROM tblWishlist wl JOIN tbl')
-        for (var i in result) {
-          !(result[i].char in wl) && (wl[result[i].char] = []);
-          var set = {}
-          set['id'] = result[i].id;
-          set['name'] = result[i].item;
-          wl[result[i].char].push(set); 
-        }
-        return wl;
-      } else if (char === 'all') {
-        var result = await sql.query('SELECT char_id, item FROM tblWishlist')
-      } else {
-        var result = await sql.query('SELECT char_id, item FROM tblWishlist WHERE char_id = ?', [char])
-      }
-      for (var i in result) {
-        !(result[i].char_id in wl) && (wl[result[i].char_id] = []);
-        wl[result[i].char_id].push(result[i].item)
-      }
-      return wl;
     }
   },
   set: {
