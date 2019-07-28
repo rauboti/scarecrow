@@ -81,9 +81,16 @@ const local = module.exports = {
                 else if (t.includes('Increases damage done by Shadow spells and effects ')) { stats['magical']['dmg_shadow'] = parseInt(t.split('.')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Increases damage done by Fire spells and effects ')) { stats['magical']['dmg_fire'] = parseInt(t.split('.')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Increases damage done by Frost spells and effects ')) { stats['magical']['dmg_frost'] = parseInt(t.split('.')[0].split(' ').slice(-1)[0]); }
+                else if (t.includes('Increases damage done by Nature spells and effects ')) { stats['magical']['dmg_nature'] = parseInt(t.split('.')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Increases healing done by spells and effects by')) { stats['magical']['healing'] = parseInt(t.split('.')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Improves your chance to hit with spells')) { stats['magical']['hit'] = parseInt(t.split('%')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Improves your chance to get a critical strike with spells by')) { stats['magical']['crit'] = parseInt(t.split('%')[0].split(' ').slice(-1)[0]); }
+                else if (t.includes('Ranged Attack Power')) {
+                    stats['physical']['rap'] = parseInt(t.split('+')[1].split(' ')[0])
+                }
+                else if (t.includes('Attack Power')) {
+                    stats['physical']['ap'] = parseInt(t.split('+')[1].split(' ')[0])
+                }
                 else if (t.includes('Improves your chance to hit by')) { stats['physical']['hit'] = parseInt(t.split('%')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Improves your chance to get a critical strike by')) { stats['physical']['crit'] = parseInt(t.split('%')[0].split(' ').slice(-1)[0]); }
                 else if (t.includes('Increased Defense')) { stats['defensive']['defense'] = parseInt(t.split('+')[1].split('.')[0]); }

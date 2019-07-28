@@ -105,7 +105,7 @@ module.exports = {
                     return result;
                 },
                 byCharacter: async function(query) {
-                    const result = await sql.query('SELECT u.id, u.user as "name", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank JOIN tblCharacter c ON c.user = u.id WHERE c.name LIKE ? GROUP BY u.id ORDER BY u.rank DESC, u.user ASC', ['%'+query+'%']);
+                    const result = await sql.query('SELECT u.id, u.user as "name", r.name as "rank", u.role FROM tblUser u JOIN tblRank r on r.id = u.rank JOIN tblCharacter c ON c.user = u.id WHERE c.name LIKE ? GROUP BY u.id, r.name ORDER BY u.rank DESC, u.user ASC', ['%'+query+'%']);
                     return result;
                 }
             },
