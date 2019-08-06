@@ -21,10 +21,10 @@ function initItem(item) {
   $('#txtPhysicalStats').html('');
   $('#txtDefensiveStats').html('');
   $('#txtOtherStats').html('');
-  $('txtLVHealing').val(0)
-  $('txtLVMagical').val(0)
-  $('txtLVPhysical').val(0)
-  $('txtLVTanking').val(0)
+  $('#txtLVHealing').val(0);
+  $('#txtLVMagical').val(0);
+  $('#txtLVPhysical').val(0);
+  $('#txtLVTanking').val(0);
 
   if (!$.isEmptyObject(item.stats.base)) {
     if (item.stats.base.agi) { $('#txtBaseStats').append('<div>' + item.stats.base.agi + ' agility (IV: ' + (item.stats.base.agi*item.coefficients.agi) + ')</div>'); addToLV('#txtLVPhysical', item.stats.base.agi, item.coefficients.agi); }
