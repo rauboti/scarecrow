@@ -38,15 +38,49 @@
     </nav>
   <body>
     <section class="pageContainer">
-      <div class="formContainer">
-        <% if (conf.rank >= 6) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
-          <button type="button" onclick="location.href=location.origin + '/loot/wishlists';">Wishlists</button>
-        <%} if (conf.rank > 7) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/update';">Update item</button>
-          <button type="button" onclick="location.href=location.origin + '/loot/award'" class="action-button">Award item</button>
-        <%}%>
-      </div>
+      <form name="frmAwardItem" method="post" autocomplete="off">
+        <div class="formContainer">
+          <div class="formContainer-fullColumn">
+            <span>Raid:</span>
+            <select name="raid">
+              <option value=""></option>
+              <%for (var i in events) {%>
+                <option value="<%=events[i].id%>">[<%=events[i].day%> <%=events[i].date%>/<%=events[i].month%>] <%=events[i].instance%></option>
+              <%}%>
+            </select>
+          </div>
+          <div class="formContainer-fullColumn">
+            <span>Character:</span>
+            <select name="char">
+              <option value=""></option>
+              <%for (var i in characters) {%>
+                <option value="<%=characters[i].id%>"><%=characters[i].name%> - <%=characters[i].server.toUpperCase()%></option>
+              <%}%>
+            </select>
+          </div>
+          <div class="formContainer-fullColumn">
+            <span>Item:</span>
+            <select name="item">
+              <option value=""></option>
+              <%for (var i in items) {%>
+                <option value="<%=items[i].id%>"><%=items[i].name%></option>
+              <%}%>
+            </select>
+          </div>
+          <div class="formContainer-fullColumn">
+            <span>Role:</span>
+            <select name="role">
+              <option value=""></option>
+              <option value="phys">Physical DPS</option>
+              <option value="mag">Caster</option>
+              <option value="heal">Healer</option>
+              <option value="tank">Tank</option>
+            </select>
+          </div>
+          <button type="submit" name="award" value="1">Mainspec</button>
+          <button type="submit" name="award" value="0">Offspec</button>
+        </div>
+      </form>
     </section>
   </body>
   <foot>
@@ -58,7 +92,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/awarditem.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

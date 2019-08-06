@@ -1,6 +1,6 @@
 # db files
-db/config.js
-strategies/bnet.strategy.js
+src/db/config.js
+src/config/strategies/bnet.strategy.js
 
 #node_modules
 node_modules/

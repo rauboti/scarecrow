@@ -82,7 +82,7 @@ function router() {
             res.redirect('/admin');
           }
         } else if (req.body.editUser) {
-          const Update = await data.user.set.details(req.body, req.params.id, true)
+          const Update = await data.user.set.details(req.params.id, req.body, true)
           res.redirect(req.get('referer'));
         } else if (req.body.editChar) {
           const Edit = await data.character.set.details(req.body, req.params.id, true)
@@ -173,7 +173,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const events = await data.events.getAll();
+          const events = await data.event.get.all();
           const conf = { device: req.device.type.toLowerCase(), page: 'Events', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('events', { scMenu, conf, events });
         }());
@@ -187,7 +187,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const event = await data.event.get(req.params.id, req.user)
+          const event = await data.event.get.single(req.params.id, req.user)
           const conf = { device: req.device.type.toLowerCase(), page: 'Events', rank: rank, theme: theme, main: req.user.main, title: '<Scarecrow>' }
           res.render('event', { scMenu, conf, event });
         }());
@@ -228,6 +228,28 @@ function router() {
           res.render('loot', { scMenu, conf });
         }());
       })});
+
+  pagerouter.route('/loot/award')                     // => The item award page
+  .all((req, res, next) => {
+    req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+  .get((req, res) => {
+    req.user && (rank = req.user.rank);
+    req.user ? theme = req.user.theme : theme = 'scarecrow';
+    getPages(req.user.rank, function(scMenu){
+      (async function showPage() {
+        const characters = await data.character.get.all.total();
+        const items = await data.item.get.all();
+        const events = await data.event.get.all();
+        const conf = { device: req.device.type.toLowerCase(), page: 'Loot', rank: rank, theme: theme, title: '<Scarecrow>' }
+        res.render('awarditem', {scMenu, conf, characters, items, events});
+      }())
+    })})
+  .post((req, res) => {
+    (async function dbQuery() {
+      debug(req.body);
+      await data.item.award(req.body);
+      res.redirect(req.get('referer'));
+    }())})
   
   pagerouter.route('/loot/standings')                // => The standings page
   .all((req, res, next) => {
@@ -250,7 +272,7 @@ function router() {
       res.json(result);
     }())})
 
-  pagerouter.route('/loot/itemvalues')                // => The item value page
+  pagerouter.route('/loot/update')                // => The item value page
   .all((req, res, next) => {
     req.user && req.user.rank >= 8 ? next() : res.redirect('/signIn') })
   .get((req, res) => {
@@ -260,14 +282,14 @@ function router() {
       (async function showPage() {
         const conf = { device: req.device.type.toLowerCase(), page: 'Loot', rank: rank, theme: theme, title: '<Scarecrow>' }
         const instances = await data.instances.get();
-        res.render('itemvalues', {scMenu, conf, instances});
+        res.render('itemupdate', {scMenu, conf, instances});
       }())
     })})
   .post((req, res) => {
     (async function dbQuery() {
       debug(req.body);
       if (req.body.update && req.body.update === 'itemvalue') {
-        await data.lootValue.update(req.body)
+        await data.item.update(req.body)
         res.redirect(req.get('referer'));
       }
     }())})
@@ -319,7 +341,7 @@ function router() {
             await data.character.update.level(req.user.id, req.user.token, req.body.name, req.body.server);
           }
         } else if (req.body.editUser) {
-          const Edit = await data.user.set.details(req.body, req.user.id, false)
+          const Edit = await data.user.set.details(req.user.id, req.body, false)
           req.user.theme = req.body.theme;
         }
         res.redirect(req.get('referer'));
@@ -396,7 +418,7 @@ function router() {
     .post((req, res) => {
       (async function dbQuery() {
         debug(req.body);
-        req.body.request === 'boss' && (result = await data.get.boss(req.body.id))
+        req.body.request === 'boss' && (result = await data.boss.get.all())
         req.body.request === 'characters' && (result = await api.bnet.character.get.all(req.user.token))
         req.body.request === 'classes' && (result = await data.classes.get())
         req.body.request === 'coefficients' && (result = await data.get.coefficients())
@@ -412,15 +434,6 @@ function router() {
         if (req.body.request === 'user') { result = await data.user.get.name(req.body.query, req.body.set); }
         res.json(result);
       }())});
-  
-  pagerouter.route('/api/set')                        // => API
-    .post((req, res) => {
-      (async function dbQuery() {
-        debug(req.body);
-        req.body.request === 'item' && (result = await data.set.item(req.body.item))
-        res.json(result);
-      }())});
-
 
   return pagerouter;
 }

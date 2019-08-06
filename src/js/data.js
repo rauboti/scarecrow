@@ -13,6 +13,14 @@ const SC = require('../js/functions');
 const api = require('../api/requests');
 
 const local = module.exports = {
+  boss: {
+    get: {
+      all: async function() {
+        const result = await db.boss.get.all();
+        return result;
+      }
+    }
+  },
   character: {
     add: async function(userId, char) {
       const id = await db.character.add(userId, char)
@@ -21,6 +29,17 @@ const local = module.exports = {
     delete: async function(userId, charId) {
       await db.character.delete.single(userId, charId);
       return;
+    },
+    get: {
+      all: {
+        total: async function() {
+          const result = await db.character.get.all.total();
+          return result;
+        },
+        user: async function() {
+          //
+        }
+      }
     },
     update: {
       level: async function(userId, token, charName, server) {
@@ -45,12 +64,22 @@ const local = module.exports = {
   },
   instances: {
     get: async function() {
-      const result = db.instances.get();
+      const result = await db.instances.get();
       return result;
     }
   },
   item: {
+    award: async function(a) {
+      await db.item.award(a);
+      const wl = await db.wishlist.get.excisting(a.char, a.item);
+      !(wl.length < 1) && await db.wishlist.receive(a.char, wl[0].id)
+      return;
+    },
     get: {
+      all: async function() {
+        const result = await db.item.get.all();
+        return result;
+      },
       single: async function(req) {
         req.source === 'wowhead' ? item = await api.wh.item(req.id) : item = await db.item.get.single(req.id);
         item['coefficients'] = await db.coefficients.get();
@@ -60,13 +89,11 @@ const local = module.exports = {
         const result = await db.item.get.matches(query)
         return result;
       }
-    }
-  },
-  lootValue: {
-    update: async function(lv) {
-      if (lv.id !== '') {
-        const item = await db.item.get.single(lv.id)
-        item.length < 1 ? await db.lv.add(lv) : await db.lv.update(lv)
+    },
+    update: async function(item) {
+      if (item.id !== '') {
+        const result = await db.item.get.single(item.id)
+        result.length < 1 ? await db.item.add(item) : await db.item.update(item)
       }
       return;
     }
@@ -90,7 +117,7 @@ const local = module.exports = {
       details: async function(userId) {
         var obj = {}
         obj['details'] = await db.user.get.single.details(userId)
-        obj['characters'] = await db.character.get.all(userId);
+        obj['characters'] = await db.character.get.all.user(userId);
         return obj;
       },
       officers: async function() {
@@ -99,12 +126,8 @@ const local = module.exports = {
       }
     },
     set: {
-      details: async function(user, id, admin) {
-        if (admin) {
-          const result = await sql.query('UPDATE tblUser SET rank = ?, role = ?, email = ? WHERE id = ?', [parseInt(user.rank), user.role, user.email, id]);
-        } else {
-          const result = await sql.query('UPDATE tblUser SET email = ?, theme = ? WHERE id = ?', [user.email, user.theme, id]);
-        }
+      details: async function(userId, details, admin) {
+        await db.user.set.details(userId, details, admin);
         return;
       }
     }
@@ -135,14 +158,6 @@ const local = module.exports = {
 
   // => Still require cleanup
   get: {
-    boss: async function(id) {
-      if (id === 'all') {
-        const result = await sql.query('SELECT id, boss FROM tblProgression ORDER BY boss ASC');
-        return result;
-      } else {
-        // only 1 selected
-      }
-    },
     event: async function(id) {
       if (id === 'all') {
         const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i ON e.instance = i.id');
@@ -233,19 +248,6 @@ const local = module.exports = {
         var result = await sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set['selected'][player], set.raid, set.boss, 10])
       }
       return;
-    },
-    item: async function(item) {
-      var result = await sql.query('SELECT * from tblItem WHERE id = ?', [item.id])
-      if (result.length < 1) {
-        result = await sql.query('INSERT INTO tblItem (`id`, `instance`, `name`, `slot`, `quality`, `agi`, `int`, `spi`, `sta`, `str`, `ap`, `rap`, `defense`, `parry`, `dodge`, `block`, `mp5`, `splpwr`, `hlrpwr`, `dps`, `melcrit`, `melhit`, `splcrit`, `splhit`, `misc`, `tankvalue`, `healvalue`, `physvalue`, `magvalue`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [item.id, item.instance, item.name, item.slot, item.quality, item.agi, item.int, item.spi, item.sta, item.str, item.ap, item.rap, item.defense, item.parry, item.dodge, item.block, item.mp5, item.splpwr, item.hlrpwr, item.dps, item.melcrit, item.melhit, item.splcrit, item.splcrit, item.misc, item.valuetank, item.valueheal, item.valuephysical, item.valuemagical])
-      } else {
-        result = await sql.query('UPDATE tblItem SET `instance` = ?, `name` = ?, `slot` = ?, `quality` = ?, `agi` = ?, `int` = ?, `spi` = ?, `sta` = ?, `str` = ?, `ap` = ?, `rap` = ?, `defense` = ?, `parry` = ?, `dodge` = ?, `block` = ?, `mp5` = ?, `splpwr` = ?, `hlrpwr` = ?, `dps` = ?, `melcrit` = ?, `melhit` = ?, `splcrit` = ?, `splhit` = ?, `misc` = ?, `tankvalue` = ?, `healvalue` = ?, `physvalue` = ?, `magvalue` = ? WHERE `id` = ?', [item.instance, item.name, item.slot, item.quality, item.agi, item.int, item.spi, item.sta, item.str, item.ap, item.rap, item.defense, item.parry, item.dodge, item.block, item.mp5, item.splpwr, item.hlrpwr, item.dps, item.melcrit, item.melhit, item.splcrit, item.splcrit, item.misc, item.valuetank, item.valueheal, item.valuephysical, item.valuemagical, item.id])
-      }
-      return;
-    },
-    itemRecipient: async function(set) {
-      var id = await local.getUniqueID('tblItemReceived');
-      var result = await sql.query('INSERT INTO tblItemReceived (`id`, `raid`, `char`, `item`, `role`) VALUES (?, ?, ?, ?, ?)', [id, set.raid, set.player, set.item, set.role])
     }
   },
   app: {
@@ -357,63 +359,63 @@ const local = module.exports = {
       }
       return;
     },
-    get: async function(id, user) {
-      var event = {}
-      var result = await sql.query('SELECT id FROM tblCharacter WHERE user_id = ? AND main = 1', [user.id])
-      result[0] && (user.main = result[0].id)
-      result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list, e.info FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
-      var d = new Date(result[0].time);
-      event['day'] = SC.getWeekday(d.getDay());
-      event['date'] = d.getDate();
-      event['month'] = d.getMonth()+1;
-      event['instance'] = result[0].name;
-      event['consumables'] = result[0].list;
-      (result[0].info !== null) && (event['info'] = result[0].info);
-      event['tank'] = [];
-      event['support'] = [];
-      event['damage'] = [];
-      event['uninvolved'] = [];
-      event['max'] = {};
-      event['max']['tanks'] = result[0].tanks
-      event['max']['support'] = result[0].support
-      event['max']['damage'] = result[0].damage
-      var signed = false;
-      result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
-      var idx = 1;
-      for (var i in result) {
-        (result[i].id === user.main) && (signed = result[i].event_status)
-        var attendee = {}
-        attendee['class'] = result[i].class
-        attendee['name'] = result[i].name
-        attendee['status'] = result[i].event_status
-        if (result[i].event_status === 'accept') {
-          attendee['idx'] = idx;
-          event[result[i].role.toLowerCase()].push(attendee);
-          idx++;
-        } else {
-          attendee['comment'] = result[i].comment
-          event['uninvolved'].push(attendee)
+    get: {
+      all: async function() {
+        var events = {}
+        const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance WHERE e.time >= CURDATE() ORDER BY e.time ASC');
+        for (var i in result) {
+          d = new Date(result[i].time)
+          var x = {}
+          x['id'] = result[i].id;
+          x['instance'] = result[i].name;
+          x['day'] = SC.getWeekday(d.getDay());
+          x['date'] = d.getDate();
+          x['month'] = d.getMonth()+1;
+          events[i] = x;
         }
+        return events;
+      },
+      single: async function(id, user) {
+        var event = {}
+        var result = await sql.query('SELECT id FROM tblCharacter WHERE user = ? AND main = 1', [user.id])
+        result[0] && (user.main = result[0].id)
+        result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list, e.info FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
+        var d = new Date(result[0].time);
+        event['day'] = SC.getWeekday(d.getDay());
+        event['date'] = d.getDate();
+        event['month'] = d.getMonth()+1;
+        event['instance'] = result[0].name;
+        event['consumables'] = result[0].list;
+        (result[0].info !== null) && (event['info'] = result[0].info);
+        event['tank'] = [];
+        event['support'] = [];
+        event['damage'] = [];
+        event['uninvolved'] = [];
+        event['max'] = {};
+        event['max']['tanks'] = result[0].tanks
+        event['max']['support'] = result[0].support
+        event['max']['damage'] = result[0].damage
+        var signed = false;
+        result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
+        var idx = 1;
+        for (var i in result) {
+          (result[i].id === user.main) && (signed = result[i].event_status)
+          var attendee = {}
+          attendee['class'] = result[i].class
+          attendee['name'] = result[i].name
+          attendee['status'] = result[i].event_status
+          if (result[i].event_status === 'accept') {
+            attendee['idx'] = idx;
+            event[result[i].role.toLowerCase()].push(attendee);
+            idx++;
+          } else {
+            attendee['comment'] = result[i].comment
+            event['uninvolved'].push(attendee)
+          }
+        }
+        event['signed'] = signed;
+        return event;
       }
-      event['signed'] = signed;
-      return event;
-    }
-  },
-  events: {
-    getAll: async function() {
-      var events = {}
-      const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance WHERE e.time >= CURDATE() ORDER BY e.time ASC');
-      for (var i in result) {
-        d = new Date(result[i].time)
-        var x = {}
-        x['id'] = result[i].id;
-        x['instance'] = result[i].name;
-        x['day'] = SC.getWeekday(d.getDay());
-        x['date'] = d.getDate();
-        x['month'] = d.getMonth()+1;
-        events[i] = x;
-      }
-      return events;
     }
   },
   ranks: {

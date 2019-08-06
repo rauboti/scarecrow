@@ -9,6 +9,14 @@ const sql = require('../db/config');
 const SC = require('../js/functions');
 
 module.exports = {
+    boss: {
+        get: {
+            all: async function() {
+                const result = await sql.query('SELECT id, boss FROM tblProgression ORDER BY boss ASC');
+                return result;
+            }
+        }
+    },
     character: {
         add: async function(userId, char) {
             var charExcists = await sql.query('SELECT * from tblCharacter WHERE name = ? and server = ?', [char.name, char.server]);
@@ -31,9 +39,15 @@ module.exports = {
             }
         },
         get: {
-            all: async function(userId) {
-                const result = await sql.query('SELECT id, name, server, class, spec, role, level, main FROM tblCharacter WHERE user = ? ORDER BY main DESC', [userId]);
-                return result;
+            all: {
+                total: async function() {
+                    const result = await sql.query('SELECT id, name, server FROM tblCharacter ORDER BY name ASC');
+                    return result;
+                },
+                user: async function(userId) {
+                    const result = await sql.query('SELECT id, name, server, class, spec, role, level, main FROM tblCharacter WHERE user = ? ORDER BY main DESC', [userId]);
+                    return result;
+                }
             }
         },
         update: {
@@ -71,9 +85,21 @@ module.exports = {
         }
     },
     item: {
+        add: async function(item) {
+            await sql.query('INSERT INTO tblItem(`id`, `instance`, `name`, `slot`, `quality`, `tankvalue`, `healvalue`, `physvalue`, `magvalue`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [parseInt(item.id), parseInt(item.instance), item.name, item.slot, item.quality, (parseInt(item.tanking)+parseInt(item.tankingMisc)), (parseInt(item.healing)+parseInt(item.healingMisc)), (parseInt(item.physical)+parseInt(item.physicalMisc)), (parseInt(item.magical)+parseInt(item.magicalMisc))]);
+            return;
+        },
+        award: async function(a) {
+            const id = await getUniqueID('tblLoot');
+            await sql.query('INSERT INTO tblLoot(`id`, `raid`, `char`, `item`, `role`, `mainspec`) VALUES(?, ?, ?, ?, ?, ?)', [id, a.raid, a.char, parseInt(a.item), a.role, parseInt(a.award)])
+            return;
+        },
         get: {
+            all: async function() {
+                const result = await sql.query('SELECT id, name, instance FROM tblItem ORDER BY name ASC');
+                return result;
+            },
             single: async function(itemId) {
-                //console.log(itemId)
                 const result = await sql.query('SELECT * FROM tblItem WHERE `id` = ?', [itemId]);
                 return result;
             },
@@ -81,15 +107,9 @@ module.exports = {
                 const result = await sql.query('SELECT id, name, quality, slot FROM tblItem WHERE `name` LIKE ?', ['%' + query + '%']);
                 return result;
             }
-        }
-    },
-    lv: {
-        add: async function(lv) {
-            await sql.query('INSERT INTO tblItem(`id`, `instance`, `name`, `slot`, `quality`, `tankvalue`, `healvalue`, `physvalue`, `magvalue`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [parseInt(lv.id), parseInt(lv.instance), lv.name, lv.slot, lv.quality, (parseInt(lv.tanking)+parseInt(lv.tankingMisc)), (parseInt(lv.healing)+parseInt(lv.healingMisc)), (parseInt(lv.physical)+parseInt(lv.physicalMisc)), (parseInt(lv.magical)+parseInt(lv.magicalMisc))]);
-            return;
         },
-        update: async function(lv) {
-            await sql.query('UPDATE tblItem SET `instance` = ?, `name` = ?, `slot` = ?, `quality` = ?, `tankvalue` = ?, `healvalue` = ?, `physvalue` = ?, `magvalue` = ? WHERE `id` = ?', [parseInt(lv.instance), lv.name, lv.slot, lv.quality, (parseInt(lv.tanking)+parseInt(lv.tankingMisc)), (parseInt(lv.healing)+parseInt(lv.healingMisc)), (parseInt(lv.physical)+parseInt(lv.physicalMisc)), (parseInt(lv.magical)+parseInt(lv.magicalMisc)), (parseInt(lv.id))]);
+        update: async function(item) {
+            await sql.query('UPDATE tblItem SET `instance` = ?, `name` = ?, `slot` = ?, `quality` = ?, `tankvalue` = ?, `healvalue` = ?, `physvalue` = ?, `magvalue` = ? WHERE `id` = ?', [parseInt(item.instance), item.name, item.slot, item.quality, (parseInt(item.tanking)+parseInt(item.tankingMisc)), (parseInt(item.healing)+parseInt(item.healingMisc)), (parseInt(item.physical)+parseInt(item.physicalMisc)), (parseInt(item.magical)+parseInt(item.magicalMisc)), (parseInt(item.id))]);
             return;
         }
     },
@@ -120,6 +140,15 @@ module.exports = {
                 }
             }
         },
+        set: {
+            details: async function(userId, details, admin) {
+                if (admin) {
+                    const result = await sql.query('UPDATE tblUser SET rank = ?, role = ?, email = ? WHERE id = ?', [parseInt(details.rank), details.role, details.email, userId]);
+                  } else {
+                    const result = await sql.query('UPDATE tblUser SET email = ?, theme = ? WHERE id = ?', [details.email, details.theme, userId]);
+                  }
+            }
+        }
     },
     wishlist: {
         add: async function(charId, item) {
@@ -139,7 +168,15 @@ module.exports = {
             characters: async function() {
                 const result = await sql.query('SELECT c.`id`, c.`name` FROM tblWishlist wl JOIN tblCharacter c ON wl.`char` = c.`id` GROUP BY wl.`char`')
                 return result;
+            },
+            excisting: async function(charId, item) {
+                const result = await sql.query('SELECT id FROM tblWishlist WHERE `char` = ? AND `item` = ?', [charId, item])
+                return result;
             }
+        },
+        receive: async function(charId, id) {
+            await sql.query('UPDATE tblWishlist SET `received` = 1 WHERE `id` = ? AND `char` = ?', [id, charId])
+            return;
         }
     }
 }

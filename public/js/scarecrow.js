@@ -87,16 +87,6 @@ var scarecrow = {
       var data = { request: 'attendance', set: set}
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin'});
     },
-    item: function(item) {
-      // Setting item information
-      var data = { request: 'item', item: item}
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/set'});
-    },
-    itemRecipient: function(raid, item, player, role) {
-      // Adding an item to a player
-      var data = { request: 'itemRecipient', raid: raid, item: item, player: player, role: role}
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin'});
-    },
     lv: function(lv) {
       // Adding LootValue score to the database
       var data = { request: 'lootValue', lv: lv}

@@ -46,12 +46,6 @@
           <button id="btnAddEvent" type="button" class="action-button">Add event</button>
           <button id="btnEditConsumes" type="button" class="action-button">Edit req. consumables</button>
         </div>
-        <% if (conf.rank > 7) {%>
-        <div>
-          <div class="formHeadline">Items & loot</div>
-          <button id="btnAwardItem" type="button" class="action-button">Award item</button>
-        </div>
-        <%}%>
         <div>
           <div class="formHeadline">Users</div>
           <% if (conf.rank > 7) {%>
@@ -76,6 +70,11 @@
     </section>
   </body>
   <foot>
+    <section class="bottomContainer">
+      <div class="formContainer">
+        <a href="https://discord.gg/z6xy5x7" target="_blank"><img class="social-logo" src="/img/discord.png"></img>Join our Discord!</a>
+      </div>
+    </section>
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/datepicker.min.js"></script>

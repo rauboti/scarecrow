@@ -58,8 +58,16 @@ html {
 }
 img {
   background-size: cover;
+}
+img.loginContainer-image {
   height: 30vw;
   width: 30vw;
+}
+img.social-logo {
+  height: 1.4rem;
+  margin: 5px;
+  vertical-align: middle;
+  width: 1.4rem;
 }
 input {
   padding: 10px;
@@ -354,7 +362,12 @@ section.pageContainer {
 section.pageContainer::-webkit-scrollbar {
   width: 0 !important;
 }
-
+section.bottomContainer {
+  bottom: 0;
+  margin-bottom: 2vh;
+  position: absolute;
+  width: 100%;
+}
 /*  ------------------------------------------------------------ { Applications }
 */
 .appBody, .appButtonRow, .appContainer {
