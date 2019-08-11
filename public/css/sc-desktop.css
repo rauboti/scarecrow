@@ -417,7 +417,28 @@ section.bottomContainer {
   right: 0;
   width: 50vw;
 }
-/*  ------------------------------------------------------------ { Appplications }
+
+/*  ------------------------------------------------------------ { Articles }
+*/
+.articleContainer {
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 1%;
+  text-align: left;
+}
+.articleContainer .header {
+  margin-bottom: 10px;
+}
+.articleContainer .header .title {
+  font-size: 1.5em;
+}
+.articleContainer .header .time {
+  font-size: 0.75em;
+  font-style: italic;
+  color: grey;
+}
+
+/*  ------------------------------------------------------------ { Applications }
 */
 .appBody, .appButtonRow {
   margin: 10px;

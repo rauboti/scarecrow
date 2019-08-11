@@ -97,10 +97,10 @@ button.menu.selected {
 }
 /*  ------------------------------------------------------------ { Containers }
 */
-.appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .eventContainer, .formButtonRow, .formContainer, .loginContainer, .officerContainer, .popupContainer, .timerContainer {
+.appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .articleContainer, .eventContainer, .formButtonRow, .formContainer, .loginContainer, .officerContainer, .popupContainer, .timerContainer {
   background: rgba(var(--clrPrimaryBackground), .9);
 }
-.appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .eventContainer, .eventContainer-roleContainer, .formButtonRow, .formContainer, .itemContainer, .loginContainer, .officerContainer, .popupContainer, .timerContainer {
+.appBody, .appButtonRow, .appHeadline, .applyContainer, .appStatusContainerBody, .appStatusContainerHead, .articleContainer, .eventContainer, .eventContainer-roleContainer, .formButtonRow, .formContainer, .itemContainer, .loginContainer, .officerContainer, .popupContainer, .timerContainer {
   border: 1px solid rgba(var(--clrThemeBorder), .5);
   border-radius: var(--radBorder);
 }

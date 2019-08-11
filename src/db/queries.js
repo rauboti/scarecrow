@@ -26,8 +26,14 @@ module.exports = {
                 var filename = '';
             }
             debug('File handled')
-            await sql.query('INSERT INTO tblArticle(id, title, article, image) VALUES (?, ?, ?, ?);', [id, title, article, filename]);
+            await sql.query('INSERT INTO tblArticle(`id`, `title`, `article`, `image`) VALUES (?, ?, ?, ?);', [id, title, article, filename]);
             return;
+        },
+        get: {
+            all: async function() {
+                const result = await sql.query('SELECT * FROM tblArticle ORDER BY `date` DESC')
+                return result;
+            }
         }
     },
     boss: {

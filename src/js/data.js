@@ -17,7 +17,19 @@ const local = module.exports = {
     add: async function(title, article, file) {
       await db.article.add(title, article, file);
       return;
-    } 
+    },
+    get: {
+      all: async function() {
+        var result = await db.article.get.all();
+
+        for (var i in result) {
+          var d = new Date(result[i].date);
+          result[i].date = d.getDate() + '/' + (d.getMonth()+1) + '-' + d.getFullYear();
+        }
+
+        return result;
+      }
+    }
   },
   boss: {
     get: {

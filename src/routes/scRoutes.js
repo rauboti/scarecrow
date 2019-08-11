@@ -20,8 +20,9 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(rank, function(scMenu){
         (async function dbQuery() {
+          const articles = await data.article.get.all();
           const conf = { device: req.device.type.toLowerCase(), page: 'Home', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('home', {scMenu, conf});
+          res.render('home', {scMenu, conf, articles});
         }())
       })})
 

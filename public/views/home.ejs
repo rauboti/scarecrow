@@ -39,6 +39,16 @@
   </head>
   <body>
     <section class="pageContainer">
+      <% for (var i in articles) {%>
+      <div class="articleContainer">
+        <div class="header">
+          <div class="title"><%=articles[i].title%></div>
+          <div class="time"><%=articles[i].date%></div>
+        </div>
+        <div class="body"><%=articles[i].article%></div>
+      </div>
+      <%}%>
+
       <div class="timerContainer">
         <div id="txtDays" class="timerValue"></div>
         <div class="timerUnit">Days</div>
