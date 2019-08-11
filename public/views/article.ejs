@@ -39,13 +39,7 @@
   <body>
     <section class="pageContainer">
       <div class="formContainer">
-        <% if (conf.rank >= 6) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
-          <button type="button" onclick="location.href=location.origin + '/loot/wishlists';">Wishlists</button>
-        <%} if (conf.rank > 7) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/update';">Update item</button>
-          <button type="button" onclick="location.href=location.origin + '/loot/award'">Award item</button>
-        <%}%>
+        <button type="button" onclick="location.href=location.origin + '/admin/articles/new'">Articles</button>
       </div>
     </section>
   </body>

@@ -39,14 +39,10 @@
   <body>
     <section class="pageContainer">
       <div class="formContainer">
-        <% if (conf.rank >= 6) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
-          <button type="button" onclick="location.href=location.origin + '/loot/wishlists';">Wishlists</button>
-        <%} if (conf.rank > 7) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/update';">Update item</button>
-          <button type="button" onclick="location.href=location.origin + '/loot/award'">Award item</button>
-        <%}%>
+        <button id="btnNew" type="button">New article</button>
+        <button id="btnEdit" type="button">Edit article</button>
       </div>
+      <div id="articleContainer" class="formContainer"></div>
     </section>
   </body>
   <foot>
@@ -58,7 +54,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/articles.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

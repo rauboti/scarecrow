@@ -3,6 +3,7 @@ const express = require('express');
 const debug = require('debug')('app:scRoutes');
 const passport = require('passport');
 const device = require('express-device');
+const fileUpload = require('express-fileupload');
 
 const pagerouter = express.Router();                  // => Defining a route
 
@@ -56,6 +57,38 @@ function router() {
           req.body.request === 'itemRecipient' && (result = await data.set.itemRecipient(req.body))
         }
       }())})
+
+  pagerouter.route('/admin/articles')                   // => applications page
+    .all((req, res, next) => {
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+    .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
+      getPages(req.user.rank, function(scMenu){
+        (async function dbQuery() {
+          const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+          res.render('articles', { scMenu, conf });
+        }());
+      })})
+    .post((req, res) => {
+      (async function dbQuery() {
+        if (req.body.action === 'new') { await data.article.add(req.body.title, req.body.article, req.files); }
+        res.redirect(req.get('referer'));
+      }())});
+
+  pagerouter.route('/admin/article/:id')                   // => applications page
+    .all((req, res, next) => {
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+    .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
+      getPages(req.user.rank, function(scMenu){
+        (async function dbQuery() {
+          
+          const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+          res.render('article', { scMenu, conf });
+        }());
+      })});
 
   pagerouter.route('/admin/user/:id')                 // => User administration pages
     .all((req, res, next) => {

@@ -1,6 +1,7 @@
 // => node modules
 const express = require('express');
 const debug = require('debug')('app:queries');
+const path = require('path');
 
 // => db connection
 const sql = require('../db/config');
@@ -9,6 +10,26 @@ const sql = require('../db/config');
 const SC = require('../js/functions');
 
 module.exports = {
+    article: {
+        add: async function(title, article, file) {
+            const id = await getUniqueID('tblArticle');
+            debug(title); debug(article); debug(file);
+            if (file) {
+                debug('There is an image here')
+                var filename = file.image.name;
+                file.image.mv(path.join(__dirname, '../../public/img/upload', filename), function(err) {
+                    if (err) { debug(err); }
+                    debug('Look, at least we are trying');
+                })
+            } else {
+                debug('Damn, no images')
+                var filename = '';
+            }
+            debug('File handled')
+            await sql.query('INSERT INTO tblArticle(id, title, article, image) VALUES (?, ?, ?, ?);', [id, title, article, filename]);
+            return;
+        }
+    },
     boss: {
         get: {
             all: async function() {

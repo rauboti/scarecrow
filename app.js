@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const path = require('path');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload')
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -25,7 +26,8 @@ app.use(morgan('tiny'))
 .use(bodyParser.json())
 .use(bodyParser.urlencoded({ extended: false }))
 .use(cookieParser())
-.use(session({ secret: 'scarecrow', saveUninitialized: false, resave: false }));
+.use(session({ secret: 'scarecrow', saveUninitialized: false, resave: false }))
+.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
 require('./src/config/passport.js')(app);
 app.use(favicon(path.join(__dirname, '/public/ico', 'favicon.ico')))
 .use(device.capture());

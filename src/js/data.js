@@ -13,6 +13,12 @@ const SC = require('../js/functions');
 const api = require('../api/requests');
 
 const local = module.exports = {
+  article: {
+    add: async function(title, article, file) {
+      await db.article.add(title, article, file);
+      return;
+    } 
+  },
   boss: {
     get: {
       all: async function() {

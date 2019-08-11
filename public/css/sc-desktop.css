@@ -198,19 +198,19 @@ textarea {
   margin: 1.25%;
   text-align: left;
 }
-.formContainer-fullColumn input[type="text"], .formContainer-fullColumn input[type="number"], .formContainer-fullColumn input[type="password"], .formContainer-halfColumn input[type="text"], .formContainer-halfColumn input[type="number"], .formContainer-halfColumn input[type="password"] {
+.formContainer-fullColumn input, .formContainer-halfColumn input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   margin: 0;
   width: 100%;
 }
-.formContainer-triColumn input[type="text"], .formContainer-triColumn input[type="number"], .formContainer-triColumn input[type="password"] {
+.formContainer-triColumn input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   margin: 0;
   width: 100%;
 }
-.formContainer-quarterColumn input[type="text"], .formContainer-quarterColumn input[type="number"], .formContainer-quarterColumn input[type="password"], .formContainer-pentaColumn input[type="text"], .formContainer-pentaColumn input[type="number"], .formContainer-pentaColumn input[type="password"] {
+.formContainer-quarterColumn input, .formContainer-pentaColumn input {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   margin: 0;
