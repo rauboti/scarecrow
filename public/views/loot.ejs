@@ -39,13 +39,27 @@
   <body>
     <section class="pageContainer">
       <div class="formContainer">
+          <button id="btnRules" type="button">Loot rules</button>
         <% if (conf.rank >= 6) {%>
-          <button type="button" onclick="location.href=location.origin + '/loot/standings';">Standings</button>
           <button type="button" onclick="location.href=location.origin + '/loot/wishlists';">Wishlists</button>
         <%} if (conf.rank > 7) {%>
           <button type="button" onclick="location.href=location.origin + '/loot/update';">Update item</button>
           <button type="button" onclick="location.href=location.origin + '/loot/award'">Award item</button>
         <%}%>
+      </div>
+      <% if (conf.rank >= 6) {%>
+        <div class="formContainer">
+          <div class="formContainer-fullColumn">
+            <select id="slctItems">
+              <option value=""></option>
+              <% for (var i in items) {%>
+                <option value="<%=items[i].id%>"><%=items[i].name%></option>
+              <%}%>
+            </select>
+          </div>
+        </div>
+      <%}%>
+      <div id="frmLootValue" class="formContainer">
       </div>
     </section>
   </body>
@@ -58,7 +72,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/loot.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

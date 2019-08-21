@@ -91,6 +91,28 @@ function router() {
         }());
       })});
 
+  pagerouter.route('/admin/attendance')                   // => attendance page
+    .all((req, res, next) => {
+      req.user && req.user.rank >= 6 ? next() : res.redirect('/signIn') })
+    .get((req, res) => {
+      req.user && (rank = req.user.rank);
+      req.user ? theme = req.user.theme : theme = 'scarecrow';
+      getPages(req.user.rank, function(scMenu){
+        (async function dbQuery() {
+          const events = await data.event.get.all('all');
+          const bosses = await data.boss.get.all();
+          const characters = await data.character.get.all.mains();
+          const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+          res.render('attendance', { scMenu, conf, events, bosses, characters });
+        }());
+      })})
+    .post((req, res) => {
+      (async function dbQuery() {
+        debug(req.body)
+        await data.attendance.add(req.body);
+        res.redirect(req.get('referer'));
+      }())});
+
   pagerouter.route('/admin/user/:id')                 // => User administration pages
     .all((req, res, next) => {
       req.user && req.user.rank === 8 ? next() : res.redirect('/signIn') })
@@ -207,7 +229,7 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
-          const events = await data.event.get.all();
+          const events = await data.event.get.all('current');
           const conf = { device: req.device.type.toLowerCase(), page: 'Events', rank: rank, theme: theme, title: '<Scarecrow>' }
           res.render('events', { scMenu, conf, events });
         }());
@@ -258,8 +280,10 @@ function router() {
       req.user ? theme = req.user.theme : theme = 'scarecrow';
       getPages(req.user.rank, function(scMenu){
         (async function dbQuery() {
+          const items = await data.item.get.all();
+          //const lootValue = await data.lootValue.get();
           const conf = { device: req.device.type.toLowerCase(), page: 'Loot', rank: rank, theme: theme, title: '<Scarecrow>' }
-          res.render('loot', { scMenu, conf });
+          res.render('loot', { scMenu, conf, items });
         }());
       })});
 
@@ -273,7 +297,7 @@ function router() {
       (async function showPage() {
         const characters = await data.character.get.all.total();
         const items = await data.item.get.all();
-        const events = await data.event.get.all();
+        const events = await data.event.get.all('all');
         const conf = { device: req.device.type.toLowerCase(), page: 'Loot', rank: rank, theme: theme, title: '<Scarecrow>' }
         res.render('awarditem', {scMenu, conf, characters, items, events});
       }())
@@ -281,7 +305,7 @@ function router() {
   .post((req, res) => {
     (async function dbQuery() {
       debug(req.body);
-      await data.item.award(req.body);
+      await data.loot.add(req.body);
       res.redirect(req.get('referer'));
     }())})
   
@@ -337,7 +361,7 @@ function router() {
     getPages(req.user.rank, function(scMenu){
       (async function showPage() {
         const wishlists = await data.wishlist.get.characters();
-        const conf = { device: req.device.type.toLowerCase(), page: 'Admin', rank: rank, theme: theme, title: '<Scarecrow>' }
+        const conf = { device: req.device.type.toLowerCase(), page: 'Loot', rank: rank, theme: theme, title: '<Scarecrow>' }
         res.render('wishlists', { scMenu, conf, wishlists})
       }())
     })})
@@ -433,8 +457,8 @@ function router() {
     pagerouter.route('/api/item/:action')             // => Item API
     .post((req, res) => {
       (async function endPoints() {
-        debug(req.params.action)
-        debug(req.body);
+        //debug(req.params.action)
+        //debug(req.body);
         req.params.action === 'single' &&  (result = await data.item.get.single(req.body))
         req.params.action === 'matches' && (result = await data.item.get.matches(req.body.query))
         res.json(result);
@@ -443,8 +467,16 @@ function router() {
     pagerouter.route('/api/wishlist/:character')      // => Wishlist API
     .post((req, res) => {
       (async function endPoints() {
-        debug(req.params.character)
-        const result = await data.wishlist.get.single(req.params.character)
+        //debug(req.params.character)
+        req.params.character === 'items' ? result = await data.wishlist.get.items() : result = await data.wishlist.get.single(req.params.character)
+        res.json(result);
+      }())});
+    
+    pagerouter.route('/api/lootvalue/get')            // => LootValue API
+    .post((req, res) => {
+      (async function endPoints() {
+        //debug(req.body)
+        result = await data.lootValue.get();
         res.json(result);
       }())});
 
@@ -457,7 +489,6 @@ function router() {
         req.body.request === 'classes' && (result = await data.classes.get())
         req.body.request === 'coefficients' && (result = await data.get.coefficients())
         req.body.request === 'consumables' && (result = await data.consumables.get())
-        req.body.request === 'event' && (result = await data.get.event(req.body.id))
         req.body.request === 'instances' && (result = await data.instances.get())
         req.body.request === 'players' && (result = await data.get.players())
         req.body.request === 'progression' && (result = await data.get.progression())

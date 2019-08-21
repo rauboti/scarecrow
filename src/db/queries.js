@@ -36,6 +36,31 @@ module.exports = {
             }
         }
     },
+    attendance: {
+        add: async function(set) {
+            set.attendance === 'standby' ? points = 7.5 : points = 10;
+            if (set.character instanceof Array) {
+                for (var c in set.character) {
+                    var id = await getUniqueID('tblAttendance');
+                    await sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set.character[c], set.raid, parseInt(set.boss), points])
+                }
+            } else {
+                var id = await getUniqueID('tblAttendance');
+                await sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set.character, set.raid, parseInt(set.boss), points])  
+            }
+            return;
+        },
+        get: {
+            all: async function() {
+                const result = await sql.query('SELECT c.id, a.raid, a.boss, a.points, c.name, c.class FROM tblAttendance a JOIN tblCharacter c ON a.char = c.id ORDER BY c.id, a.raid')
+                return result;
+            },
+            mains: async function() {
+                const result = await sql.query('SELECT c.id, a.raid, a.boss, a.points, c.name, c.class FROM tblAttendance a JOIN tblCharacter c ON a.char = c.id WHERE c.main = 1 ORDER BY c.id, a.raid')
+                return result;
+            }
+        }
+    },
     boss: {
         get: {
             all: async function() {
@@ -68,7 +93,11 @@ module.exports = {
         get: {
             all: {
                 total: async function() {
-                    const result = await sql.query('SELECT id, name, server FROM tblCharacter ORDER BY name ASC');
+                    const result = await sql.query('SELECT id, name, server, class FROM tblCharacter ORDER BY name ASC');
+                    return result;
+                },
+                mains: async function() {
+                    const result = await sql.query('SELECT id, name, server, class FROM tblCharacter where main = 1 ORDER BY name ASC');
                     return result;
                 },
                 user: async function(userId) {
@@ -105,6 +134,23 @@ module.exports = {
             return coefficients;
         },
     },
+    event: {
+        add: async function() {
+            const id = await getUniqueID('tblEvent');
+            await sql.query('INSERT INTO tblEvent (id, instance, time, info) VALUES (?, ?, ?, ?)', [id, instance, date, info]);
+            return;
+        },
+        get: {
+            all: async function() {
+                const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i ON e.instance = i.id');
+                return result;
+            },
+            current: async function() {
+                const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance WHERE e.time >= CURDATE() ORDER BY e.time ASC');
+                return result;
+            }
+        }
+    },
     instances: {
         get: async function() {
             const result = await sql.query('SELECT id, name FROM tblInstance');
@@ -116,14 +162,9 @@ module.exports = {
             await sql.query('INSERT INTO tblItem(`id`, `instance`, `name`, `slot`, `quality`, `tankvalue`, `healvalue`, `physvalue`, `magvalue`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [parseInt(item.id), parseInt(item.instance), item.name, item.slot, item.quality, (parseInt(item.tanking)+parseInt(item.tankingMisc)), (parseInt(item.healing)+parseInt(item.healingMisc)), (parseInt(item.physical)+parseInt(item.physicalMisc)), (parseInt(item.magical)+parseInt(item.magicalMisc))]);
             return;
         },
-        award: async function(a) {
-            const id = await getUniqueID('tblLoot');
-            await sql.query('INSERT INTO tblLoot(`id`, `raid`, `char`, `item`, `role`, `mainspec`) VALUES(?, ?, ?, ?, ?, ?)', [id, a.raid, a.char, parseInt(a.item), a.role, parseInt(a.award)])
-            return;
-        },
         get: {
             all: async function() {
-                const result = await sql.query('SELECT id, name, instance FROM tblItem ORDER BY name ASC');
+                const result = await sql.query('SELECT * FROM tblItem ORDER BY name ASC');
                 return result;
             },
             single: async function(itemId) {
@@ -138,6 +179,23 @@ module.exports = {
         update: async function(item) {
             await sql.query('UPDATE tblItem SET `instance` = ?, `name` = ?, `slot` = ?, `quality` = ?, `tankvalue` = ?, `healvalue` = ?, `physvalue` = ?, `magvalue` = ? WHERE `id` = ?', [parseInt(item.instance), item.name, item.slot, item.quality, (parseInt(item.tanking)+parseInt(item.tankingMisc)), (parseInt(item.healing)+parseInt(item.healingMisc)), (parseInt(item.physical)+parseInt(item.physicalMisc)), (parseInt(item.magical)+parseInt(item.magicalMisc)), (parseInt(item.id))]);
             return;
+        }
+    },
+    loot: {
+        add: async function(a) {
+            const id = await getUniqueID('tblLoot');
+            await sql.query('INSERT INTO tblLoot(`id`, `raid`, `char`, `item`, `role`, `mainspec`) VALUES(?, ?, ?, ?, ?, ?)', [id, a.raid, a.char, parseInt(a.item), a.role, parseInt(a.award)])
+            return;
+        },
+        get: {
+            all: async function() {
+                const result = await sql.query('SELECT `raid`, `char`, `role`, `item` FROM tblLoot ORDER BY `char`, `raid`')
+                return result;
+            },
+            mainspec: async function() {
+                const result = await sql.query('SELECT `raid`, `char`, `role`, `item` FROM tblLoot WHERE mainspec = 1 ORDER BY `char`, `raid`')
+                return result;
+            }
         }
     },
     user: {
@@ -198,6 +256,10 @@ module.exports = {
             },
             excisting: async function(charId, item) {
                 const result = await sql.query('SELECT id FROM tblWishlist WHERE `char` = ? AND `item` = ?', [charId, item])
+                return result;
+            },
+            all: async function() {
+                const result = await sql.query('SELECT `id`, `char`, `item` FROM tblWishlist WHERE `received` = 0')
                 return result;
             }
         },

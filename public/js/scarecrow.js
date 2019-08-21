@@ -25,10 +25,6 @@ var scarecrow = {
       var data = { request: 'consumables' };
       $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: consumables })
     },
-    event: function(id, events) {
-      var data = { request: 'event', id: id };
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/get', success: events })
-    },
     instances: function(instances) { // --|--@ Complete
       //=<>= Getting instances from the database
       var data = { request: 'instances' };
@@ -49,7 +45,7 @@ var scarecrow = {
     lootValue: function(lootvalue) { // --|--@ Complete
       // Getting items from the database
       var data = { request: 'lootvalue' }
-      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/admin/lootvalue', success: lootvalue });
+      $.ajax({ type: 'POST', data: JSON.stringify(data), contentType: 'application/json', url: location.origin + '/api/lootvalue/get', success: lootvalue });
     },
     players: function(players) {
       // Getting progression status from the database

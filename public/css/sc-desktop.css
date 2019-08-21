@@ -113,11 +113,18 @@ select {
   padding: 10px;
   font-size: 1rem;
 }
+table {
+  border-collapse: collapse;
+  box-sizing: border-box;
+  width: 100%;
+}
+td {
+  padding: 10px;
+}
 tr {
   background-color: rgba(0, 0, 0, 0) !important;
   text-align: left;
 }
-
 textarea {
   font-size: 1rem;
   height: 100px;
@@ -215,6 +222,11 @@ textarea {
   -moz-box-sizing: border-box;
   margin: 0;
   width: 100%;
+}
+/* Resetting the width on checkboxes and radio buttons */
+.formContainer-fullColumn input[type="checkbox"], .formContainer-fullColumn input[type="radio"], .formContainer-halfColumn input[type="checkbox"], .formContainer-halfColumn input[type="radio"], .formContainer-triColumn input[type="checkbox"], .formContainer-triColumn input[type="radio"], .formContainer-quarterColumn input[type="checkbox"], .formContainer-quarterColumn input[type="radio"], .formContainer-pentaColumn input[type="checkbox"], .formContainer-pentaColumn input[type="radio"] {
+  width: auto;
+  margin: auto;
 }
 .formContainer-fullColumn select, .formContainer-fullColumn textarea, .formContainer-halfColumn select, .formContainer-halfColumn textarea, .formContainer-quarterColumn select, .formContainer-quarterColumn textarea, .formContainer-pentaColumn select, .formContainer-pentaColumn textarea {
   box-sizing: border-box;
@@ -773,24 +785,18 @@ section.bottomContainer {
 
 /*  ------------------------------------------------------------ { LootValue }
 */
-.lvBar-outter {
-  /*border: 1px solid rgba(84, 112, 125, 1);*/
-  border: 1px solid rgba(50, 66, 74, 0.75);
-  border-radius: 5px;
+.lvBar {
+  background-color: rgba(50, 66, 74, 1);
+  border: 1px solid rgba(84, 112, 125, 1);
+  border-radius: 2px;
   display: inline-block;
-  height: 1rem;
-  padding: 0;
-  margin: 5px;
-  text-align: left;
+  height: 1.2em;
   vertical-align: middle;
-  width: 65%;
 }
-.lvBar-inner {
-  background-color: rgba(50, 66, 74, 0.75);
-  height: 1rem;
-}
+
 .lvBar-text {
-  color: rgba(84, 112, 125, 1);
+  color: white;
+  margin-left: 5px;
   vertical-align: middle;
 }
 

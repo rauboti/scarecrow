@@ -38,11 +38,35 @@
     </nav>
   <body>
     <section class="pageContainer">
-      <div class="formContainer">
-        <div id="classFilters"></div>
-        <div class="formContainer-fullColumn"><select id="frmItems"><option value=""></option></select></div>
-      </div>
-      <div id="formLootValue" class="formContainer"></div>
+      <form method="post" autocomplete="off">
+        <div class="formContainer">
+          <div class="formContainer-halfColumn">
+            <span>Raid</span>
+            <select name="raid">
+              <option value=""></option>
+              <% for (var e in events) {%>
+              <option value="<%=events[e].id%>"><%=events[e].instance%> [<%=events[e].date%>/<%=events[e].month%>]</option>
+              <%}%>
+            </select>
+          </div>
+          <div class="formContainer-halfColumn">
+            <span>Boss</span>
+            <select name="boss">
+              <option value=""></option>
+              <% for (var b in bosses) {%>
+              <option value="<%=bosses[b].id%>"><%=bosses[b].boss%></option>
+              <%}%>
+            </select>
+          </div>
+          <div>
+            <% for (var c in characters) {%>
+            <div class="formContainer-quarterColumn clr<%=characters[c].class%>"><input type="checkbox" name="character" value="<%=characters[c].id%>"> <%=characters[c].name%></div>
+            <%}%>
+          </div>
+          <button type="submit" name="attendance" value="full">Full attendance</button>
+          <button type="submit" name="attendance" value="standby">Standby</button>
+        </div>
+      </form>
     </section>
   </body>
   <foot>
@@ -54,7 +78,7 @@
     <!-- JS source files -->
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/scarecrow.js"></script>
-    <script src="/js/lootstandings.js"></script>
+    <script src="/js/attendance.js"></script>
     <% if (conf.device === 'phone') {%> <script>$('.menuButtonRow').hide()</script> <%}%>
   </foot>
 </html>

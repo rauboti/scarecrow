@@ -52,7 +52,7 @@
       </div>
       <div class="officerList">
         <% for (var i in officers) {
-          if (officers[i].rank === 'Officer' || officers[i].rank === 'Admin') {%>
+          if (officers[i].rank === 'Officer') {%>
             <div class="officerContainer">
               <div class="officerContainer-rank">Officer</div>
               <div class="officerContainer-player"><%=officers[i].char%></div>

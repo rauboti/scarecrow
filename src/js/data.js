@@ -21,14 +21,18 @@ const local = module.exports = {
     get: {
       all: async function() {
         var result = await db.article.get.all();
-
         for (var i in result) {
           var d = new Date(result[i].date);
           result[i].date = d.getDate() + '/' + (d.getMonth()+1) + '-' + d.getFullYear();
         }
-
         return result;
       }
+    }
+  },
+  attendance: {
+    add: async function(set) {
+      await db.attendance.add(set);
+      return;
     }
   },
   boss: {
@@ -52,6 +56,10 @@ const local = module.exports = {
       all: {
         total: async function() {
           const result = await db.character.get.all.total();
+          return result;
+        },
+        mains: async function() {
+          const result = await db.character.get.all.mains();
           return result;
         },
         user: async function() {
@@ -80,6 +88,81 @@ const local = module.exports = {
       return classes;
     }
   },
+  event: {
+    add: async function(instance, date, info) {
+      await db.event.add(instance, date, info);
+      return;
+    },
+    response: async function(event, main, response) {
+      response.comment ? comment = response.comment : comment = '';
+      const id = await local.getUniqueID('tblEventSignup');
+      const excists = await sql.query('SELECT * FROM tblEventSignup WHERE event_id = ? AND char_ID = ?', [event, main]);
+      if (excists[0]) {
+        await sql.query('UPDATE tblEventSignup SET event_status = ?, comment = ?, timestamp = now() WHERE event_id = ? AND char_id = ?', [response.sign, comment, event, main])
+      } else {
+        await sql.query('INSERT INTO tblEventSignup (id, event_id, char_id, event_status, comment) VALUES (?, ?, ?, ?, ?)', [id, event, main, response.sign, comment])
+      }
+      return;
+    },
+    get: {
+      all: async function(selection) {
+        const result = await db.event.get[selection]()
+        var events = {}
+        for (var i in result) {
+          d = new Date(result[i].time)
+          var x = {}
+          x['id'] = result[i].id;
+          x['instance'] = result[i].name;
+          x['day'] = SC.getWeekday(d.getDay());
+          x['date'] = d.getDate();
+          x['month'] = d.getMonth()+1;
+          events[i] = x;
+        }
+        return events;
+      },
+      single: async function(id, user) {
+        var event = {}
+        var result = await sql.query('SELECT id FROM tblCharacter WHERE user = ? AND main = 1', [user.id])
+        result[0] && (user.main = result[0].id)
+        result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list, e.info FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
+        var d = new Date(result[0].time);
+        event['day'] = SC.getWeekday(d.getDay());
+        event['date'] = d.getDate();
+        event['month'] = d.getMonth()+1;
+        event['instance'] = result[0].name;
+        event['consumables'] = result[0].list;
+        (result[0].info !== null) && (event['info'] = result[0].info);
+        event['tank'] = [];
+        event['support'] = [];
+        event['damage'] = [];
+        event['uninvolved'] = [];
+        event['max'] = {};
+        event['max']['tanks'] = result[0].tanks
+        event['max']['support'] = result[0].support
+        event['max']['damage'] = result[0].damage
+        var signed = false;
+        result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
+        var idx = 1;
+        for (var i in result) {
+          (result[i].id === user.main) && (signed = result[i].event_status)
+          var attendee = {}
+          attendee['class'] = result[i].class
+          attendee['name'] = result[i].name
+          attendee['status'] = result[i].event_status
+          if (result[i].event_status === 'accept') {
+            attendee['idx'] = idx;
+            event[result[i].role.toLowerCase()].push(attendee);
+            idx++;
+          } else {
+            attendee['comment'] = result[i].comment
+            event['uninvolved'].push(attendee)
+          }
+        }
+        event['signed'] = signed;
+        return event;
+      }
+    }
+  },
   instances: {
     get: async function() {
       const result = await db.instances.get();
@@ -87,12 +170,6 @@ const local = module.exports = {
     }
   },
   item: {
-    award: async function(a) {
-      await db.item.award(a);
-      const wl = await db.wishlist.get.excisting(a.char, a.item);
-      !(wl.length < 1) && await db.wishlist.receive(a.char, wl[0].id)
-      return;
-    },
     get: {
       all: async function() {
         const result = await db.item.get.all();
@@ -115,6 +192,64 @@ const local = module.exports = {
       }
       return;
     }
+  },
+  loot: {
+    add: async function(a) {
+      await db.loot.add(a);
+      const wl = await db.wishlist.get.excisting(a.char, a.item);
+      !(wl.length < 1) && await db.wishlist.receive(a.char, wl[0].id)
+      return;
+    }
+  },
+  lootValue: {
+    get: async function() {
+      var lv = [];
+      var attendance = {};
+      var loot = {};
+      var items = {};
+
+      var result = await db.item.get.all();
+      for (var i in result) {
+        var set = {}
+        set['tank'] = result[i].tankvalue;
+        set['heal'] = result[i].healvalue;
+        set['phys'] = result[i].physvalue;
+        set['mag'] = result[i].magvalue;
+        items[result[i].id] = set
+      }
+
+      result = await db.attendance.get.mains();
+      for (var i in result) {
+        if (!(result[i].id in attendance)) {
+          var set = {}
+          set['id'] = result[i].id
+          set['character'] = result[i].name;
+          set['class'] = result[i].class;
+          set['attendance'] = 0;
+          attendance[result[i].id] = set;
+        }
+        attendance[result[i].id]['attendance'] += result[i].points
+      }
+
+      result = await db.loot.get.mainspec();
+      for (var i in result) {
+        !(result[i].char in loot) && (loot[result[i].char] = 0);
+        loot[result[i].char] += parseInt(items[result[i].item][result[i].role])
+      }
+
+      for (var i in attendance) {
+        var set = {}
+        set['id'] = attendance[i].id
+        set['player'] = attendance[i].character
+        set['class'] = attendance[i].class
+        loot[i] && loot[i] !== 0 ? set['value'] = (loot[i] / attendance[i].attendance).toFixed(2) : set['value'] = (1 / attendance[i].attendance).toFixed(2)
+        lv.push(set)
+      }
+      lv.sort(function(a, b){
+          return a.value-b.value
+      })
+      return lv;
+    },
   },
   user: {
     delete: async function(userId) {
@@ -167,6 +302,15 @@ const local = module.exports = {
       characters: async function() {
         const result = await db.wishlist.get.characters();
         return result;
+      },
+      items: async function() {
+        var list = {}
+        const result = await db.wishlist.get.all();
+        for (var row in result) {
+          !(result[row].item in list) && (list[result[row].item] = [])
+          list[result[row].item].push(result[row].char)
+        }
+        return list;
       }
     }
   },
@@ -176,76 +320,6 @@ const local = module.exports = {
 
   // => Still require cleanup
   get: {
-    event: async function(id) {
-      if (id === 'all') {
-        const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i ON e.instance = i.id');
-        return result;
-      } else {
-        // only 1 selected
-      }
-    },
-    lv: async function() {
-      var lv = [];
-      var attendance = {};
-      var received = {};
-      var items = {};
-
-      var result = await sql.query('SELECT id, tankvalue, healvalue, physvalue, magvalue FROM tblItem ORDER BY id')
-      for (var i in result) {
-        var set = {}
-        set['tank'] = result[i].tankvalue;
-        set['heal'] = result[i].healvalue;
-        set['phys'] = result[i].physvalue;
-        set['mag'] = result[i].magvalue;
-        items[result[i].id] = set
-      }
-
-      result = await sql.query('SELECT c.id, a.char, a.raid, a.boss, c.name, c.class FROM tblAttendance a JOIN tblCharacter c ON a.char = c.id ORDER BY a.char, a.raid')
-      for (var i in result) {
-        if (!(result[i].char in attendance)) {
-          var set = {}
-          set['id'] = result[i].id
-          set['player'] = result[i].name;
-          set['class'] = result[i].class;
-          set['attendance'] = 0;
-          attendance[result[i].char] = set;
-        }
-        attendance[result[i].char]['attendance']++;
-      }
-
-      result = await sql.query('SELECT `raid`, `char`, `role`, `item` FROM tblItemReceived ORDER BY `char`, `raid`')
-      for (var i in result) {
-        !(result[i].char in received) && (received[result[i].char] = 0);
-        received[result[i].char] += parseInt(items[result[i].item][result[i].role])
-      }
-
-      for (var i in attendance) {
-        var set = {}
-        set['id'] = attendance[i].id
-        set['player'] = attendance[i].player
-        set['class'] = attendance[i].class
-        received[i] && received[i] !== 0 ? set['value'] = (received[i] / attendance[i].attendance).toFixed(2) : set['value'] = (1 / attendance[i].attendance).toFixed(2)
-        lv.push(set)
-      }
-
-      lv.sort(function(a, b){
-          return a.value-b.value
-      })
-
-      return lv;
-    },
-    players: async function() {
-      var players = [];
-      const result = await sql.query('SELECT id, name, class FROM tblCharacter WHERE main = 1')
-      for (var i in result) {
-        set = {};
-        set['id'] = result[i].id
-        set['name'] = result[i].name
-        set['class'] = result[i].class
-        players.push(set)
-      }
-      return players;
-    },
     progression: async function() {
       var progression = {}
       const result = await sql.query('SELECT instance, boss, status FROM tblProgression');
@@ -257,15 +331,6 @@ const local = module.exports = {
         progression[result[i].instance].push(x);
       }
       return progression;
-    }
-  },
-  set: {
-    attendance: async function(set) {
-      for (var player in set['selected']) {
-        var id = await local.getUniqueID('tblAttendance');
-        var result = await sql.query('INSERT INTO tblAttendance (`id`, `char`, `raid`, `boss`, `points`) VALUES (?, ?, ?, ?, ?)', [id, set['selected'][player], set.raid, set.boss, 10])
-      }
-      return;
     }
   },
   app: {
@@ -358,82 +423,6 @@ const local = module.exports = {
         list[result[i].id] = obj;
       }
       return list;
-    }
-  },
-  event: {
-    add: async function(instance, date, info) {
-      const id = await local.getUniqueID('tblEvent');
-      const result = await sql.query('INSERT INTO tblEvent (id, instance, time, info) VALUES (?, ?, ?, ?)', [id, instance, date, info]);
-      return;
-    },
-    response: async function(event, main, response) {
-      response.comment ? comment = response.comment : comment = '';
-      const id = await local.getUniqueID('tblEventSignup');
-      const excists = await sql.query('SELECT * FROM tblEventSignup WHERE event_id = ? AND char_ID = ?', [event, main]);
-      if (excists[0]) {
-        const result = await sql.query('UPDATE tblEventSignup SET event_status = ?, comment = ?, timestamp = now() WHERE event_id = ? AND char_id = ?', [response.sign, comment, event, main])
-      } else {
-        const result = await sql.query('INSERT INTO tblEventSignup (id, event_id, char_id, event_status, comment) VALUES (?, ?, ?, ?, ?)', [id, event, main, response.sign, comment])
-      }
-      return;
-    },
-    get: {
-      all: async function() {
-        var events = {}
-        const result = await sql.query('SELECT e.id, i.name, e.time FROM tblEvent e JOIN tblInstance i on i.id = e.instance WHERE e.time >= CURDATE() ORDER BY e.time ASC');
-        for (var i in result) {
-          d = new Date(result[i].time)
-          var x = {}
-          x['id'] = result[i].id;
-          x['instance'] = result[i].name;
-          x['day'] = SC.getWeekday(d.getDay());
-          x['date'] = d.getDate();
-          x['month'] = d.getMonth()+1;
-          events[i] = x;
-        }
-        return events;
-      },
-      single: async function(id, user) {
-        var event = {}
-        var result = await sql.query('SELECT id FROM tblCharacter WHERE user = ? AND main = 1', [user.id])
-        result[0] && (user.main = result[0].id)
-        result = await sql.query('SELECT i.name, e.time, i.tanks, i.support, i.damage, c.list, e.info FROM tblEvent e JOIN tblInstance i ON i.id = e.instance JOIN tblConsumables c ON i.id = c.id WHERE e.id = ?', [id]);
-        var d = new Date(result[0].time);
-        event['day'] = SC.getWeekday(d.getDay());
-        event['date'] = d.getDate();
-        event['month'] = d.getMonth()+1;
-        event['instance'] = result[0].name;
-        event['consumables'] = result[0].list;
-        (result[0].info !== null) && (event['info'] = result[0].info);
-        event['tank'] = [];
-        event['support'] = [];
-        event['damage'] = [];
-        event['uninvolved'] = [];
-        event['max'] = {};
-        event['max']['tanks'] = result[0].tanks
-        event['max']['support'] = result[0].support
-        event['max']['damage'] = result[0].damage
-        var signed = false;
-        result = await sql.query('SELECT c.id, es.event_status, c.name, c.class, c.role, es.comment FROM tblEventSignup es JOIN tblCharacter c on c.id = es.char_id WHERE event_id = ? ORDER BY timestamp ASC', [id]);
-        var idx = 1;
-        for (var i in result) {
-          (result[i].id === user.main) && (signed = result[i].event_status)
-          var attendee = {}
-          attendee['class'] = result[i].class
-          attendee['name'] = result[i].name
-          attendee['status'] = result[i].event_status
-          if (result[i].event_status === 'accept') {
-            attendee['idx'] = idx;
-            event[result[i].role.toLowerCase()].push(attendee);
-            idx++;
-          } else {
-            attendee['comment'] = result[i].comment
-            event['uninvolved'].push(attendee)
-          }
-        }
-        event['signed'] = signed;
-        return event;
-      }
     }
   },
   ranks: {
