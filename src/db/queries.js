@@ -135,7 +135,7 @@ module.exports = {
         },
     },
     event: {
-        add: async function() {
+        add: async function(instance, date, info) {
             const id = await getUniqueID('tblEvent');
             await sql.query('INSERT INTO tblEvent (id, instance, time, info) VALUES (?, ?, ?, ?)', [id, instance, date, info]);
             return;

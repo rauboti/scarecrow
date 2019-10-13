@@ -43,7 +43,8 @@ const local = module.exports = {
                     return response;
                 },
                 level: async function(token, name, server) {
-                    url = 'https://eu.api.blizzard.com/wow/character/' + server + '/' + name + '?fields=stats&locale=en_EU&access_token=' + token;
+                    url = 'https://eu.api.blizzard.com/profile/wow/character/' + server + '/' + name + '?namespace=profile-eu&locale=en_EU&access_token=' + token;
+                    //url = 'https://eu.api.blizzard.com/wow/character/' + server + '/' + name + '?fields=stats&locale=en_EU&access_token=' + token;
                     var response = await getData(url);
                     return response.level;
                 }

@@ -48,54 +48,6 @@
         <div class="body"><%=articles[i].article%></div>
       </div>
       <%}%>
-
-      <div class="timerContainer">
-        <div id="txtDays" class="timerValue"></div>
-        <div class="timerUnit">Days</div>
-      </div>
-      <div class="timerContainer">
-        <div id="txtHours" class="timerValue"></div>
-        <div class="timerUnit">Hours</div>
-      </div>
-      <div class="timerContainer">
-        <div id="txtMin" class="timerValue"></div>
-        <div class="timerUnit">Minutes</div>
-      </div>
-      <div class="timerContainer">
-        <div id="txtSec" class="timerValue"></div>
-        <div class="timerUnit">Seconds</div>
-      </div>
-      <script>
-      const cdDate = new Date("Aug 27, 2019 12:00:00").getTime();
-
-      updateTimer();
-    
-      const x = setInterval(function() {
-        updateTimer();
-      }, 1000);
-
-      function updateTimer() {
-        var now = new Date().getTime();
-        var distance = cdDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Display the result in the element with id="demo"
-        document.getElementById("txtDays").innerHTML = days;
-        document.getElementById("txtHours").innerHTML = hours;
-        document.getElementById("txtMin").innerHTML = minutes;
-        document.getElementById("txtSec").innerHTML = seconds;
-
-        if (distance < 0) {
-          clearInterval(x);
-          document.getElementByClass("pageContainer").innerHTML = "EXPIRED";
-        }
-      }
-      </script>
     </section>
   </body>
   <foot>
